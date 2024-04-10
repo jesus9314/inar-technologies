@@ -20,7 +20,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasShieldPermissions
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles, HasPanelShield, LogsActivity;
 
@@ -61,10 +61,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasShield
         ];
     }
 
-    // public function canAccessPanel(Panel $panel): bool
-    // {
-    //     return true;
-    // }
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
 
     public function getFilamentAvatarUrl(): ?string
     {
