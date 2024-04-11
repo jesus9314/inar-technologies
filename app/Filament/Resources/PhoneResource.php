@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CurrencyResource\Pages;
-use App\Filament\Resources\CurrencyResource\RelationManagers;
-use App\Models\Currency;
+use App\Filament\Resources\PhoneResource\Pages;
+use App\Filament\Resources\PhoneResource\RelationManagers;
+use App\Models\Phone;
+use App\Models\Supplier;
 use Filament\Forms;
+use Filament\Forms\Components\MorphToSelect;
+use Filament\Forms\Components\MorphToSelect\Type;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -13,17 +16,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CurrencyResource extends Resource
+class PhoneResource extends Resource
 {
-    protected static ?string $model = Currency::class;
+    protected static ?string $model = Phone::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-currency-dollar';
+    protected static ?string $navigationIcon = 'heroicon-o-phone';
 
-    protected static ?string $navigationGroup = 'Códigos';
+    protected static ?string $navigationGroup = 'Informacón adicional';
 
-    protected static ?string $modelLabel = 'Moneda';
+    protected static ?string $modelLabel = 'Teléfono';
 
-    protected static ?string $pluralModelLabel = 'Monedas';
+    protected static ?string $pluralModelLabel = 'Teléfonos';
 
     public static function getNavigationBadge(): ?string
     {
@@ -34,18 +37,17 @@ class CurrencyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
+                Forms\Components\TextInput::make('number')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('symbol')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('activity_state_id')
-                    ->relationship('ActivityState', 'description')
-                    ->required(),
+                MorphToSelect::make('phoneable')
+                    ->types([
+                        Type::make(Supplier::class)->titleAttribute('name'),
+                    ])
+                    ->searchable()
+                    ->preload()
             ]);
     }
 
@@ -53,11 +55,11 @@ class CurrencyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code')
+                Tables\Columns\TextColumn::make('number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('symbol')
+                Tables\Columns\TextColumn::make('phoneable_type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('state.id')
+                Tables\Columns\TextColumn::make('phoneable_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -87,7 +89,7 @@ class CurrencyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCurrencies::route('/'),
+            'index' => Pages\ManagePhones::route('/'),
         ];
     }
 }

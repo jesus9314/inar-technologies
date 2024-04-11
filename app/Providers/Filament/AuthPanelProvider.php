@@ -40,6 +40,7 @@ class AuthPanelProvider extends PanelProvider
             ->spa()
             ->login()
             ->sidebarCollapsibleOnDesktop()
+            ->readOnlyRelationManagersOnResourceViewPagesByDefault(false)
             ->databaseNotifications()
             ->colors([
                 'primary' => Color::Amber,

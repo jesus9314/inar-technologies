@@ -2,34 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class State extends Model
 {
-    use HasFactory, LogsActivity;
+    use SoftDeletes;
 
     protected $fillable = [
-        'code',
-        'description',
+        'id', 'country_id', 'name', 'status'
     ];
 
-    public function getActivitylogOptions(): LogOptions
+    public function cities(): HasMany
     {
-        return LogOptions::defaults()
-            ->logFillable();
+        return $this->hasMany(City::class);
     }
 
-    public function currencies(): HasMany
+    public function country(): BelongsTo
     {
-        return $this->hasMany(State::class);
-    }
-
-    public function documents(): HasMany
-    {
-        return $this->hasMany(Document::class);
+        return $this->belongsTo(Country::class);
     }
 }

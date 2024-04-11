@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CurrencyResource\Pages;
-use App\Filament\Resources\CurrencyResource\RelationManagers;
-use App\Models\Currency;
+use App\Filament\Resources\SupplierTypeResource\Pages;
+use App\Filament\Resources\SupplierTypeResource\RelationManagers;
+use App\Models\SupplierType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,17 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CurrencyResource extends Resource
+class SupplierTypeResource extends Resource
 {
-    protected static ?string $model = Currency::class;
+    protected static ?string $model = SupplierType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-currency-dollar';
+    protected static ?string $navigationIcon = 'heroicon-c-hashtag';
 
-    protected static ?string $navigationGroup = 'Códigos';
+    protected static ?string $navigationGroup = 'Proveedores';
 
-    protected static ?string $modelLabel = 'Moneda';
+    protected static ?string $modelLabel = 'Tipo de Proveedor';
 
-    protected static ?string $pluralModelLabel = 'Monedas';
+    protected static ?string $pluralModelLabel = 'Tipo de proveedores';
 
     public static function getNavigationBadge(): ?string
     {
@@ -37,15 +37,9 @@ class CurrencyResource extends Resource
                 Forms\Components\TextInput::make('code')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('symbol')
+                Forms\Components\TextInput::make('description')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('activity_state_id')
-                    ->relationship('ActivityState', 'description')
-                    ->required(),
             ]);
     }
 
@@ -55,11 +49,8 @@ class CurrencyResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('code')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('symbol')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('state.id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -87,7 +78,7 @@ class CurrencyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCurrencies::route('/'),
+            'index' => Pages\ManageSupplierTypes::route('/'),
         ];
     }
 }

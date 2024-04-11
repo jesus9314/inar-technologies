@@ -25,6 +25,11 @@ class DocumentResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Documentos';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -36,7 +41,7 @@ class DocumentResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('state_id')
-                    ->relationship('state', 'id')
+                    ->relationship('ActivityState', 'description')
                     ->required(),
             ]);
     }

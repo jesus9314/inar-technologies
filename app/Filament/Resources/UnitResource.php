@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CurrencyResource\Pages;
-use App\Filament\Resources\CurrencyResource\RelationManagers;
-use App\Models\Currency;
+use App\Filament\Resources\UnitResource\Pages;
+use App\Filament\Resources\UnitResource\RelationManagers;
+use App\Models\Unit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,22 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CurrencyResource extends Resource
+class UnitResource extends Resource
 {
-    protected static ?string $model = Currency::class;
+    protected static ?string $model = Unit::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-currency-dollar';
-
-    protected static ?string $navigationGroup = 'Códigos';
-
-    protected static ?string $modelLabel = 'Moneda';
-
-    protected static ?string $pluralModelLabel = 'Monedas';
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -37,9 +26,9 @@ class CurrencyResource extends Resource
                 Forms\Components\TextInput::make('code')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\TextInput::make('description')
                     ->required()
-                    ->columnSpanFull(),
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('symbol')
                     ->required()
                     ->maxLength(255),
@@ -55,9 +44,11 @@ class CurrencyResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('code')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('symbol')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('state.id')
+                Tables\Columns\TextColumn::make('state.description')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -87,7 +78,7 @@ class CurrencyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCurrencies::route('/'),
+            'index' => Pages\ManageUnits::route('/'),
         ];
     }
 }

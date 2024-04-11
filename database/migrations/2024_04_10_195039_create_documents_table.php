@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->text('description');
-            $table->foreignId('state_id')->constrained();
+            $table->foreignId('activity_state_id')->constrained();
             $table->timestamps();
         });
     }

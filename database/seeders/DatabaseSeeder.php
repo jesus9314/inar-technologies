@@ -20,5 +20,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'jesus.9314@gmail.com',
             'password' => bcrypt('alienado123')
         ]);
+
+        $this->call([
+            //production
+            StateSeeder::class,
+            DocumentSeeder::class,
+            SupplierTypeSeeder::class,
+            CountryStateCityTableSeeder::class,
+
+            //no production
+            SupplierSeeder::class,
+        ]);
     }
 }

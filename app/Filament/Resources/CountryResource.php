@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CurrencyResource\Pages;
-use App\Filament\Resources\CurrencyResource\RelationManagers;
-use App\Models\Currency;
+use App\Filament\Resources\CountryResource\Pages;
+use App\Filament\Resources\CountryResource\RelationManagers;
+use App\Models\Country;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,17 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CurrencyResource extends Resource
+class CountryResource extends Resource
 {
-    protected static ?string $model = Currency::class;
+    protected static ?string $model = Country::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-currency-dollar';
+    protected static ?string $navigationIcon = 'heroicon-c-globe-americas';
 
-    protected static ?string $navigationGroup = 'Códigos';
+    protected static ?string $navigationGroup = 'Localización';
 
-    protected static ?string $modelLabel = 'Moneda';
+    protected static ?string $modelLabel = 'País';
 
-    protected static ?string $pluralModelLabel = 'Monedas';
+    protected static ?string $pluralModelLabel = 'Países';
 
     public static function getNavigationBadge(): ?string
     {
@@ -34,17 +34,10 @@ class CurrencyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('symbol')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('activity_state_id')
-                    ->relationship('ActivityState', 'description')
+                Forms\Components\TextInput::make('status')
                     ->required(),
             ]);
     }
@@ -53,18 +46,18 @@ class CurrencyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('symbol')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('state.id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -87,7 +80,7 @@ class CurrencyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCurrencies::route('/'),
+            'index' => Pages\ManageCountries::route('/'),
         ];
     }
 }

@@ -2,10 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CurrencyResource\Pages;
-use App\Filament\Resources\CurrencyResource\RelationManagers;
-use App\Models\Currency;
+use App\Filament\Resources\EmailResource\Pages;
+use App\Filament\Resources\EmailResource\RelationManagers;
+use App\Models\Email;
+use App\Models\Supplier;
 use Filament\Forms;
+use Filament\Forms\Components\MorphToSelect;
+use Filament\Forms\Components\MorphToSelect\Type;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -13,17 +16,18 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CurrencyResource extends Resource
+class EmailResource extends Resource
 {
-    protected static ?string $model = Currency::class;
+    protected static ?string $model = Email::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-currency-dollar';
+    protected static ?string $navigationIcon = 'heroicon-s-envelope';
 
-    protected static ?string $navigationGroup = 'Códigos';
+    protected static ?string $navigationGroup = 'Informacón adicional';
 
-    protected static ?string $modelLabel = 'Moneda';
+    protected static ?string $modelLabel = 'Correo electrónico';
 
-    protected static ?string $pluralModelLabel = 'Monedas';
+    protected static ?string $pluralModelLabel = 'Correos electrónicos';
+
 
     public static function getNavigationBadge(): ?string
     {
@@ -34,18 +38,16 @@ class CurrencyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('symbol')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('activity_state_id')
-                    ->relationship('ActivityState', 'description')
-                    ->required(),
+                MorphToSelect::make('emailable')
+                    ->types([
+                        Type::make(Supplier::class)->titleAttribute('name'),
+                    ])
+                    ->searchable()
+                    ->preload()
             ]);
     }
 
@@ -53,11 +55,11 @@ class CurrencyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code')
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('symbol')
+                Tables\Columns\TextColumn::make('emailable_type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('state.id')
+                Tables\Columns\TextColumn::make('emailable_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -87,7 +89,7 @@ class CurrencyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCurrencies::route('/'),
+            'index' => Pages\ManageEmails::route('/'),
         ];
     }
 }
