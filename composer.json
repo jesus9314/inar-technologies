@@ -15,6 +15,7 @@
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
         "hasnayeen/themes": "^3.0",
+        "icetalker/filament-table-repeater": "^1.2",
         "illuminate/contracts": "^11.3",
         "jeffgreco13/filament-breezy": "^2.3",
         "joshembling/image-optimizer": "^1.4",

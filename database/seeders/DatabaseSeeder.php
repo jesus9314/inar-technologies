@@ -28,9 +28,15 @@ class DatabaseSeeder extends Seeder
             IdDocumentSeeder::class,
             SupplierTypeSeeder::class,
             CountryStateCityTableSeeder::class,
+            AffectationSeeder::class,
+            CurrencySeeder::class,
+            UnitSeeder::class,
+            WarehouseSeeder::class,
 
             //no production
             SupplierSeeder::class,
+            BrandSeeder::class,
+            CategorySeeder::class,
         ]);
     }
 }

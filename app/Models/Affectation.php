@@ -11,6 +11,7 @@ class Affectation extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'description'
     ];
 

@@ -58,6 +58,8 @@ class CurrencyResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('symbol')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('activityState.id')
                     ->numeric()
                     ->sortable(),

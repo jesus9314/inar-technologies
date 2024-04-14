@@ -18,6 +18,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -48,8 +49,8 @@ class SupplierResource extends Resource
                 Forms\Components\TextInput::make('comercial_name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('document_id')
-                    ->relationship('document', 'id')
+                Forms\Components\Select::make('id_document_id')
+                    ->relationship('idDocument', 'id')
                     ->required(),
                 Forms\Components\TextInput::make('document_number')
                     ->required()
@@ -78,16 +79,16 @@ class SupplierResource extends Resource
                     ->multiple()
                     ->relationship(titleAttribute: 'name')
                     ->required(),
-                Repeater::make('phones')
+                TableRepeater::make('phones')
                     ->relationship()
                     ->schema([
                         Forms\Components\TextInput::make('number')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
+                        Forms\Components\TextInput::make('description')
                             ->columnSpanFull(),
                     ]),
-                Repeater::make('emails')
+                TableRepeater::make('emails')
                     ->relationship()
                     ->schema([
                         Forms\Components\TextInput::make('email')

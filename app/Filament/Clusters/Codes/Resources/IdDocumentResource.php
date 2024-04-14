@@ -56,7 +56,10 @@ class IdDocumentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('code')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('activityState.description')
+                    ->label('Estado')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

@@ -33,7 +33,7 @@ class Supplier extends Model
             ->logFillable();
     }
 
-    public function document(): BelongsTo
+    public function idDocument(): BelongsTo
     {
         return $this->belongsTo(IdDocument::class);
     }

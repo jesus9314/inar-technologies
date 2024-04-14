@@ -35,6 +35,9 @@ class AffectationResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('code')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('description')
                     ->required()
                     ->maxLength(255),
@@ -45,6 +48,8 @@ class AffectationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('code')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
