@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             UnitSeeder::class,
             WarehouseSeeder::class,
+            TaxDocumentTypeSeeder::class,
 
             //no production
             SupplierSeeder::class,

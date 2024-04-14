@@ -30,4 +30,9 @@ class ActivityState extends Model
     {
         return $this->hasMany(Unit::class);
     }
+
+    public function taxDocumentTypes(): HasMany
+    {
+        return $this->hasMany(TaxDocumentType::class);
+    }
 }
