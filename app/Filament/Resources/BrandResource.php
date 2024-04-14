@@ -42,11 +42,9 @@ class BrandResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
-                    ->required()
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_url')
-                    ->image()
-                    ->required(),
+                    ->image(),
             ]);
     }
 

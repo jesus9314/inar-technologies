@@ -10,8 +10,10 @@ use App\Models\Supplier;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\MorphToSelect\Type;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -57,8 +59,7 @@ class SupplierResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('image_url')
-                    ->image()
-                    ->required(),
+                    ->image(),
                 Forms\Components\TextInput::make('web')
                     ->required()
                     ->maxLength(255),
@@ -77,6 +78,23 @@ class SupplierResource extends Resource
                     ->multiple()
                     ->relationship(titleAttribute: 'name')
                     ->required(),
+                Repeater::make('phones')
+                    ->relationship()
+                    ->schema([
+                        Forms\Components\TextInput::make('number')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Textarea::make('description')
+                            ->columnSpanFull(),
+                    ]),
+                Repeater::make('emails')
+                    ->relationship()
+                    ->schema([
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+                    ])
             ]);
     }
 

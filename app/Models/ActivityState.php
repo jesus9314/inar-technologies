@@ -18,7 +18,7 @@ class ActivityState extends Model
 
     public function documents(): HasMany
     {
-        return $this->hasMany(Document::class);
+        return $this->hasMany(IdDocument::class);
     }
 
     public function currencies(): HasMany

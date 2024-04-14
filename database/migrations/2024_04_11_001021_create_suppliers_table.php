@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('comercial_name');
             
-            $table->foreignId('document_id')->constrained();
+            $table->foreignId('id_document_id')->constrained();
             $table->string('document_number');
 
             $table->string('phone_number')->nullable();

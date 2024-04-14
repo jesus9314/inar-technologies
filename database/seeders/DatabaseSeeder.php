@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\IdDocument;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             //production
             StateSeeder::class,
-            DocumentSeeder::class,
+            IdDocumentSeeder::class,
             SupplierTypeSeeder::class,
             CountryStateCityTableSeeder::class,
 

@@ -23,7 +23,7 @@ class Supplier extends Model
         'web',
         'address',
         'email',
-        'document_id',
+        'id_document_id',
         'supplier_type_id',
     ];
 
@@ -35,7 +35,7 @@ class Supplier extends Model
 
     public function document(): BelongsTo
     {
-        return $this->belongsTo(Document::class);
+        return $this->belongsTo(IdDocument::class);
     }
 
     public function supplierType(): BelongsTo
