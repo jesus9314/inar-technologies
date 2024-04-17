@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained();
             $table->foreignId('brand_id')->constrained();
             $table->foreignId('currency_id')->constrained();
+            $table->foreignId('unit_id')->constrained();
 
             $table->timestamps();
         });

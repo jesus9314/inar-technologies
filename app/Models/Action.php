@@ -18,4 +18,9 @@ class Action extends Model
     {
         return $this->hasMany(StockHistory::class);
     }
+
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(Purchase::class);
+    }
 }

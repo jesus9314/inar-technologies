@@ -16,32 +16,36 @@ class AffectationSeeder extends Seeder
 
         $affectations = [
             [
+                "code" => 10,
+                "description" => "Gravado - Operación Onerosa"
+            ],
+            [
                 "code" => 11,
-                "description" => "Gravado – Retiro por premio"
+                "description" => "Gravado - Retiro por premio"
             ],
             [
                 "code" => 12,
-                "description" => "Gravado – Retiro por donación"
+                "description" => "Gravado - Retiro por donación"
             ],
             [
                 "code" => 13,
-                "description" => "Gravado – Retiro"
+                "description" => "Gravado - Retiro"
             ],
             [
                 "code" => 14,
-                "description" => "Gravado – Retiro por publicidad"
+                "description" => "Gravado - Retiro por publicidad"
             ],
             [
                 "code" => 15,
-                "description" => "Gravado – Bonificaciones"
+                "description" => "Gravado - Bonificaciones"
             ],
             [
                 "code" => 16,
-                "description" => "Gravado – Retiro por entrega a trabajadores"
+                "description" => "Gravado - Retiro por entrega a trabajadores"
             ],
             [
                 "code" => 17,
-                "description" => "Gravado – IVAP"
+                "description" => "Gravado - IVAP"
             ],
             [
                 "code" => 20,
@@ -49,7 +53,7 @@ class AffectationSeeder extends Seeder
             ],
             [
                 "code" => 21,
-                "description" => "Exonerado – Transferencia Gratuita"
+                "description" => "Exonerado - Transferencia Gratuita"
             ],
             [
                 "code" => 30,
@@ -57,15 +61,15 @@ class AffectationSeeder extends Seeder
             ],
             [
                 "code" => 31,
-                "description" => "Inafecto – Retiro por Bonificación"
+                "description" => "Inafecto - Retiro por Bonificación"
             ],
             [
                 "code" => 32,
-                "description" => "Inafecto – Retiro"
+                "description" => "Inafecto - Retiro"
             ],
             [
                 "code" => 33,
-                "description" => "Inafecto – Retiro por Muestras Médicas"
+                "description" => "Inafecto - Retiro por Muestras Médicas"
             ],
             [
                 "code" => 34,
@@ -73,7 +77,7 @@ class AffectationSeeder extends Seeder
             ],
             [
                 "code" => 35,
-                "description" => "Inafecto – Retiro por premio"
+                "description" => "Inafecto - Retiro por premio"
             ],
             [
                 "code" => 36,

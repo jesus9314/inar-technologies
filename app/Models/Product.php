@@ -28,7 +28,8 @@ class Product extends Model
         'affectation_id',
         'category_id',
         'brand_id',
-        'currency_id'
+        'currency_id',
+        'unit_id'
     ];
 
     public function affectation(): BelongsTo
@@ -64,5 +65,10 @@ class Product extends Model
     public function stockHistories(): HasMany
     {
         return $this->hasMany(StockHistory::class);
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 }

@@ -4,12 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
-use App\Filament\Resources\ProductResource\RelationManagers\PresentationsRelationManager;
-use App\Filament\Resources\ProductResource\RelationManagers\StockHistoriesRelationManager;
 use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -21,13 +17,18 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-c-building-storefront';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Productos y Servicios';
 
-    protected static ?string $modelLabel = 'Producto';
+    protected static ?string $modelLabel = 'Servicio';
 
-    protected static ?string $pluralModelLabel = 'Productos';
+    protected static ?string $pluralModelLabel = 'Servicios';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('unit_id', 1);
+    }
 
     public static function form(Form $form): Form
     {
@@ -71,10 +72,14 @@ class ProductResource extends Resource
                 Forms\Components\Select::make('currency_id')
                     ->relationship('currency', 'id')
                     ->required(),
-                Select::make('warehouses')
-                    ->preload()
-                    ->multiple()
-                    ->relationship(titleAttribute: 'description')
+                Forms\Components\Select::make('unit_id')
+                    ->disabled()
+                    ->relationship(
+                        name: 'unit',
+                        titleAttribute: 'description',
+                        modifyQueryUsing: fn (Builder $query) => $query->where('id', '=', 1)
+                    )
+                    ->default(1)
                     ->required(),
             ]);
     }
@@ -122,6 +127,9 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('currency.id')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('unit.id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -148,8 +156,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            PresentationsRelationManager::class,
-            StockHistoriesRelationManager::class,
+            //
         ];
     }
 
