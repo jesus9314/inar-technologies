@@ -25,8 +25,18 @@ class Brand extends Model
             ->logFillable();
     }
 
-    public function products() : HasMany
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function processors(): HasMany
+    {
+        return $this->hasMany(Processor::class);
+    }
+
+    public function graphics(): HasMany
+    {
+        return $this->hasMany(Graphic::class);
     }
 }

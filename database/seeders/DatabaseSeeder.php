@@ -33,6 +33,10 @@ class DatabaseSeeder extends Seeder
             UnitSeeder::class,
             WarehouseSeeder::class,
             TaxDocumentTypeSeeder::class,
+            MemoryTypeSeeder::class,
+            ProcessorConditionSeeder::class,
+            OperatingSystemSeeder::class,
+            RamFormFactorSeeder::class,
 
             //no production
             SupplierSeeder::class,
