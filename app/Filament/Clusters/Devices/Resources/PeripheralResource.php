@@ -3,13 +3,10 @@
 namespace App\Filament\Clusters\Devices\Resources;
 
 use App\Filament\Clusters\Devices;
-use App\Filament\Clusters\Devices\Resources\GraphicResource\Pages;
-use App\Filament\Clusters\Devices\Resources\GraphicResource\RelationManagers;
-use App\Models\Graphic;
+use App\Filament\Clusters\Devices\Resources\PeripheralResource\Pages;
+use App\Filament\Clusters\Devices\Resources\PeripheralResource\RelationManagers;
+use App\Models\Peripheral;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -17,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class GraphicResource extends Resource
+class PeripheralResource extends Resource
 {
-    protected static ?string $model = Graphic::class;
+    protected static ?string $model = Peripheral::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -29,28 +26,19 @@ class GraphicResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('model')
+                Forms\Components\TextInput::make('description')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('clock')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('memory_capacity')
-                    ->required()
-                    ->maxLength(255),
-                FileUpload::make('image_url')
+                Forms\Components\FileUpload::make('image_url')
                     ->image()
                     ->required(),
-                TextInput::make('specifications_url')
-                    ->required()
-                    ->maxLength(255),
-                Select::make('brand_id')
+                Forms\Components\Select::make('brand_id')
                     ->relationship('brand', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
-                Select::make('memory_type_id')
-                    ->relationship('memoryType', 'description')
+                Forms\Components\Select::make('peripheral_type_id')
+                    ->relationship('peripheralType', 'description')
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -61,19 +49,13 @@ class GraphicResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('model')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('clock')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('memory_capacity')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image_url'),
-                Tables\Columns\TextColumn::make('specifications_url')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('memoryType.id')
+                Tables\Columns\TextColumn::make('peripheralType.id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -91,6 +73,7 @@ class GraphicResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -99,20 +82,10 @@ class GraphicResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGraphics::route('/'),
-            'create' => Pages\CreateGraphic::route('/create'),
-            'view' => Pages\ViewGraphic::route('/{record}'),
-            'edit' => Pages\EditGraphic::route('/{record}/edit'),
+            'index' => Pages\ManagePeripherals::route('/'),
         ];
     }
 }

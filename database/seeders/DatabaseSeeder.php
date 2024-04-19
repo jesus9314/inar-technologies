@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             ProcessorConditionSeeder::class,
             OperatingSystemSeeder::class,
             RamFormFactorSeeder::class,
+            PeripheralTypeSeeder::class,
 
             //no production
             SupplierSeeder::class,

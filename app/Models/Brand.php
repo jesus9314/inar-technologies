@@ -39,4 +39,14 @@ class Brand extends Model
     {
         return $this->hasMany(Graphic::class);
     }
+
+    public function rams(): HasMany
+    {
+        return $this->hasMany(Ram::class);
+    }
+
+    public function peripherals(): HasMany
+    {
+        return $this->hasMany(Peripheral::class);
+    }
 }

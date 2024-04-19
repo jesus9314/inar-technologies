@@ -3,13 +3,10 @@
 namespace App\Filament\Clusters\Devices\Resources;
 
 use App\Filament\Clusters\Devices;
-use App\Filament\Clusters\Devices\Resources\GraphicResource\Pages;
-use App\Filament\Clusters\Devices\Resources\GraphicResource\RelationManagers;
-use App\Models\Graphic;
+use App\Filament\Clusters\Devices\Resources\RamResource\Pages;
+use App\Filament\Clusters\Devices\Resources\RamResource\RelationManagers;
+use App\Models\Ram;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -17,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class GraphicResource extends Resource
+class RamResource extends Resource
 {
-    protected static ?string $model = Graphic::class;
+    protected static ?string $model = Ram::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -29,27 +26,31 @@ class GraphicResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('model')
+                Forms\Components\TextInput::make('speed')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('clock')
+                Forms\Components\TextInput::make('capacity')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('memory_capacity')
-                    ->required()
+                Forms\Components\TextInput::make('latency')
                     ->maxLength(255),
-                FileUpload::make('image_url')
-                    ->image()
-                    ->required(),
-                TextInput::make('specifications_url')
-                    ->required()
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
+                Forms\Components\FileUpload::make('image_url')
+                    ->image(),
+                Forms\Components\TextInput::make('specifications_link')
                     ->maxLength(255),
-                Select::make('brand_id')
+                Forms\Components\Select::make('brand_id')
                     ->relationship('brand', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
-                Select::make('memory_type_id')
+                Forms\Components\Select::make('ram_form_factor_id')
+                    ->relationship('ramFormFactor', 'description')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Forms\Components\Select::make('memory_type_id')
                     ->relationship('memoryType', 'description')
                     ->searchable()
                     ->preload()
@@ -61,16 +62,19 @@ class GraphicResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('model')
+                Tables\Columns\TextColumn::make('speed')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('clock')
+                Tables\Columns\TextColumn::make('capacity')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('memory_capacity')
+                Tables\Columns\TextColumn::make('latency')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image_url'),
-                Tables\Columns\TextColumn::make('specifications_url')
+                Tables\Columns\TextColumn::make('specifications_link')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('brand.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ramFormFactor.id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('memoryType.id')
@@ -109,10 +113,10 @@ class GraphicResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGraphics::route('/'),
-            'create' => Pages\CreateGraphic::route('/create'),
-            'view' => Pages\ViewGraphic::route('/{record}'),
-            'edit' => Pages\EditGraphic::route('/{record}/edit'),
+            'index' => Pages\ListRams::route('/'),
+            'create' => Pages\CreateRam::route('/create'),
+            'view' => Pages\ViewRam::route('/{record}'),
+            'edit' => Pages\EditRam::route('/{record}/edit'),
         ];
     }
 }

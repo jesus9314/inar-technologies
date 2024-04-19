@@ -45,6 +45,8 @@ class ProcessorResource extends Resource
                     ->maxLength(255),
                 Select::make('memory_type_id')
                     ->relationship('memoryType', 'description')
+                    ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\TextInput::make('memory_capacity')
                     ->maxLength(255),
@@ -56,6 +58,8 @@ class ProcessorResource extends Resource
                     ->url(),
                 Forms\Components\Select::make('brand_id')
                     ->relationship('brand', 'name')
+                    ->searchable()
+                    ->preload()
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -76,6 +80,8 @@ class ProcessorResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('processor_condition_id')
                     ->relationship('processorCondition', 'description')
+                    ->searchable()
+                    ->preload()
                     ->required(),
             ]);
     }

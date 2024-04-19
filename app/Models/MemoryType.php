@@ -23,4 +23,9 @@ class MemoryType extends Model
     {
         return $this->hasMany(Graphic::class);
     }
+
+    public function rams()
+    {
+        return $this->hasMany(Ram::class);
+    }
 }
