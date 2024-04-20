@@ -6,6 +6,7 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\RamResource\Pages;
 use App\Filament\Clusters\Devices\Resources\RamResource\RelationManagers;
 use App\Models\Ram;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RamResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = Ram::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -25,37 +28,7 @@ class RamResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('speed')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('capacity')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('latency')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image_url')
-                    ->image(),
-                Forms\Components\TextInput::make('specifications_link')
-                    ->maxLength(255),
-                Forms\Components\Select::make('brand_id')
-                    ->relationship('brand', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\Select::make('ram_form_factor_id')
-                    ->relationship('ramFormFactor', 'description')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\Select::make('memory_type_id')
-                    ->relationship('memoryType', 'description')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-            ]);
+            ->schema(self::ram_form());
     }
 
     public static function table(Table $table): Table

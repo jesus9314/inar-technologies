@@ -6,6 +6,7 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\PeripheralResource\Pages;
 use App\Filament\Clusters\Devices\Resources\PeripheralResource\RelationManagers;
 use App\Models\Peripheral;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PeripheralResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = Peripheral::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -25,24 +28,7 @@ class PeripheralResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\FileUpload::make('image_url')
-                    ->image()
-                    ->required(),
-                Forms\Components\Select::make('brand_id')
-                    ->relationship('brand', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\Select::make('peripheral_type_id')
-                    ->relationship('peripheralType', 'description')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-            ]);
+            ->schema(self::peripheral_form());
     }
 
     public static function table(Table $table): Table

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Processor extends Model
 {
@@ -39,5 +40,10 @@ class Processor extends Model
     public function memoryType(): BelongsTo
     {
         return $this->belongsTo(MemoryType::class);
+    }
+
+    public function device(): HasMany
+    {
+        return $this->hasMany(Device::class);
     }
 }

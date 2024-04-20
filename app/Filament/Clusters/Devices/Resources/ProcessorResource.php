@@ -6,6 +6,7 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\ProcessorResource\Pages;
 use App\Filament\Clusters\Devices\Resources\ProcessorResource\RelationManagers;
 use App\Models\Processor;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -20,6 +21,8 @@ use Illuminate\Support\Str;
 
 class ProcessorResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = Processor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -45,6 +48,7 @@ class ProcessorResource extends Resource
                     ->maxLength(255),
                 Select::make('memory_type_id')
                     ->relationship('memoryType', 'description')
+                    ->createOptionForm(self::just_description())
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -60,26 +64,11 @@ class ProcessorResource extends Resource
                     ->relationship('brand', 'name')
                     ->searchable()
                     ->preload()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(function (Set $set, $state) {
-                                $set('slug', Str::slug($state));
-                            })
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('slug')
-                            ->readOnly()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
-                            ->columnSpanFull(),
-                        Forms\Components\FileUpload::make('image_url')
-                            ->image(),
-                    ])
+                    ->createOptionForm(self::brand_form())
                     ->required(),
                 Forms\Components\Select::make('processor_condition_id')
                     ->relationship('processorCondition', 'description')
+                    ->createOptionForm(self::just_description())
                     ->searchable()
                     ->preload()
                     ->required(),

@@ -6,6 +6,7 @@ use App\Filament\Clusters\Codes;
 use App\Filament\Clusters\Codes\Resources\RamFormFactorResource\Pages;
 use App\Filament\Clusters\Codes\Resources\RamFormFactorResource\RelationManagers;
 use App\Models\RamFormFactor;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RamFormFactorResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = RamFormFactor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -25,11 +28,7 @@ class RamFormFactorResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+            ->schema(self::just_description());
     }
 
     public static function table(Table $table): Table

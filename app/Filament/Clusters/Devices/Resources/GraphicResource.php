@@ -6,19 +6,26 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\GraphicResource\Pages;
 use App\Filament\Clusters\Devices\Resources\GraphicResource\RelationManagers;
 use App\Models\Graphic;
+use App\Traits\Devices\AditionalForms;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class GraphicResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = Graphic::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -28,33 +35,7 @@ class GraphicResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                TextInput::make('model')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('clock')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('memory_capacity')
-                    ->required()
-                    ->maxLength(255),
-                FileUpload::make('image_url')
-                    ->image()
-                    ->required(),
-                TextInput::make('specifications_url')
-                    ->required()
-                    ->maxLength(255),
-                Select::make('brand_id')
-                    ->relationship('brand', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Select::make('memory_type_id')
-                    ->relationship('memoryType', 'description')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-            ]);
+            ->schema(self::graphics_form());
     }
 
     public static function table(Table $table): Table

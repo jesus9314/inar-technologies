@@ -6,6 +6,7 @@ use App\Filament\Clusters\Codes;
 use App\Filament\Clusters\Codes\Resources\OperatingSystemResource\Pages;
 use App\Filament\Clusters\Codes\Resources\OperatingSystemResource\RelationManagers;
 use App\Models\OperatingSystem;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OperatingSystemResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = OperatingSystem::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -25,13 +28,7 @@ class OperatingSystemResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\FileUpload::make('image_url')
-                    ->image(),
-            ]);
+            ->schema(self::operating_system_form());
     }
 
     public static function table(Table $table): Table

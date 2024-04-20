@@ -6,7 +6,10 @@ use App\Filament\Clusters\Codes;
 use App\Filament\Clusters\Codes\Resources\MemoryTypeResource\Pages;
 use App\Filament\Clusters\Codes\Resources\MemoryTypeResource\RelationManagers;
 use App\Models\MemoryType;
+use App\Traits\Devices\AditionalForms;
+use App\Traits\TraitForms;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -16,6 +19,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MemoryTypeResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = MemoryType::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -25,11 +30,7 @@ class MemoryTypeResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+            ->schema(self::just_description());
     }
 
     public static function table(Table $table): Table

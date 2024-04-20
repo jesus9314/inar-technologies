@@ -6,16 +6,23 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\PeripheralTypeResource\Pages;
 use App\Filament\Clusters\Devices\Resources\PeripheralTypeResource\RelationManagers;
 use App\Models\PeripheralType;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PeripheralTypeResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = PeripheralType::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -25,11 +32,7 @@ class PeripheralTypeResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+            ->schema(self::just_description());
     }
 
     public static function table(Table $table): Table
@@ -51,9 +54,11 @@ class PeripheralTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
