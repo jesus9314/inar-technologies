@@ -83,7 +83,7 @@ trait TraitForms
                 ->required(),
             Select::make('memory_type_id')
                 ->relationship('memoryType', 'description')
-                ->createOptionForm(self::just_description())
+                ->createOptionForm(self::memory_type_form())
                 ->searchable()
                 ->preload()
                 ->required(),
@@ -107,7 +107,7 @@ trait TraitForms
                 ->required(),
             Select::make('peripheral_type_id')
                 ->relationship('peripheralType', 'description')
-                ->createOptionForm(self::just_description())
+                ->createOptionForm(self::peripheral_type_form())
                 ->searchable()
                 ->preload()
                 ->required(),
@@ -139,20 +139,38 @@ trait TraitForms
                 ->required(),
             Select::make('ram_form_factor_id')
                 ->relationship('ramFormFactor', 'description')
-                ->createOptionForm(self::just_description())
+                ->createOptionForm(self::ram_form_factor_form())
                 ->searchable()
                 ->preload()
                 ->required(),
             Select::make('memory_type_id')
                 ->relationship('memoryType', 'description')
-                ->createOptionForm(self::just_description())
+                ->createOptionForm(self::memory_type_form())
                 ->searchable()
                 ->preload()
                 ->required(),
         ];
     }
 
-    public static function just_description(): array
+    public static function memory_type_form(): array
+    {
+        return [
+            TextInput::make('description')
+                ->required()
+                ->maxLength(255),
+        ];
+    }
+
+    public static function ram_form_factor_form(): array
+    {
+        return [
+            TextInput::make('description')
+                ->required()
+                ->maxLength(255),
+        ];
+    }
+
+    public static function peripheral_type_form(): array
     {
         return [
             TextInput::make('description')

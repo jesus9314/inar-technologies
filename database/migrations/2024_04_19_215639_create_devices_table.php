@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name');
-            $table->text('description');
-            $table->text('aditional_info');
-            $table->float('ram_total');
-            $table->string('speccy_snapshot_url');
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->text('aditional_info')->nullable();
+            $table->float('ram_total')->nullable();
+            $table->string('speccy_snapshot_url')->nullable();
 
             $table->foreignId('device_state_id')->constrained();
             $table->foreignId('processor_id')->constrained();

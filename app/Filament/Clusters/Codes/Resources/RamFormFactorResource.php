@@ -28,7 +28,7 @@ class RamFormFactorResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(self::just_description());
+            ->schema(self::ram_form_factor_form());
     }
 
     public static function table(Table $table): Table

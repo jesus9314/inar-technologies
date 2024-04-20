@@ -30,7 +30,7 @@ class MemoryTypeResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(self::just_description());
+            ->schema(self::memory_type_form());
     }
 
     public static function table(Table $table): Table
