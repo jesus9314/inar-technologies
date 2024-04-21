@@ -37,14 +37,6 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-
-    public static function getGlobalSearchResultDetails(Model $record): array
-    {
-        return [
-            'Rol' => $record->roles->first()->name,
-        ];
-    }
-
     public static function form(Form $form): Form
     {
         $AuthUser = User::find(auth()->user()->id);

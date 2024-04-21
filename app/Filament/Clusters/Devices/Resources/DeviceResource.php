@@ -8,8 +8,10 @@ use App\Filament\Clusters\Devices\Resources\DeviceResource\RelationManagers;
 use App\Models\Device;
 use App\Traits\TraitForms;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -32,27 +34,31 @@ class DeviceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('aditional_info')
+                Textarea::make('aditional_info')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('ram_total')
+                TextInput::make('ram_total')
                     ->required()
                     ->numeric(),
-                Forms\Components\FileUpload::make('speccy_snapshot_url')
+                FileUpload::make('speccy_snapshot_url')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\Select::make('device_state_id')
+                Select::make('user_id')
+                    ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable(),
+                Select::make('device_state_id')
                     ->relationship('deviceState', 'id')
                     ->searchable()
                     ->preload()
                     ->required(),
-                Forms\Components\Select::make('processor_id')
+                Select::make('processor_id')
                     ->relationship('processor', 'model')
                     ->searchable()
                     ->preload()

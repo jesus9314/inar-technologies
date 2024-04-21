@@ -22,6 +22,7 @@ return new class extends Migration
 
             $table->foreignId('device_state_id')->constrained();
             $table->foreignId('processor_id')->constrained();
+            $table->string('user_id')->nullable();
 
             $table->timestamps();
         });

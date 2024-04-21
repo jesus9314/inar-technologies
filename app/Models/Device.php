@@ -19,6 +19,7 @@ class Device extends Model
         'speccy_snapshot_url',
         'device_state_id',
         'processor_id',
+        'device_id',
     ];
 
     public function deviceState(): BelongsTo
@@ -49,5 +50,10 @@ class Device extends Model
     public function deviceRams(): HasMany
     {
         return $this->hasMany(DeviceRam::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
