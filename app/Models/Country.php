@@ -15,13 +15,18 @@ class Country extends Model
         'id', 'name', 'status'
     ];
 
-    public function states(): HasMany
+    public function departments(): HasMany
     {
-        return $this->hasMany(State::class);
+        return $this->hasMany(Department::class);
     }
 
-    public function cities(): HasManyThrough
+    public function provinces(): HasMany
     {
-        return $this->hasManyThrough(City::class, State::class);
+        return $this->hasMany(Province::class);
+    }
+
+    public function districts(): HasMany
+    {
+        return $this->hasMany(District::class);
     }
 }

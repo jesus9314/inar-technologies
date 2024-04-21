@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\IdDocument;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +25,10 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             IdDocumentSeeder::class,
             SupplierTypeSeeder::class,
-            CountryStateCityTableSeeder::class,
+            CountrySeeder::class,
+            DepartmentSeeder::class,
+            ProvinceSeeder::class,
+            DistrictSeeder::class,
             AffectationSeeder::class,
             CurrencySeeder::class,
             UnitSeeder::class,

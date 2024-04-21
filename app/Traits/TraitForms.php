@@ -6,8 +6,10 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 
 trait TraitForms
 {
@@ -176,6 +178,40 @@ trait TraitForms
             TextInput::make('description')
                 ->required()
                 ->maxLength(255),
+        ];
+    }
+
+    public static function district_form(): array
+    {
+        return [
+            TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('status')
+                ->required(),
+            Select::make('country_id')
+                ->relationship('country', 'name')
+                ->searchable()
+                ->preload()
+                ->live()
+                ->required(),
+            Select::make('department_id')
+                ->relationship(
+                    name: 'department',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('country_id', $get('country_id'))
+                )
+                ->disabled(fn (Get $get): bool => !filled($get('country_id')))
+                ->live()
+                ->required(),
+            Select::make('province_id')
+                ->relationship(
+                    name: 'province',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('department_id', $get('department_id'))
+                )
+                ->disabled(fn (Get $get): bool => !filled($get('department_id')))
+                ->required(),
         ];
     }
 }
