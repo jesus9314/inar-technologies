@@ -12,6 +12,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -32,11 +33,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
      */
     protected $fillable = [
         'name',
+        'last_name_m',
+        'last_name_p',
+        'dni',
+        'ruc',
         'email',
         'password',
         'avatar_url',
         'theme',
-        'theme_color'
+        'theme_color',
+        'id_document_id'
     ];
 
     /**
@@ -105,5 +111,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function devices(): HasMany
     {
         return $this->hasMany(Device::class);
+    }
+
+    public function idDocument(): BelongsTo
+    {
+        return $this->belongsTo(IdDocument::class);
     }
 }

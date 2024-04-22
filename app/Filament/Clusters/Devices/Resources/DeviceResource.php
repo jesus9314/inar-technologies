@@ -16,6 +16,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -35,34 +39,34 @@ class DeviceResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Textarea::make('aditional_info')
-                    ->required()
-                    ->columnSpanFull(),
-                TextInput::make('ram_total')
-                    ->required()
-                    ->numeric(),
-                FileUpload::make('speccy_snapshot_url')
-                    ->required()
+                    ->hiddenOn('create')
                     ->columnSpanFull(),
                 Select::make('user_id')
                     ->relationship('user', 'name')
                     ->preload()
-                    ->searchable(),
+                    ->searchable()
+                    ->required(),
+                Select::make('device_type_id')
+                    ->relationship('deviceType', 'description')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Textarea::make('description')
+                    ->columnSpanFull(),
+                Textarea::make('aditional_info')
+                    ->columnSpanFull(),
+                TextInput::make('ram_total')
+                    ->numeric(),
+                FileUpload::make('speccy_snapshot_url')
+                    ->columnSpanFull(),
                 Select::make('device_state_id')
                     ->relationship('deviceState', 'id')
                     ->searchable()
-                    ->preload()
-                    ->required(),
+                    ->preload(),
                 Select::make('processor_id')
                     ->relationship('processor', 'model')
                     ->searchable()
-                    ->preload()
-                    ->required(),
+                    ->preload(),
                 Repeater::make('deviceOperatingSystems')
                     ->relationship()
                     ->label('Sistemas Operativos')
@@ -72,8 +76,8 @@ class DeviceResource extends Resource
                             ->createOptionForm(self::operating_system_form())
                             ->preload()
                             ->searchable()
-                            ->required()
-                    ]),
+                    ])
+                    ->defaultItems(0),
                 Repeater::make('deviceGraphics')
                     ->label('Tarjetas Gráficas')
                     ->relationship()
@@ -83,8 +87,8 @@ class DeviceResource extends Resource
                             ->createOptionForm(self::graphics_form())
                             ->preload()
                             ->searchable()
-                            ->required()
-                    ]),
+                    ])
+                    ->defaultItems(0),
                 Repeater::make('devicePeripherals')
                     ->label('Periféricos')
                     ->relationship()
@@ -94,8 +98,8 @@ class DeviceResource extends Resource
                             ->createOptionForm(self::peripheral_form())
                             ->preload()
                             ->searchable()
-                            ->required()
-                    ]),
+                    ])
+                    ->defaultItems(0),
                 Repeater::make('deviceRams')
                     ->label('Memorias Ram')
                     ->relationship()
@@ -104,12 +108,11 @@ class DeviceResource extends Resource
                             ->relationship('ram', 'id')
                             ->createOptionForm(self::ram_form())
                             ->preload()
-                            ->searchable()
-                            ->required(),
+                            ->searchable(),
                         TextInput::make('quantity')
-                            ->required()
                             ->integer()
                     ])
+                    ->defaultItems(0)
             ]);
     }
 
@@ -119,10 +122,13 @@ class DeviceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('ram_total')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deviceState.id')
+                Tables\Columns\TextColumn::make('deviceState.description')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('processor_id')
@@ -141,8 +147,11 @@ class DeviceResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make()
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

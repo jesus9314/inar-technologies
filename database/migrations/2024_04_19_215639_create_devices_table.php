@@ -20,9 +20,10 @@ return new class extends Migration
             $table->float('ram_total')->nullable();
             $table->string('speccy_snapshot_url')->nullable();
 
-            $table->foreignId('device_state_id')->constrained();
-            $table->foreignId('processor_id')->constrained();
-            $table->string('user_id')->nullable();
+            $table->foreignId('device_state_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('processor_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('device_type_id')->constrained();
 
             $table->timestamps();
         });

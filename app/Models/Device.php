@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\DeviceObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[ObservedBy([DeviceObserver::class])]
 class Device extends Model
 {
     use HasFactory;
@@ -20,6 +23,8 @@ class Device extends Model
         'device_state_id',
         'processor_id',
         'device_id',
+        'device_type_id',
+        'user_id'
     ];
 
     public function deviceState(): BelongsTo
@@ -55,5 +60,10 @@ class Device extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function deviceType(): BelongsTo
+    {
+        return $this->belongsTo(DeviceType::class);
     }
 }

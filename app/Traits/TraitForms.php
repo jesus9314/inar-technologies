@@ -214,4 +214,16 @@ trait TraitForms
                 ->required(),
         ];
     }
+
+    public static function device_type_form(): array
+    {
+        return [
+            TextInput::make('description')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('symbol')
+                ->required()
+                ->maxLength(255),
+        ];
+    }
 }

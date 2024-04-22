@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Models\User;
+use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,14 +19,6 @@ class TestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $units = Unit::all()->except(1);
-        $products = Product::where('unit_id', '!=', 1)->get()->toArray();
-        $services = Product::where('unit_id', 1)->get()->toArray();
-        $allArray = 
-        [
-            'Productos' => [$products],
-            'Servicios' => [$services]
-        ];
-        return $allArray;
+        return getDataFromRuc('20602172725');
     }
 }
