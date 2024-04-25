@@ -15,6 +15,8 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use FilipFonal\FilamentLogManager\FilamentLogManager;
+use GeoSot\FilamentEnvEditor\FilamentEnvEditorPlugin;
 use Hasnayeen\Themes\Http\Middleware\SetTheme;
 use Hasnayeen\Themes\ThemesPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -25,6 +27,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
+use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
@@ -80,12 +83,12 @@ class AuthPanelProvider extends PanelProvider
                         hasAvatars: true, // Enables the avatar upload form component (default = false)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
-                    ->avatarUploadComponent(fn() => FileUpload::make('avatar_url')
-                                                                    ->avatar()
-                                                                    ->imageEditor()
-                                                                    ->directory('avatars')
-                                                                    ->optimize('webp')
-                                                                    ->resize(50))
+                    ->avatarUploadComponent(fn () => FileUpload::make('avatar_url')
+                        ->avatar()
+                        ->imageEditor()
+                        ->directory('avatars')
+                        ->optimize('webp')
+                        ->resize(50))
                     ->enableTwoFactorAuthentication(
                         force: false, // force the user to enable 2FA before they can use the application (default = false)
                     ),
@@ -94,6 +97,11 @@ class AuthPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 ThemesPlugin::make(),
                 SpotlightPlugin::make(),
+                FilamentEnvEditorPlugin::make()
+                    ->navigationLabel('Variables de Entorno')
+                    ->navigationGroup('Configuraciones'),
+                FilamentLogManager::make(),
+                EnvironmentIndicatorPlugin::make()
             ])
             ->authMiddleware([
                 Authenticate::class,

@@ -14,6 +14,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -35,8 +36,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'name',
         'last_name_m',
         'last_name_p',
-        'dni',
-        'ruc',
+        'document_number',
         'email',
         'password',
         'avatar_url',
@@ -116,5 +116,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function idDocument(): BelongsTo
     {
         return $this->belongsTo(IdDocument::class);
+    }
+
+    public function emails(): MorphMany
+    {
+        return $this->morphMany(Email::class, 'emailable');
+    }
+
+    public function phones(): MorphMany
+    {
+        return $this->morphMany(Phone::class, 'phoneable');
     }
 }

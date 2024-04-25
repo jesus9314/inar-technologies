@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,31 +21,62 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('alienado123')
         ]);
 
-        $this->call([
-            //production
-            StateSeeder::class,
-            IdDocumentSeeder::class,
-            SupplierTypeSeeder::class,
-            CountrySeeder::class,
-            DepartmentSeeder::class,
-            ProvinceSeeder::class,
-            DistrictSeeder::class,
-            AffectationSeeder::class,
-            CurrencySeeder::class,
-            UnitSeeder::class,
-            WarehouseSeeder::class,
-            TaxDocumentTypeSeeder::class,
-            MemoryTypeSeeder::class,
-            ProcessorConditionSeeder::class,
-            OperatingSystemSeeder::class,
-            RamFormFactorSeeder::class,
-            PeripheralTypeSeeder::class,
-            DeviceTypeSeeder::class,
+        $this->call(self::getSeeders());
+    }
 
-            //no production
-            SupplierSeeder::class,
-            BrandSeeder::class,
-            CategorySeeder::class,
-        ]);
+    public static function getSeeders(): array
+    {
+        $seeders = array();
+
+        if (App::environment('local')) {
+            $seeders = [
+                StateSeeder::class,
+                IdDocumentSeeder::class,
+                SupplierTypeSeeder::class,
+                CountrySeeder::class,
+                DepartmentSeeder::class,
+                ProvinceSeeder::class,
+                DistrictSeeder::class,
+                AffectationSeeder::class,
+                CurrencySeeder::class,
+                UnitSeeder::class,
+                WarehouseSeeder::class,
+                TaxDocumentTypeSeeder::class,
+                MemoryTypeSeeder::class,
+                ProcessorConditionSeeder::class,
+                OperatingSystemSeeder::class,
+                RamFormFactorSeeder::class,
+                PeripheralTypeSeeder::class,
+                DeviceTypeSeeder::class,
+                ApiSeeder::class,
+                
+                SupplierSeeder::class,
+                BrandSeeder::class,
+                CategorySeeder::class,
+            ];
+        } elseif (App::environment('production')) {
+            $seeders = [
+                StateSeeder::class,
+                IdDocumentSeeder::class,
+                SupplierTypeSeeder::class,
+                CountrySeeder::class,
+                DepartmentSeeder::class,
+                ProvinceSeeder::class,
+                DistrictSeeder::class,
+                AffectationSeeder::class,
+                CurrencySeeder::class,
+                UnitSeeder::class,
+                WarehouseSeeder::class,
+                TaxDocumentTypeSeeder::class,
+                MemoryTypeSeeder::class,
+                ProcessorConditionSeeder::class,
+                OperatingSystemSeeder::class,
+                RamFormFactorSeeder::class,
+                PeripheralTypeSeeder::class,
+                DeviceTypeSeeder::class,
+                ApiSeeder::class,
+            ];
+        }
+        return $seeders;
     }
 }

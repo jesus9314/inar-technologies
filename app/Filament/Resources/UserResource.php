@@ -6,6 +6,9 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Pages\ActivityUserLogPage;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Traits\InfoList\TraitInfoLists;
+use App\Traits\InfoList\UserInfoList;
+use App\Traits\UserForms;
 use Filament\Forms;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
@@ -13,6 +16,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
@@ -27,6 +31,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
+    use UserForms, UserInfoList;
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationGroup = 'Manejo de Usuarios';
@@ -44,73 +50,19 @@ class UserResource extends Resource
         $AuthUser = User::find(auth()->user()->id);
 
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('last_name_m')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('last_name_p')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('dni')
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Get $get, Set $set, $state) => self::set_person_data($get, $set, $state))
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('ruc')
-                    ->required()
-                    ->maxLength(255),
-                Select::make('id_document_id')
-                    ->relationship('idDocument', 'description')
-                    ->preload()
-                    ->searchable(),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->disabledOn('edit')
-                    ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->hiddenOn(['edit', 'view'])
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('theme')
-                    ->hiddenOn('create')
-                    ->maxLength(255)
-                    ->default('default'),
-                ColorPicker::make('theme_color')
-                    ->hiddenOn('create')
-                    ->rgb(),
-                Select::make('roles')
-                    ->visible($AuthUser->can('activities_brand'))
-                    ->multiple()
-                    ->preload()
-                    ->relationship('roles', 'name'),
-                FileUpload::make('avatar_url')
-                    ->avatar()
-                    ->imageEditor()
-                    ->directory('avatars')
-                    ->optimize('webp')
-                    ->resize(50),
-            ]);
-    }
-
-    public static function set_person_data(Get $get, Set $set, $state)
-    {
-        $data = getDataFromDni($state);
-        $set('name', $data->nombres);
-        $set('last_name_m', $data->apellidoMaterno);
-        $set('last_name_p', $data->apellidoPaterno);
-        $set('id_document_id', 2);
+            ->schema(self::user_form());
     }
 
     public function isSuperAdmin($record): bool
     {
         $user = User::find($record->id);
         return $user->hasRole('super_admin');
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema(self::user_infolist());
     }
 
     public static function table(Table $table): Table
