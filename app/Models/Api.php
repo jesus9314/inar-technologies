@@ -12,6 +12,7 @@ class Api extends Model
     protected $fillable = [
         'name',
         'documentation_link',
-        'status'
+        'status',
+        'env_name'
     ];
 }

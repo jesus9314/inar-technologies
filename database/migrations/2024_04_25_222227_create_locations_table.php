@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apis', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('documentation_link')->nullable();
-            $table->string('env_name')->nullable();
-            $table->boolean('status')->default(false);
+            $table->string('lat');
+            $table->string('lng');
+            $table->string('description')->nullable();
+            $table->string('address');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('apis');
+        Schema::dropIfExists('locations');
     }
 };

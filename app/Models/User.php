@@ -14,6 +14,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,7 +43,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'avatar_url',
         'theme',
         'theme_color',
-        'id_document_id'
+        'id_document_id',
+        'customer_id'
     ];
 
     /**
@@ -126,5 +128,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function phones(): MorphMany
     {
         return $this->morphMany(Phone::class, 'phoneable');
+    }
+
+    public function locations(): HasMany
+    {
+        return $this->hasMany(Location::class);
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
     }
 }

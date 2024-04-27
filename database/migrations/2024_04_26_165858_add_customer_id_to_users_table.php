@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('apis', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('documentation_link')->nullable();
-            $table->string('env_name')->nullable();
-            $table->boolean('status')->default(false);
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('apis');
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
+        });
     }
 };

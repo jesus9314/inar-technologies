@@ -17,11 +17,13 @@ class ApiSeeder extends Seeder
             [
                 'name' => 'APIS.NET.PE',
                 'documentation_link' => 'https://apis.net.pe/',
+                'env_name' => 'APIS_NET_PE_KEY',
                 'status' => true,
             ],
             [
                 'name' => 'Google Maps',
                 'documentation_link' => 'https://developers.google.com/maps/documentation/javascript?hl=es-419',
+                'env_name' => 'GOOGLE_MAPS_API_KEY',
                 'status' => false,
             ],
         ];
@@ -30,6 +32,7 @@ class ApiSeeder extends Seeder
             Api::create([
                 'name' => $api['name'],
                 'documentation_link' => $api['documentation_link'],
+                'env_name' => $api['env_name'],
                 'status' => $api['status']
             ]);
         }

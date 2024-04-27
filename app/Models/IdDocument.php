@@ -39,4 +39,9 @@ class IdDocument extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function costumers(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }

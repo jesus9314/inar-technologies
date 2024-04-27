@@ -34,6 +34,9 @@ class ApiResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('env_name')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('documentation_link')
                     ->prefix('https://')
                     ->maxLength(255),
@@ -51,6 +54,10 @@ class ApiResource extends Resource
                 Tables\Columns\TextColumn::make('documentation_link')
                     ->url(fn (Api $api) => $api->documentation_link)
                     ->openUrlInNewTab()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('env_name')
+                    ->copyable()
+                    ->copyMessage('Variable de entorno Copiada')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
