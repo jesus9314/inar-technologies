@@ -97,9 +97,9 @@ class AuthPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 ThemesPlugin::make(),
                 SpotlightPlugin::make(),
-                FilamentEnvEditorPlugin::make()
-                    ->navigationLabel('Variables de Entorno')
-                    ->navigationGroup('Configuraciones'),
+                // FilamentEnvEditorPlugin::make()
+                //     ->navigationLabel('Variables de Entorno')
+                //     ->navigationGroup('Configuraciones'),
                 FilamentLogManager::make(),
                 EnvironmentIndicatorPlugin::make()
             ])
