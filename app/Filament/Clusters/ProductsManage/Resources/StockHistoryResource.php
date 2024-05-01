@@ -4,12 +4,14 @@ namespace App\Filament\Clusters\ProductsManage\Resources;
 
 use App\Filament\Clusters\ProductsManage;
 use App\Filament\Clusters\ProductsManage\Resources\StockHistoryResource\Pages;
+use App\Filament\Clusters\ProductsManage\Resources\StockHistoryResource\Pages\StockHistoryActivityLogPage;
 use App\Filament\Clusters\ProductsManage\Resources\StockHistoryResource\RelationManagers;
 use App\Models\StockHistory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -46,18 +48,20 @@ class StockHistoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('quantity')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('product.name')
-                    ->numeric()
+                    ->label('Producto')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('action.id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('old_quantity')
+                    ->label('Stock antiguo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('new_quantity')
+                    ->label('Stock nuevo')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('action.description')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -67,9 +71,12 @@ class StockHistoryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\Action::make('activities')->url(fn ($record) => StockHistoryResource::getUrl('activities', ['record' => $record])),
+                    // Tables\Actions\EditAction::make(),
+                    // Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -82,6 +89,7 @@ class StockHistoryResource extends Resource
     {
         return [
             'index' => Pages\ManageStockHistories::route('/'),
+            'activities' => StockHistoryActivityLogPage::route('/{record}/activities'),
         ];
     }
 }

@@ -48,27 +48,7 @@ trait UserForms
                     ])
                     ->visible(self::get_user_auth()->hasRole('super_admin')),
                 Step::make('Información adicional')
-                    ->schema([
-                        TableRepeater::make('phones')
-                            ->relationship()
-                            ->defaultItems(0)
-                            ->schema([
-                                TextInput::make('number')
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('description')
-                                    ->columnSpanFull(),
-                            ]),
-                        TableRepeater::make('emails')
-                            ->relationship()
-                            ->defaultItems(0)
-                            ->schema([
-                                TextInput::make('email')
-                                    ->email()
-                                    ->required()
-                                    ->maxLength(255),
-                            ])
-                    ])
+                    ->schema(self::get_aditional_info())
             ])
                 ->columnSpanFull()
                 ->skippable(),
@@ -217,70 +197,127 @@ trait UserForms
                             ->columns(2)
                     ]),
                 Step::make('Direcciones')
-                    ->schema(self::location_form())
+                    ->schema(self::location_form()),
+                Step::make('Información adicional')
+                    ->schema(self::get_aditional_info())
             ])->columnSpanFull()
                 ->skippable(),
         ];
     }
 
+    public static function get_aditional_info(): array
+    {
+        return [
+            TableRepeater::make('phones')
+                ->label('Teléfonos')
+                ->relationship()
+                ->defaultItems(0)
+                ->schema([
+                    TextInput::make('number')
+                        ->label('Número')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('description')
+                        ->label('Descripción')
+                        ->columnSpanFull(),
+                ]),
+            TableRepeater::make('emails')
+                ->label('Correos Electrónicos')
+                ->relationship()
+                ->defaultItems(0)
+                ->schema([
+                    TextInput::make('email')
+                        ->label('Correo')
+                        ->email()
+                        ->required()
+                        ->suffixIcon('heroicon-c-at-symbol')
+                        ->maxLength(255),
+                ])
+        ];
+    }
+
     public static function location_form(): array
     {
+        if (self::getGoogleMapStatus()) {
+            $location_input = Geocomplete::make('address')
+                ->isLocation()
+                ->reverseGeocode([
+                    'city'   => '%L',
+                    'zip'    => '%z',
+                    'state'  => '%A1',
+                    'street' => '%n %S',
+                ])
+                ->countries(['pe']) // restrict autocomplete results to these countries
+                ->debug() // output the results of reverse geocoding in the browser console, useful for figuring out symbol formats
+                ->updateLatLng() // update the lat/lng fields on your form when a Place is selected
+                ->maxLength(1024)
+                ->live()
+                ->prefix('Escoge:')
+                ->placeholder('Escribe una dirección ...')
+                ->geolocate() // add a suffix button which requests and reverse geocodes the device location
+                ->geolocateIcon('heroicon-o-map'); // override the default icon for the geolocate button;
+        } elseif (!self::getGoogleMapStatus()) {
+            $location_input = TextInput::make('address');
+        }
+
         return [
             Repeater::make('locations')
                 ->relationship()
                 ->schema([
                     TextInput::make('description')
+                        ->label('Descripción')
                         ->live(onBlur: true),
+                    TextInput::make('reference')
+                        ->label('Referencia'),
                     TextInput::make('lat')
+                        ->label('Latitud')
                         ->reactive()
+                        ->hidden(!self::getGoogleMapStatus())
                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
                             $set('location', [
                                 'lat' => floatVal($state),
-                                'lng' => floatVal($get('longitude')),
+                                'lng' => floatVal($get('lng')),
                             ]);
                         })
                         ->lazy(),
                     TextInput::make('lng')
+                        ->label('Longitud')
                         ->reactive()
+                        ->hidden(!self::getGoogleMapStatus())
                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
                             $set('location', [
-                                'lat' => floatval($get('latitude')),
+                                'lat' => floatval($get('lat')),
                                 'lng' => floatVal($state),
                             ]);
                         })
                         ->lazy(),
-                    Geocomplete::make('address')
-                        ->isLocation()
-                        ->reverseGeocode([
-                            'city'   => '%L',
-                            'zip'    => '%z',
-                            'state'  => '%A1',
-                            'street' => '%n %S',
-                        ])
-                        ->countries(['pe']) // restrict autocomplete results to these countries
-                        ->debug() // output the results of reverse geocoding in the browser console, useful for figuring out symbol formats
-                        ->updateLatLng() // update the lat/lng fields on your form when a Place is selected
-                        ->maxLength(1024)
-                        ->live()
-                        ->prefix('Escoge:')
-                        ->placeholder('Escribe una dirección ...')
-                        ->geolocate() // add a suffix button which requests and reverse geocodes the device location
-                        ->geolocateIcon('heroicon-o-map'), // override the default icon for the geolocate button
+                    $location_input,
                     Map::make('location')
+                        ->label('Ubicación')
                         ->columnSpanFull()
-                        // ->autocompleteReverse(true) // reverse geocode marker location to autocomplete field
+                        ->autocomplete('address')
+                        ->autocompleteReverse(true) // reverse geocode marker location to autocomplete field
+                        ->hidden(!self::getGoogleMapStatus())
                         ->reactive()
                         ->defaultZoom(19)
+                        ->mapControls([
+                            'zoomControl' => true,
+                        ])
+                        ->debug()
+                        ->drawingControl()
                         ->defaultLocation([-12.0577422, -77.0738183])
                         ->geolocate() // adds a button to request device location and set map marker accordingly
                         ->geolocateLabel('Get Location') // overrides the default label for geolocate button
-                        // ->geolocateOnLoad(true, true) // geolocate on load, second arg 'always' (default false, only for new form))
+                        ->geolocateOnLoad(true, false) // geolocate on load, second arg 'always' (default false, only for new form))
                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                            $set('latitude', $state['lat']);
-                            $set('longitude', $state['lng']);
+                            $set('lat', $state['lat']);
+                            $set('lng', $state['lng']);
                         }),
                 ])
                 ->label('Direcciones')
+                ->live()
+                ->reactive()
+                ->lazy()
                 ->columns(2)
                 ->itemLabel(fn (array $state): ?string => Str::upper($state['description']) ?? null)
         ];
@@ -341,7 +378,7 @@ trait UserForms
     /**
      * retorna si la api de Google Maps
      */
-    public function getGoogleMapStatus(): bool
+    public static function getGoogleMapStatus(): bool
     {
         return Api::find(2)->status;
     }

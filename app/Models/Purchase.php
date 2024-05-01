@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\PurchaseObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+#[ObservedBy(PurchaseObserver::class)]
 class Purchase extends Model
 {
     use HasFactory;
@@ -54,5 +57,10 @@ class Purchase extends Model
     public function productPurchase(): HasMany
     {
         return $this->hasMany(ProductPurchase::class);
+    }
+
+    public function scopeWithProducts($query)
+    {
+        $query->with('productPurchase');
     }
 }

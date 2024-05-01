@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\ProductPurchaseObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
+#[ObservedBy(ProductPurchaseObserver::class)]
 class ProductPurchase extends Pivot
 {
     use HasFactory;

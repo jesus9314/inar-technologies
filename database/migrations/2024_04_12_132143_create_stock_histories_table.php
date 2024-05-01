@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('stock_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('quantity');
+            $table->string('old_quantity');
+            $table->string('new_quantity');
 
+            $table->string('total_price');
             $table->foreignId('product_id')->constrained();
             $table->foreignId('action_id')->constrained();
             

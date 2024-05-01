@@ -6,6 +6,7 @@ use App\Filament\Clusters\ProductsManage;
 use App\Filament\Clusters\ProductsManage\Resources\ProductResource\Pages;
 use App\Filament\Clusters\ProductsManage\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
+use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -26,6 +27,8 @@ use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = Product::class;
 
     protected static ?string $cluster = ProductsManage::class;
@@ -44,103 +47,7 @@ class ProductResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Section::make()
-                    ->columns(2)
-                    ->schema([
-                        Fieldset::make('Nombre')
-                            ->schema([
-                                TextInput::make('name')
-                                    ->required()
-                                    ->label('Nombre')
-                                    ->autocapitalize('sentencecs')
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (Get $get, Set $set) => self::setSlug($get, $set))
-                                    ->maxLength(255),
-                                TextInput::make('slug')
-                                    ->required()
-                                    ->readOnly()
-                                    ->disabled()
-                                    ->beforeStateDehydrated(fn (Get $get, Set $set) => self::setSlug($get, $set))
-                                    ->maxLength(255),
-                            ]),
-                        TextInput::make('secondary_name')
-                            ->label('Nombre secundario')
-                            ->maxLength(255),
-                        TextInput::make('model')
-                            ->label('Modelo')
-                            ->maxLength(255),
-                        TextInput::make('bar_code')
-                            ->label('Código de Barras')
-                            ->maxLength(255),
-                        TextInput::make('internal_code')
-                            ->label('Código Interno')
-                            ->maxLength(255),
-                        DatePicker::make('due_date')
-                            ->label('Fecha de vencimiento'),
-                        TextInput::make('description')
-                            ->label('descripción del producto')
-                            ->maxLength(255),
-                        TextInput::make('stock_initial')
-                            ->label('Stock Inicial')
-                            ->numeric(),
-                        TextInput::make('stock_final')
-                            ->label('Stock Final')
-                            ->numeric(),
-                        TextInput::make('unity_price')
-                            ->label('Precio Unitario')
-                            ->required()
-                            ->numeric()
-                            ->prefix('S/'),
-                        Select::make('affectation_id')
-                            ->label('Tipos de afectación al IGV')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('affectation', 'description')
-                            ->default(1)
-                            ->required(),
-                        Select::make('category_id')
-                            ->label('Categoría')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('category', 'name')
-                            ->required(),
-                        Select::make('brand_id')
-                            ->label('Marca')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('brand', 'name')
-                            ->required(),
-                        Select::make('currency_id')
-                            ->label('Moneda')
-                            ->searchable()
-                            ->preload()
-                            ->relationship('currency', 'description')
-                            ->default(1)
-                            ->required(),
-                        Select::make('unit_id')
-                            ->label('Unidad')
-                            ->searchable()
-                            ->preload()
-                            ->relationship(
-                                name: 'unit',
-                                titleAttribute: 'description',
-                                modifyQueryUsing: fn (Builder $query) => $query->where('id', '!=', 1)
-                            )
-                            ->default(10)
-                            ->required(),
-                        Select::make('warehouses')
-                            ->preload()
-                            ->multiple()
-                            ->relationship(titleAttribute: 'description')
-                            ->required(),
-                        FileUpload::make('image_url')
-                            ->label('Imagen del producto')
-                            ->image()
-                            ->columnSpan(2),
-                    ])
-
-            ]);
+            ->schema(self::product_form());
     }
 
     public static function setSlug(Get $get, Set $set): void

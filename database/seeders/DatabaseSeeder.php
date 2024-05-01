@@ -49,7 +49,8 @@ class DatabaseSeeder extends Seeder
                 PeripheralTypeSeeder::class,
                 DeviceTypeSeeder::class,
                 ApiSeeder::class,
-                
+                ActionSeeder::class,
+
                 SupplierSeeder::class,
                 BrandSeeder::class,
                 CategorySeeder::class,
@@ -75,6 +76,7 @@ class DatabaseSeeder extends Seeder
                 PeripheralTypeSeeder::class,
                 DeviceTypeSeeder::class,
                 ApiSeeder::class,
+                ActionSeeder::class,
             ];
         }
         return $seeders;

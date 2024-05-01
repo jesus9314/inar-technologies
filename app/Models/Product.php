@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\ProductObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[ObservedBy(ProductObserver::class)]
 class Product extends Model
 {
     use HasFactory;
@@ -29,7 +32,8 @@ class Product extends Model
         'category_id',
         'brand_id',
         'currency_id',
-        'unit_id'
+        'unit_id',
+        'service_id'
     ];
 
     public function affectation(): BelongsTo
@@ -70,5 +74,10 @@ class Product extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
     }
 }

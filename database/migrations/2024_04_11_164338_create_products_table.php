@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('secondary_name')->nullable();
-            $table->string('slug');
+            $table->string('slug')->nullable();
             $table->string('model')->nullable();
             $table->string('bar_code')->nullable();
             $table->string('internal_code')->nullable();
             $table->date('due_date')->nullable();
             $table->string('image_url')->nullable();
             $table->string('description')->nullable();
-            $table->integer('stock_initial')->nullable();
+            $table->integer('stock_initial');
             $table->integer('stock_final')->nullable();
             $table->integer('unity_price');
 
