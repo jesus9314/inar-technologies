@@ -33,6 +33,7 @@
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-package-tools": "^1.16",
         "swisnl/filament-backgrounds": "^1.1",
+        "ysfkaya/filament-phone-input": "^2.3",
         "z3d0x/filament-logger": "^0.7.1"
     },
     "require-dev": {

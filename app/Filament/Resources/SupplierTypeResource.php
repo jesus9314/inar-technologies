@@ -2,19 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\SupplierResource\Pages\SupplierTypeActivityLogPage;
 use App\Filament\Resources\SupplierTypeResource\Pages;
-use App\Filament\Resources\SupplierTypeResource\RelationManagers;
 use App\Models\SupplierType;
-use Filament\Forms;
+use App\Traits\Forms\SupplierTraitForms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SupplierTypeResource extends Resource
 {
+    use SupplierTraitForms;
+
     protected static ?string $model = SupplierType::class;
 
     protected static ?string $navigationIcon = 'heroicon-c-hashtag';
@@ -33,14 +36,7 @@ class SupplierTypeResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+            ->schema(self::supplier_type_form());
     }
 
     public static function table(Table $table): Table
@@ -64,9 +60,12 @@ class SupplierTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make('activities')->url(fn ($record) => SupplierTypeResource::getUrl('activities', ['record' => $record])),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -79,6 +78,7 @@ class SupplierTypeResource extends Resource
     {
         return [
             'index' => Pages\ManageSupplierTypes::route('/'),
+            'activities' => SupplierTypeActivityLogPage::route('/{record}/activities'),
         ];
     }
 }

@@ -7,6 +7,8 @@ use App\Filament\Resources\SupplierResource\RelationManagers;
 use App\Filament\Resources\SupplierResource\RelationManagers\EmailsRelationManager;
 use App\Filament\Resources\SupplierResource\RelationManagers\PhonesRelationManager;
 use App\Models\Supplier;
+use App\Traits\Forms\SupplierTraitForms;
+use App\Traits\TraitForms;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
@@ -24,6 +26,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SupplierResource extends Resource
 {
+    use SupplierTraitForms;
+
     protected static ?string $model = Supplier::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-wallet';
@@ -42,61 +46,7 @@ class SupplierResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('comercial_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('id_document_id')
-                    ->relationship('idDocument', 'id')
-                    ->required(),
-                Forms\Components\TextInput::make('document_number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone_number')
-                    ->tel()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\FileUpload::make('image_url')
-                    ->image(),
-                Forms\Components\TextInput::make('web')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('address')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('supplier_type_id')
-                    ->relationship('supplierType', 'id')
-                    ->required(),
-                Forms\Components\Select::make('countries')
-                    ->preload()
-                    ->multiple()
-                    ->relationship(titleAttribute: 'name')
-                    ->required(),
-                TableRepeater::make('phones')
-                    ->relationship()
-                    ->schema([
-                        Forms\Components\TextInput::make('number')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('description')
-                            ->columnSpanFull(),
-                    ]),
-                TableRepeater::make('emails')
-                    ->relationship()
-                    ->schema([
-                        Forms\Components\TextInput::make('email')
-                            ->email()
-                            ->required()
-                            ->maxLength(255),
-                    ])
-            ]);
+            ->schema(self::supplier_form());
     }
 
     public static function table(Table $table): Table
@@ -138,8 +88,7 @@ class SupplierResource extends Resource
     public static function getRelations(): array
     {
         return [
-            EmailsRelationManager::class,
-            PhonesRelationManager::class,
+            //
         ];
     }
 
@@ -147,9 +96,6 @@ class SupplierResource extends Resource
     {
         return [
             'index' => Pages\ListSuppliers::route('/'),
-            'create' => Pages\CreateSupplier::route('/create'),
-            'view' => Pages\ViewSupplier::route('/{record}'),
-            'edit' => Pages\EditSupplier::route('/{record}/edit'),
         ];
     }
 }

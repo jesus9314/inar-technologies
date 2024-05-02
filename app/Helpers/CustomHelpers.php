@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Api;
+use App\Models\User;
+
 if (!function_exists('getDataFromDni')) {
     function getDataFromDni(String $dni)
     {
@@ -57,5 +60,27 @@ if (!function_exists('getDataFromRuc')) {
         curl_close($curl);
         // Datos de empresas según padron reducido
         return $empresa = json_decode($response);
+    }
+}
+
+/**
+ * Retorna si la api especificada en el parámetro está
+ * activa o no
+ */
+if (!function_exists('getApiStatus')) {
+    function getApiStatus(Api $api): bool
+    {
+        return $api->status;
+    }
+}
+
+/**
+ * Retorna el modelo del usuario logeado
+ */
+
+if (!function_exists('getUserAuth')) {
+    function getUserAuth(): User
+    {
+        return User::find(auth()->user()->id);
     }
 }

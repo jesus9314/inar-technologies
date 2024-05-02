@@ -13,10 +13,12 @@ use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 trait TraitForms
 {
@@ -247,6 +249,7 @@ trait TraitForms
                         ->columns(2),
                 ])
                 ->columnSpanFull()
+                ->skippable()
         ];
     }
 

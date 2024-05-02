@@ -46,7 +46,7 @@ trait UserForms
                             ->preload()
                             ->relationship('roles', 'name'),
                     ])
-                    ->visible(self::get_user_auth()->hasRole('super_admin')),
+                    ->visible(getUserAuth()->hasRole('super_admin')),
                 Step::make('Información adicional')
                     ->schema(self::get_aditional_info())
             ])
@@ -115,7 +115,7 @@ trait UserForms
 
     public static function get_info_desc(): string
     {
-        return self::getApisNetStatus() ? 'La información se llenará automáticamente en base al tipo de documento seleccionados [DNI, RUC]' : '';
+        return getApiStatus(Api::find(1)) ? 'La información se llenará automáticamente en base al tipo de documento seleccionados [DNI, RUC]' : '';
     }
 
     //customer forms
@@ -238,7 +238,7 @@ trait UserForms
 
     public static function location_form(): array
     {
-        if (self::getGoogleMapStatus()) {
+        if (getApiStatus(Api::find(2))) {
             $location_input = Geocomplete::make('address')
                 ->isLocation()
                 ->reverseGeocode([
@@ -256,7 +256,7 @@ trait UserForms
                 ->placeholder('Escribe una dirección ...')
                 ->geolocate() // add a suffix button which requests and reverse geocodes the device location
                 ->geolocateIcon('heroicon-o-map'); // override the default icon for the geolocate button;
-        } elseif (!self::getGoogleMapStatus()) {
+        } elseif (!getApiStatus(Api::find(2))) {
             $location_input = TextInput::make('address');
         }
 
@@ -272,7 +272,7 @@ trait UserForms
                     TextInput::make('lat')
                         ->label('Latitud')
                         ->reactive()
-                        ->hidden(!self::getGoogleMapStatus())
+                        ->hidden(!getApiStatus(Api::find(2)))
                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
                             $set('location', [
                                 'lat' => floatVal($state),
@@ -283,7 +283,7 @@ trait UserForms
                     TextInput::make('lng')
                         ->label('Longitud')
                         ->reactive()
-                        ->hidden(!self::getGoogleMapStatus())
+                        ->hidden(!getApiStatus(Api::find(2)))
                         ->afterStateUpdated(function ($state, callable $get, callable $set) {
                             $set('location', [
                                 'lat' => floatval($get('lat')),
@@ -297,7 +297,7 @@ trait UserForms
                         ->columnSpanFull()
                         ->autocomplete('address')
                         ->autocompleteReverse(true) // reverse geocode marker location to autocomplete field
-                        ->hidden(!self::getGoogleMapStatus())
+                        ->hidden(!getApiStatus(Api::find(2)))
                         ->reactive()
                         ->defaultZoom(19)
                         ->mapControls([
@@ -327,19 +327,19 @@ trait UserForms
     //common methods
     public static function getHelperText()
     {
-        return self::getApisNetStatus() ? 'Ingrese el número de su documento y se llenará automaticamente si el tipo de documento es RUC ó DNI' : '';
+        return getApiStatus(Api::find(1)) ? 'Ingrese el número de su documento y se llenará automaticamente si el tipo de documento es RUC ó DNI' : '';
     }
 
     /**
      * Coloca los valores recibidos por la api APISNET.NET en los campos respectivos
      * dependiendo si se encuentra activado el uso de esta api
      */
-    public static function set_data_from_api(Get $get, Set $set)
+    public static function set_data_from_api(Get $get, Set $set): void
     {
         $document_type = $get('id_document_id');
         $document_number = $get('document_number');
 
-        if (self::getApisNetStatus() == true) {
+        if (getApiStatus(Api::find(1)) == true) {
             if ($document_type != null && $document_number != null) {
                 if ($document_type == 2) {
                     $data = getDataFromDni($document_number);
@@ -357,29 +357,5 @@ trait UserForms
                 $set('last_name_p', null);
             }
         }
-    }
-
-    /**
-     * Obtiene el usuario autenticado
-     */
-    public static function get_user_auth(): User
-    {
-        return User::find(auth()->user()->id);
-    }
-
-    /**
-     * retorna si la api APISNET.NET está habilitada
-     */
-    public static function getApisNetStatus(): bool
-    {
-        return Api::find(1)->status;
-    }
-
-    /**
-     * retorna si la api de Google Maps
-     */
-    public static function getGoogleMapStatus(): bool
-    {
-        return Api::find(2)->status;
     }
 }

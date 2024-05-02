@@ -22,6 +22,6 @@ class TestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return ProductPurchase::where('purchase_id', 1)->get();
+        return getDataFromRuc('20602172725');
     }
 }
