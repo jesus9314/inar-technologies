@@ -15,6 +15,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
@@ -99,6 +100,7 @@ trait UserForms
         return [
             TextInput::make('email')
                 ->email()
+                ->unique()
                 ->required()
                 ->disabledOn('edit')
                 ->maxLength(255),
@@ -124,8 +126,12 @@ trait UserForms
         return [
             TextInput::make('document_number')
                 ->label('Número de Documento')
+                ->unique()
                 ->live(onBlur: true)
-                ->afterStateUpdated(fn (Get $get, Set $set) => self::set_data_from_api($get, $set))
+                ->afterStateUpdated(function (Get $get, Set $set, HasForms $livewire, TextInput $component) {
+                    self::set_data_from_api($get, $set);
+                    self::validate_one_field($livewire, $component);
+                })
                 ->helperText(fn () => self::getHelperText())
                 ->required()
                 ->maxLength(255),
@@ -151,12 +157,20 @@ trait UserForms
         ];
     }
 
+    private static function validate_one_field(HasForms $livewire, TextInput $component): void
+    {
+        $livewire->validateOnly($component->getStatePath());
+    }
+
     public static function get_costumber_account_info_form(): array
     {
         return [
             TextInput::make('email')
                 ->email()
+                ->unique()
                 ->required()
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->disabledOn('edit')
                 ->maxLength(255),
             Password::make('password')

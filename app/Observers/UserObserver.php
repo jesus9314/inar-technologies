@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +13,11 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        //
+        if($user->customer_id){
+            $costumer = Customer::find($user->customer_id);
+            $user->name = "$costumer->last_name_p $costumer->last_name_m, $costumer->name";
+            $user->save();
+        }
     }
 
     /**

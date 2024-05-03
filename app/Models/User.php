@@ -44,7 +44,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'theme',
         'theme_color',
         'id_document_id',
-        'customer_id'
+        'customer_id',
+        'id_document_id'
     ];
 
     /**

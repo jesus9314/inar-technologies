@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-#[ObservedBy(CustomerObserver::class)]
+// #[ObservedBy(CustomerObserver::class)]
 class Customer extends Model
 {
     use HasFactory;
@@ -21,7 +21,8 @@ class Customer extends Model
         'last_name_m',
         'last_name_p',
         'document_number',
-        'user_id'
+        'user_id',
+        'id_document_id'
     ];
 
     public function user(): HasOne

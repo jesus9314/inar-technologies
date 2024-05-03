@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('last_name_m')->nullable();
             $table->string('last_name_p')->nullable();
-            $table->string('document_number')->nullable();
+            $table->string('document_number')->nullable()->unique();
 
             $table->foreignId('id_document_id')->constrained()->onDelete('cascade');
             $table->timestamps();

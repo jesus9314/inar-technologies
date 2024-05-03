@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Customer;
+use App\Models\User;
 
 class CustomerObserver
 {
@@ -11,9 +12,14 @@ class CustomerObserver
      */
     public function created(Customer $customer): void
     {
+        
+        $user = User::where('customer_id', $customer->id)->get();
+        dd($user);
         if ($customer->user) {
-            $customer->user->name = $customer->name;
+            $user->name = "$customer->last_name_p $customer->last_name_m, $customer->name";
         }
+        // dd($customer);
+        $user->save();
     }
 
     /**
