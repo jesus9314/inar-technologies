@@ -63,7 +63,7 @@ class CurrencyPolicy
      */
     public function forceDelete(User $user, Currency $currency): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_currency');
     }
 
     /**
@@ -71,7 +71,7 @@ class CurrencyPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_currency');
     }
 
     /**
@@ -79,7 +79,7 @@ class CurrencyPolicy
      */
     public function restore(User $user, Currency $currency): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_currency');
     }
 
     /**
@@ -87,7 +87,7 @@ class CurrencyPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_currency');
     }
 
     /**
@@ -103,6 +103,6 @@ class CurrencyPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_currency');
     }
 }

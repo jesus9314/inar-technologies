@@ -11,6 +11,8 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
@@ -22,42 +24,7 @@ use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 trait TraitForms
 {
-    public static function brand_form(): array
-    {
-        return [
-            TextInput::make('name')
-                ->required()
-                ->live(onBlur: true)
-                ->columnSpan([
-                    'default' => 1,
-                    'md' => 1,
-                ])
-                ->afterStateUpdated(fn (Set $set, $state) => $set('slug', Str::slug($state)))
-                ->maxLength(255),
-            TextInput::make('slug')
-                ->readOnly()
-                ->columnSpan([
-                    'default' => 1,
-                    'md' => 1,
-                ])
-                ->required()
-                ->maxLength(255),
-            Textarea::make('description')
-                ->columnSpan([
-                    'default' => 1,
-                    'md' => 1,
-                ])
-                ->columnSpanFull(),
-            FileUpload::make('image_url')
-                ->columnSpan([
-                    'default' => 1,
-                    'md' => 1,
-                ])
-                ->image(),
-        ];
-    }
-
-    public static function operating_system_form(): array
+    protected static function operating_system_form(): array
     {
         return [
             TextInput::make('description')
@@ -68,7 +35,7 @@ trait TraitForms
         ];
     }
 
-    public static function graphics_form(): array
+    protected static function graphics_form(): array
     {
         return [
             TextInput::make('model')
@@ -101,7 +68,7 @@ trait TraitForms
         ];
     }
 
-    public static function peripheral_form(): array
+    protected static function peripheral_form(): array
     {
         return [
             TextInput::make('description')
@@ -125,7 +92,7 @@ trait TraitForms
         ];
     }
 
-    public static function ram_form(): array
+    protected static function ram_form(): array
     {
         return [
             TextInput::make('speed')
@@ -163,7 +130,7 @@ trait TraitForms
         ];
     }
 
-    public static function memory_type_form(): array
+    protected static function memory_type_form(): array
     {
         return [
             TextInput::make('description')
@@ -172,7 +139,7 @@ trait TraitForms
         ];
     }
 
-    public static function ram_form_factor_form(): array
+    protected static function ram_form_factor_form(): array
     {
         return [
             TextInput::make('description')
@@ -181,7 +148,7 @@ trait TraitForms
         ];
     }
 
-    public static function peripheral_type_form(): array
+    protected static function peripheral_type_form(): array
     {
         return [
             TextInput::make('description')
@@ -190,7 +157,7 @@ trait TraitForms
         ];
     }
 
-    public static function district_form(): array
+    protected static function district_form(): array
     {
         return [
             TextInput::make('name')
@@ -224,7 +191,7 @@ trait TraitForms
         ];
     }
 
-    public static function device_type_form(): array
+    protected static function device_type_form(): array
     {
         return [
             TextInput::make('description')
@@ -236,135 +203,26 @@ trait TraitForms
         ];
     }
 
-    public static function product_form(): array
+    protected static function validate_one_field(HasForms $livewire, TextInput $component): void
     {
-        return [
-            Wizard::make()
-                ->schema([
-                    Step::make('Información General')
-                        ->schema(self::general_product_info())
-                        ->columns(2),
-                    Step::make('Relaciones')
-                        ->schema(self::product_relations_form())
-                        ->columns(2),
-                ])
-                ->columnSpanFull()
-                ->skippable()
-        ];
+        $livewire->validateOnly($component->getStatePath());
     }
 
-    public static function general_product_info(): array
+    protected static function affectation_form(Form $form): Form
     {
-        return [
-            TextInput::make('name')
-                ->required()
-                ->label('Nombre')
-                ->autocapitalize('sentencecs')
-                ->live(onBlur: true)
-                ->afterStateUpdated(fn (Get $get, Set $set) => self::setSlug($get, $set))
-                ->maxLength(255),
-            TextInput::make('slug')
-                ->helperText(str('El campo **Nombre** se convertirá automáticamente en el slug')->inlineMarkdown()->toHtmlString())
-                ->required()
-                ->readOnly()
-                ->disabled()
-                ->beforeStateDehydrated(fn (Get $get, Set $set) => self::setSlug($get, $set))
-                ->maxLength(255),
-            TextInput::make('secondary_name')
-                ->label('Nombre secundario')
-                ->maxLength(255),
-            TextInput::make('model')
-                ->label('Modelo')
-                ->maxLength(255),
-            TextInput::make('bar_code')
-                ->label('Código de Barras')
-                ->maxLength(255),
-            TextInput::make('internal_code')
-                ->label('Código Interno')
-                ->maxLength(255),
-            DatePicker::make('due_date')
-                ->label('Fecha de vencimiento'),
-            TextInput::make('description')
-                ->label('descripción del producto')
-                ->maxLength(255),
-            TextInput::make('stock_initial')
-                ->label('Stock Inicial')
-                ->required()
-                ->default(0)
-                ->numeric(),
-            TextInput::make('stock_final')
-                ->hiddenOn('create')
-                ->disabled()
-                ->label('Stock Final')
-                ->numeric(),
-            MoneyInput::make('unity_price')
-                ->label('Precio Unitario')
-                ->required(),
-        ];
+        return $form
+            ->schema(self::affectation_schema());
     }
 
-    public static function product_relations_form(): array
+    protected static function affectation_schema(): array
     {
         return [
-            Select::make('affectation_id')
-                ->label('Tipos de afectación al IGV')
-                ->searchable()
-                ->preload()
-                ->relationship('affectation', 'description')
-                ->default(1)
-                ->required(),
-            Select::make('category_id')
-                ->label('Categoría')
-                ->searchable()
-                ->preload()
-                ->relationship('category', 'name')
-                ->required(),
-            Select::make('brand_id')
-                ->label('Marca')
-                ->searchable()
-                ->preload()
-                ->relationship('brand', 'name')
-                ->required(),
-            Select::make('currency_id')
-                ->label('Moneda')
-                ->searchable()
-                ->preload()
-                ->relationship('currency', 'description')
-                ->default(1)
-                ->required(),
-            Select::make('unit_id')
-                ->label('Unidad')
-                ->searchable()
-                ->preload()
-                ->relationship(
-                    name: 'unit',
-                    titleAttribute: 'description',
-                    modifyQueryUsing: fn (Builder $query) => $query->where('id', '!=', 1)
-                )
-                ->default(10)
-                ->required(),
-            Select::make('warehouses')
-                ->preload()
-                ->multiple()
-                ->relationship(titleAttribute: 'description')
-                ->required(),
-            FileUpload::make('image_url')
-                ->label('Imagen del producto')
-                ->image()
-                ->columnSpan(2),
-        ];
-    }
-
-    public static function service_form(): array
-    {
-        return [
-            TextInput::make('name')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('slug')
+            TextInput::make('code')
+                ->label('Código')
                 ->required()
                 ->maxLength(255),
             TextInput::make('description')
+                ->label('Descripción')
                 ->required()
                 ->maxLength(255),
         ];

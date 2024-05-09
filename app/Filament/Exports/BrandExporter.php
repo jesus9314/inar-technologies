@@ -3,25 +3,23 @@
 namespace App\Filament\Exports;
 
 use App\Models\Brand;
+use App\Traits\Exports\CustomStyleExportsTrait;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
 
 class BrandExporter extends Exporter
 {
+    use CustomStyleExportsTrait;
+
     protected static ?string $model = Brand::class;
 
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('id')
-                ->label('ID'),
             ExportColumn::make('name'),
             ExportColumn::make('slug'),
             ExportColumn::make('description'),
-            ExportColumn::make('image_url'),
-            ExportColumn::make('created_at'),
-            ExportColumn::make('updated_at'),
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\BackupsPage;
 use Awcodes\FilamentGravatar\GravatarPlugin;
 use Awcodes\FilamentGravatar\GravatarProvider;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -57,11 +58,11 @@ class AuthPanelProvider extends PanelProvider
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
-            ->resources([
-                config('filament-logger.activity_resource')
-            ])
+            // ->resources([
+            //     config('filament-logger.activity_resource')
+            // ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -80,7 +81,7 @@ class AuthPanelProvider extends PanelProvider
                         shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
                         shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
                         navigationGroup: 'Settings', // Sets the navigation group for the My Profile page (default = null)
-                        hasAvatars: true, // Enables the avatar upload form component (default = false)
+                        hasAvatars: true, // Enables the avatar upload form component (default = fals9e)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
                     ->avatarUploadComponent(fn () => FileUpload::make('avatar_url')
@@ -92,7 +93,8 @@ class AuthPanelProvider extends PanelProvider
                     ->enableTwoFactorAuthentication(
                         force: false, // force the user to enable 2FA before they can use the application (default = false)
                     ),
-                FilamentSpatieLaravelBackupPlugin::make(),
+                FilamentSpatieLaravelBackupPlugin::make()
+                    ->usingPage(BackupsPage::class),
                 FilamentBackgroundsPlugin::make(),
                 FilamentShieldPlugin::make(),
                 ThemesPlugin::make(),

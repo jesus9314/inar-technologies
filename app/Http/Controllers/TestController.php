@@ -22,6 +22,6 @@ class TestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return getDataFromRuc('20602172725');
+        return getUserAuth()->hasRole(['super_admin']) ? true : false;
     }
 }

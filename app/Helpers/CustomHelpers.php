@@ -2,6 +2,8 @@
 
 use App\Models\Api;
 use App\Models\User;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Contracts\HasForms;
 
 if (!function_exists('getDataFromDni')) {
     function getDataFromDni(String $dni)
@@ -81,6 +83,8 @@ if (!function_exists('getApiStatus')) {
 if (!function_exists('getUserAuth')) {
     function getUserAuth(): User
     {
+        // dd(Auth::user());
         return User::find(auth()->user()->id);
     }
 }
+

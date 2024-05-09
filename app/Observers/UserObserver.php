@@ -16,6 +16,7 @@ class UserObserver
         if($user->customer_id){
             $costumer = Customer::find($user->customer_id);
             $user->name = "$costumer->last_name_p $costumer->last_name_m, $costumer->name";
+            $user->assignRole('cliente');
             $user->save();
         }
     }

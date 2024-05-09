@@ -63,7 +63,7 @@ class GraphicPolicy
      */
     public function forceDelete(User $user, Graphic $graphic): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_graphic');
     }
 
     /**
@@ -71,7 +71,7 @@ class GraphicPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_graphic');
     }
 
     /**
@@ -79,7 +79,7 @@ class GraphicPolicy
      */
     public function restore(User $user, Graphic $graphic): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_graphic');
     }
 
     /**
@@ -87,7 +87,7 @@ class GraphicPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_graphic');
     }
 
     /**
@@ -103,6 +103,6 @@ class GraphicPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_graphic');
     }
 }

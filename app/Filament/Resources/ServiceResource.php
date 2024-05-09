@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ServiceResource\Pages;
 use App\Filament\Resources\ServiceResource\RelationManagers;
 use App\Models\Service;
+use App\Traits\Forms\ServiceTraitForms;
 use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ServiceResource extends Resource
 {
-    use TraitForms;
+    use ServiceTraitForms;
 
     protected static ?string $model = Service::class;
 
@@ -72,9 +73,9 @@ class ServiceResource extends Resource
     {
         return [
             'index' => Pages\ListServices::route('/'),
-            'create' => Pages\CreateService::route('/create'),
-            'view' => Pages\ViewService::route('/{record}'),
-            'edit' => Pages\EditService::route('/{record}/edit'),
+            // 'create' => Pages\CreateService::route('/create'),
+            // 'view' => Pages\ViewService::route('/{record}'),
+            // 'edit' => Pages\EditService::route('/{record}/edit'),
         ];
     }
 }

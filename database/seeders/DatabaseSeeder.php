@@ -3,12 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Traits\Seeders\DatabaseSeederTrait;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
+    use DatabaseSeederTrait;
     /**
      * Seed the application's database.
      */
@@ -16,8 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        Storage::deleteDirectory('purchase-vouchers');
-        Storage::makeDirectory('purchase-vouchers');
+        self::create_all_directories();
 
         User::factory()->create([
             'name' => 'Jesus Inchicaque',
@@ -26,63 +25,5 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(self::getSeeders());
-    }
-
-    public static function getSeeders(): array
-    {
-        $seeders = array();
-
-        if (App::environment('local')) {
-            $seeders = [
-                StateSeeder::class,
-                IdDocumentSeeder::class,
-                SupplierTypeSeeder::class,
-                CountrySeeder::class,
-                DepartmentSeeder::class,
-                ProvinceSeeder::class,
-                DistrictSeeder::class,
-                AffectationSeeder::class,
-                CurrencySeeder::class,
-                UnitSeeder::class,
-                WarehouseSeeder::class,
-                TaxDocumentTypeSeeder::class,
-                MemoryTypeSeeder::class,
-                ProcessorConditionSeeder::class,
-                OperatingSystemSeeder::class,
-                RamFormFactorSeeder::class,
-                PeripheralTypeSeeder::class,
-                DeviceTypeSeeder::class,
-                ApiSeeder::class,
-                ActionSeeder::class,
-
-                SupplierSeeder::class,
-                BrandSeeder::class,
-                CategorySeeder::class,
-            ];
-        } elseif (App::environment('production')) {
-            $seeders = [
-                StateSeeder::class,
-                IdDocumentSeeder::class,
-                SupplierTypeSeeder::class,
-                CountrySeeder::class,
-                DepartmentSeeder::class,
-                ProvinceSeeder::class,
-                DistrictSeeder::class,
-                AffectationSeeder::class,
-                CurrencySeeder::class,
-                UnitSeeder::class,
-                WarehouseSeeder::class,
-                TaxDocumentTypeSeeder::class,
-                MemoryTypeSeeder::class,
-                ProcessorConditionSeeder::class,
-                OperatingSystemSeeder::class,
-                RamFormFactorSeeder::class,
-                PeripheralTypeSeeder::class,
-                DeviceTypeSeeder::class,
-                ApiSeeder::class,
-                ActionSeeder::class,
-            ];
-        }
-        return $seeders;
     }
 }

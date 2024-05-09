@@ -63,7 +63,7 @@ class ActionPolicy
      */
     public function forceDelete(User $user, Action $action): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_action');
     }
 
     /**
@@ -71,7 +71,7 @@ class ActionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_action');
     }
 
     /**
@@ -79,7 +79,7 @@ class ActionPolicy
      */
     public function restore(User $user, Action $action): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_action');
     }
 
     /**
@@ -87,7 +87,7 @@ class ActionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_action');
     }
 
     /**
@@ -103,6 +103,6 @@ class ActionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_action');
     }
 }

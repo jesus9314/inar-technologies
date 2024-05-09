@@ -104,11 +104,11 @@ class UserResource extends Resource
                 TextColumn::make('roles.name')
                     ->label('Rol')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'super_admin' => 'danger',
-                        'panel_user' => 'danger',
-                        'supervisor' => 'danger',
-                    })
+                    // ->color(fn (string $state): string => match ($state) {
+                    //     'super_admin' => 'danger',
+                    //     'panel_user' => 'danger',
+                    //     'supervisor' => 'danger',
+                    // })
             ])
             ->filters([
                 //

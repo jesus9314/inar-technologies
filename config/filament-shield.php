@@ -35,9 +35,14 @@ return [
             'view_any',
             'create',
             'update',
+            'restore',
+            'restore_any',
+            'replicate',
+            'reorder',
             'delete',
             'delete_any',
-            'replicate',
+            'force_delete',
+            'force_delete_any',
             'activities'
         ],
 
@@ -79,7 +84,7 @@ return [
     ],
 
     'register_role_policy' => [
-        'enabled' => false,
+        'enabled' => true,
     ],
 
 ];

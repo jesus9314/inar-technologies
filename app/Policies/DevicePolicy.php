@@ -63,7 +63,7 @@ class DevicePolicy
      */
     public function forceDelete(User $user, Device $device): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_device');
     }
 
     /**
@@ -71,7 +71,7 @@ class DevicePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_device');
     }
 
     /**
@@ -79,7 +79,7 @@ class DevicePolicy
      */
     public function restore(User $user, Device $device): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_device');
     }
 
     /**
@@ -87,7 +87,7 @@ class DevicePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_device');
     }
 
     /**
@@ -103,6 +103,6 @@ class DevicePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_device');
     }
 }

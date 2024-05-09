@@ -3,17 +3,19 @@
 namespace App\Models;
 
 use App\Observers\ProductObserver;
+use App\Traits\HasLogActivities;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[ObservedBy(ProductObserver::class)]
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, HasLogActivities;
 
     protected $fillable = [
         'name',
@@ -27,6 +29,7 @@ class Product extends Model
         'description',
         'stock_initial',
         'stock_final',
+        'stock_min',
         'unity_price',
         'affectation_id',
         'category_id',

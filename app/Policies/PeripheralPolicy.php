@@ -63,7 +63,7 @@ class PeripheralPolicy
      */
     public function forceDelete(User $user, Peripheral $peripheral): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_peripheral');
     }
 
     /**
@@ -71,7 +71,7 @@ class PeripheralPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_peripheral');
     }
 
     /**
@@ -79,7 +79,7 @@ class PeripheralPolicy
      */
     public function restore(User $user, Peripheral $peripheral): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_peripheral');
     }
 
     /**
@@ -87,7 +87,7 @@ class PeripheralPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_peripheral');
     }
 
     /**
@@ -103,6 +103,6 @@ class PeripheralPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_peripheral');
     }
 }

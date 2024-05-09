@@ -63,7 +63,7 @@ class RamPolicy
      */
     public function forceDelete(User $user, Ram $ram): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_ram');
     }
 
     /**
@@ -71,7 +71,7 @@ class RamPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_ram');
     }
 
     /**
@@ -79,7 +79,7 @@ class RamPolicy
      */
     public function restore(User $user, Ram $ram): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_ram');
     }
 
     /**
@@ -87,7 +87,7 @@ class RamPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_ram');
     }
 
     /**
@@ -103,6 +103,6 @@ class RamPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_ram');
     }
 }

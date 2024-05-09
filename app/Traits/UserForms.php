@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 trait UserForms
 {
 
+    use TraitForms;
     //user forms
     public static function user_form(): array
     {
@@ -62,7 +63,11 @@ trait UserForms
             TextInput::make('document_number')
                 ->label('Número de Documento')
                 ->live(onBlur: true)
-                ->afterStateUpdated(fn (Get $get, Set $set) => self::set_data_from_api($get, $set))
+                ->unique(ignoreRecord: true)
+                ->afterStateUpdated(function (Get $get, Set $set, HasForms $livewire, TextInput $component) {
+                    self::validate_one_field($livewire, $component);
+                    self::set_data_from_api($get, $set);
+                })
                 ->helperText(fn () => self::getHelperText())
                 ->required()
                 ->maxLength(255),
@@ -100,7 +105,8 @@ trait UserForms
         return [
             TextInput::make('email')
                 ->email()
-                ->unique()
+                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->unique(ignoreRecord: true)
                 ->required()
                 ->disabledOn('edit')
                 ->maxLength(255),
@@ -109,7 +115,10 @@ trait UserForms
                 ->regeneratePassword(color: 'danger')
                 ->copyable(color: 'success')
                 ->revealable()
-                ->hiddenOn(['edit', 'view'])
+                ->hiddenOn([
+                    'edit',
+                    'view'
+                ])
                 ->required()
                 ->maxLength(12),
         ];
@@ -126,7 +135,7 @@ trait UserForms
         return [
             TextInput::make('document_number')
                 ->label('Número de Documento')
-                ->unique()
+                ->unique(ignoreRecord: true)
                 ->live(onBlur: true)
                 ->afterStateUpdated(function (Get $get, Set $set, HasForms $livewire, TextInput $component) {
                     self::set_data_from_api($get, $set);
@@ -157,17 +166,12 @@ trait UserForms
         ];
     }
 
-    private static function validate_one_field(HasForms $livewire, TextInput $component): void
-    {
-        $livewire->validateOnly($component->getStatePath());
-    }
-
     public static function get_costumber_account_info_form(): array
     {
         return [
             TextInput::make('email')
                 ->email()
-                ->unique()
+                ->unique(ignoreRecord: true)
                 ->required()
                 ->live(onBlur: true)
                 ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
@@ -178,7 +182,10 @@ trait UserForms
                 ->regeneratePassword(color: 'danger')
                 ->copyable(color: 'success')
                 ->revealable()
-                ->hiddenOn(['edit', 'view'])
+                ->hiddenOn([
+                    // 'edit',
+                    'view'
+                ])
                 ->required()
                 ->maxLength(12),
             FileUpload::make('avatar_url')
@@ -271,12 +278,14 @@ trait UserForms
                 ->geolocate() // add a suffix button which requests and reverse geocodes the device location
                 ->geolocateIcon('heroicon-o-map'); // override the default icon for the geolocate button;
         } elseif (!getApiStatus(Api::find(2))) {
-            $location_input = TextInput::make('address');
+            $location_input = TextInput::make('address')
+                ->label('Direccion');
         }
 
         return [
-            Repeater::make('locations')
+            TableRepeater::make('locations')
                 ->relationship()
+                ->defaultItems(0)
                 ->schema([
                     TextInput::make('description')
                         ->label('Descripción')

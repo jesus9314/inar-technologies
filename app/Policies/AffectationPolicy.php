@@ -63,7 +63,7 @@ class AffectationPolicy
      */
     public function forceDelete(User $user, Affectation $affectation): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_affectation');
     }
 
     /**
@@ -71,7 +71,7 @@ class AffectationPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_affectation');
     }
 
     /**
@@ -79,7 +79,7 @@ class AffectationPolicy
      */
     public function restore(User $user, Affectation $affectation): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_affectation');
     }
 
     /**
@@ -87,7 +87,7 @@ class AffectationPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_affectation');
     }
 
     /**
@@ -103,6 +103,6 @@ class AffectationPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_affectation');
     }
 }

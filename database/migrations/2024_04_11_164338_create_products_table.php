@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->string('slug')->nullable()->unique();
             $table->string('secondary_name')->nullable();
-            $table->string('slug')->nullable();
             $table->string('model')->nullable();
             $table->string('bar_code')->nullable();
             $table->string('internal_code')->nullable();
@@ -24,14 +24,16 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('stock_initial');
             $table->integer('stock_final')->nullable();
+            $table->integer('stock_min')->nullable();
             $table->integer('unity_price');
 
-            $table->foreignId('affectation_id')->constrained();
-            $table->foreignId('category_id')->constrained();
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('currency_id')->constrained();
-            $table->foreignId('unit_id')->constrained();
+            $table->foreignId('affectation_id')->nullable()->constrained();
+            $table->foreignId('category_id')->nullable()->constrained();
+            $table->foreignId('brand_id')->nullable()->constrained();
+            $table->foreignId('currency_id')->nullable()->constrained();
+            $table->foreignId('unit_id')->nullable()->constrained();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

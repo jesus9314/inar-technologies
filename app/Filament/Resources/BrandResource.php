@@ -8,7 +8,8 @@ use App\Filament\Resources\BrandResource\Pages;
 use App\Filament\Resources\BrandResource\RelationManagers;
 use App\Models\Brand;
 use App\Models\User;
-use App\Traits\TraitForms;
+use App\Traits\Forms\TraitForms;
+use App\Traits\Tables\TraitTables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -28,7 +29,7 @@ use Illuminate\Support\Str;
 
 class BrandResource extends Resource
 {
-    use TraitForms;
+    use TraitForms, TraitTables;
 
     protected static ?string $model = Brand::class;
 
@@ -42,59 +43,14 @@ class BrandResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::brand_form())
-            ->columns([
-                'default' => 1,
-                'md' => 2,
-            ]);
+        return self::brand_form($form);
     }
 
     public static function table(Table $table): Table
     {
-        $AuthUser = User::find(auth()->user()->id);
+        // $AuthUser = User::find(auth()->user()->id);
 
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('image_url'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\Action::make('activities')
-                        ->url(fn ($record) => BrandResource::getUrl('activities', ['record' => $record]))
-                        ->icon('heroicon-c-bell-alert')
-                        ->visible($AuthUser->can('activities_brand')),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
-            ->headerActions([
-                ImportAction::make()
-                    ->importer(BrandImporter::class),
-                ExportAction::make()
-                    ->exporter(BrandExporter::class)
-            ]);
+        return self::brand_table($table);
     }
 
     public static function getPages(): array

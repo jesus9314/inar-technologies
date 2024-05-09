@@ -63,7 +63,7 @@ class OperatingSystemPolicy
      */
     public function forceDelete(User $user, OperatingSystem $operatingSystem): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_operating::system');
     }
 
     /**
@@ -71,7 +71,7 @@ class OperatingSystemPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_operating::system');
     }
 
     /**
@@ -79,7 +79,7 @@ class OperatingSystemPolicy
      */
     public function restore(User $user, OperatingSystem $operatingSystem): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_operating::system');
     }
 
     /**
@@ -87,7 +87,7 @@ class OperatingSystemPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_operating::system');
     }
 
     /**
@@ -103,6 +103,6 @@ class OperatingSystemPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_operating::system');
     }
 }

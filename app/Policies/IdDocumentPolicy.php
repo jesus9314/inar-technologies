@@ -63,7 +63,7 @@ class IdDocumentPolicy
      */
     public function forceDelete(User $user, IdDocument $idDocument): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        return $user->can('force_delete_id::document');
     }
 
     /**
@@ -71,7 +71,7 @@ class IdDocumentPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any_id::document');
     }
 
     /**
@@ -79,7 +79,7 @@ class IdDocumentPolicy
      */
     public function restore(User $user, IdDocument $idDocument): bool
     {
-        return $user->can('{{ Restore }}');
+        return $user->can('restore_id::document');
     }
 
     /**
@@ -87,7 +87,7 @@ class IdDocumentPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any_id::document');
     }
 
     /**
@@ -103,6 +103,6 @@ class IdDocumentPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder_id::document');
     }
 }
