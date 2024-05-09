@@ -4,8 +4,11 @@ namespace App\Filament\Clusters\Codes\Resources;
 
 use App\Filament\Clusters\Codes;
 use App\Filament\Clusters\Codes\Resources\CurrencyResource\Pages;
+use App\Filament\Clusters\Codes\Resources\CurrencyResource\Pages\CurrencyActivityLogPage;
 use App\Filament\Clusters\Codes\Resources\CurrencyResource\RelationManagers;
 use App\Models\Currency;
+use App\Traits\Forms\TraitForms;
+use App\Traits\Tables\TraitTables;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,6 +20,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CurrencyResource extends Resource
 {
+    use TraitForms, TraitTables;
+
     protected static ?string $model = Currency::class;
 
     protected static ?string $navigationIcon = 'heroicon-c-currency-dollar';
@@ -33,66 +38,19 @@ class CurrencyResource extends Resource
     }
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('symbol')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('activity_state_id')
-                    ->relationship('activityState', 'id')
-                    ->required(),
-            ]);
+        return self::currency_form($form);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('code')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('symbol')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('activityState.id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        return self::currency_table($table);
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageCurrencies::route('/'),
+            'activities' => CurrencyActivityLogPage::route('/{record}/activities'),
         ];
     }
 }

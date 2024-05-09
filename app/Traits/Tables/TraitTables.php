@@ -2,6 +2,9 @@
 
 namespace App\Traits\Tables;
 
+use App\Filament\Clusters\Codes\Resources\CurrencyResource;
+use App\Filament\Clusters\Codes\Resources\UnitResource;
+use App\Filament\Clusters\Codes\Resources\WarehouseResource;
 use App\Filament\Resources\BrandResource;
 use App\Filament\Resources\CategoryResource;
 use Filament\Actions\Action;
@@ -188,6 +191,211 @@ trait TraitTables
     }
 
     protected static function category_bulkActions(): array
+    {
+        return [
+            BulkActionGroup::make([
+                DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
+    /**
+     * CurrencyResource
+     */
+    protected static function currency_table(Table $table): Table
+    {
+        return $table
+            ->striped()
+            ->extremePaginationLinks()
+            ->columns(self::currency_columns())
+            ->filters(self::currency_filters())
+            ->actions(self::currency_actions())
+            ->bulkActions(self::currency_bulkActions());
+    }
+
+    protected static function currency_columns(): array
+    {
+        return [
+            TextColumn::make('code')
+                ->label('Código')
+                ->searchable(),
+            TextColumn::make('symbol')
+                ->label('Símbolo')
+                ->searchable(),
+            TextColumn::make('description')
+                ->label('Descripción')
+                ->searchable(),
+            TextColumn::make('activityState.description')
+                ->label('Estado')
+                ->numeric()
+                ->sortable(),
+            TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+        ];
+    }
+
+    protected static function currency_filters(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    protected static function currency_actions(): array
+    {
+        return [
+            ActionGroup::make([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
+                Action::make('activities')
+                    ->url(fn ($record) => CurrencyResource::getUrl('activities', ['record' => $record]))
+                    ->icon('heroicon-c-bell-alert'),
+
+            ])
+        ];
+    }
+
+    protected static function currency_bulkActions(): array
+    {
+        return [
+            BulkActionGroup::make([
+                DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
+    /**
+     * UnitResource
+     */
+    protected static function unit_table(Table $table): Table
+    {
+        return $table
+            ->striped()
+            ->extremePaginationLinks()
+            ->columns(self::unit_columns())
+            ->filters(self::unit_filters())
+            ->actions(self::unit_actions())
+            ->bulkActions(self::unit_bulkActions());
+    }
+
+    protected static function unit_columns(): array
+    {
+        return [
+            TextColumn::make('code')
+                ->searchable(),
+            TextColumn::make('description')
+                ->searchable(),
+            TextColumn::make('symbol')
+                ->searchable(),
+            TextColumn::make('activityState.id')
+                ->numeric()
+                ->sortable(),
+            TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+        ];
+    }
+
+    protected static function unit_filters(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    protected static function unit_actions(): array
+    {
+        return [
+            ActionGroup::make([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
+                Action::make('activities')
+                    ->url(fn ($record) => UnitResource::getUrl('activities', ['record' => $record]))
+                    ->icon('heroicon-c-bell-alert'),
+
+            ])
+        ];
+    }
+
+    protected static function unit_bulkActions(): array
+    {
+        return [
+            BulkActionGroup::make([
+                DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
+    /**
+     * WarehouseResource
+     */
+    protected static function warehouse_table(Table $table): Table
+    {
+        return $table
+            ->striped()
+            ->extremePaginationLinks()
+            ->columns(self::warehouse_columns())
+            ->filters(self::warehouse_filters())
+            ->actions(self::warehouse_actions())
+            ->bulkActions(self::warehouse_bulkActions());
+    }
+
+    protected static function warehouse_columns(): array
+    {
+        return [
+            TextColumn::make('description')
+                ->label('Descripción')
+                ->searchable(),
+            TextColumn::make('stablishment')
+                ->label('Establecimiento')
+                ->searchable(),
+            TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+        ];
+    }
+
+    protected static function warehouse_filters(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    protected static function warehouse_actions(): array
+    {
+        return [
+            ActionGroup::make([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
+                Action::make('activities')
+                    ->url(fn ($record) => WarehouseResource::getUrl('activities', ['record' => $record]))
+                    ->icon('heroicon-c-bell-alert'),
+
+            ])
+        ];
+    }
+
+    protected static function warehouse_bulkActions(): array
     {
         return [
             BulkActionGroup::make([

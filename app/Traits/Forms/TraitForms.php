@@ -2,25 +2,16 @@
 
 namespace App\Traits\Forms;
 
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Wizard;
-use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
-use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
-use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
-use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 trait TraitForms
 {
@@ -111,6 +102,103 @@ trait TraitForms
                 ->optimize('webp')
                 ->resize(50)
                 ->directory('categories_img'),
+        ];
+    }
+
+    /**
+     * CurrencyResource
+     */
+    protected static function currency_form(Form $form): Form
+    {
+        return $form
+            ->schema(self::currency_schema());
+    }
+
+    protected static function currency_schema(): array
+    {
+        return [
+            TextInput::make('code')
+                ->label('Código')
+                ->unique(ignoreRecord: true)
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->required()
+                ->maxLength(255),
+            Textarea::make('description')
+                ->label('Descripción')
+                ->required(),
+            TextInput::make('symbol')
+                ->label('Símbolo')
+                ->required()
+                ->maxLength(255),
+            Select::make('activity_state_id')
+                ->label('Estado')
+                ->relationship('activityState', 'description')
+                ->searchable()
+                ->preload()
+                ->native(false)
+                ->required(),
+        ];
+    }
+
+    /**
+     * UnityResource
+     */
+    protected static function unit_form(Form $form): Form
+    {
+        return $form
+            ->schema(self::unity_schema());
+    }
+
+    protected static function unit_schema(): array
+    {
+        return [
+            TextInput::make('code')
+                ->label('Código')
+                ->unique(ignoreRecord: true)
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->required()
+                ->maxLength(255),
+            TextInput::make('description')
+                ->label('Descripción')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('symbol')
+                ->label('Símbolo')
+                ->required()
+                ->maxLength(255),
+            Select::make('activity_state_id')
+                ->label('Estado')
+                ->relationship('activityState', 'description')
+                ->searchable()
+                ->preload()
+                ->native(false)
+                ->required()
+                ->default(1),
+        ];
+    }
+
+    /**
+     * WarehouseResource
+     */
+    protected static function warehouse_form(Form $form): Form
+    {
+        return $form
+            ->schema(self::warehouse_schema());
+    }
+
+    protected static function warehouse_schema(): array
+    {
+        return [
+            TextInput::make('description')
+                ->label('Descripción')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('stablishment')
+                ->label('Establecimiento')
+                ->required()
+                ->maxLength(255),
         ];
     }
 
