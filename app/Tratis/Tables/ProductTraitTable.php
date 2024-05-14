@@ -26,6 +26,7 @@ use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Grouping\Group;
@@ -37,6 +38,7 @@ trait ProductTraitTable
     protected static function product_table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('service_id', null))
             ->extremePaginationLinks()
             ->striped()
             ->groups(self::groups())

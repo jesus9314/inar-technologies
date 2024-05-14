@@ -2,28 +2,25 @@
 
 namespace App\Traits\Forms;
 
-use App\Traits\TraitForms;
-use Filament\Forms;
+use Awcodes\TableRepeater\Components\TableRepeater;
+use Awcodes\TableRepeater\Header;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
+use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
-use Illuminate\Database\Eloquent\Builder;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
+use Illuminate\Database\Eloquent\Builder;
 
 trait PurchaseTraitForms
 {
-    use SupplierTraitForms, TraitForms;
+    use SupplierTraitForms, TraitForms, ProductTraitForms, ServiceTraitForms;
 
     private static $files_accepted = [
         'application/pdf',
@@ -31,7 +28,13 @@ trait PurchaseTraitForms
         'image/png'
     ];
 
-    public static function purchase_form(): array
+    protected static function purchase_form(Form $form): Form
+    {
+        return $form
+            ->schema(self::purchase_schema());
+    }
+
+    public static function purchase_schema(): array
     {
         return [
             Wizard::make()
@@ -63,6 +66,8 @@ trait PurchaseTraitForms
             DatePicker::make('date_of_issue')
                 ->label('Fecha de Emisión')
                 ->native(false)
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (Get $get, Set $set) => self::set_reception_date($get, $set))
                 ->required(),
             DatePicker::make('date_of_reception')
                 ->label('Fecha de Recepción')
@@ -113,7 +118,7 @@ trait PurchaseTraitForms
         return [
             TableRepeater::make('productPurchase')
                 ->label('Productos')
-                ->relationship()
+                ->relationship('productPurchase')
                 ->live(onBlur: true)
                 ->afterStateUpdated(function (Get $get, Set $set, $state) {
                     self::updatePrices($set, $get);
@@ -121,60 +126,134 @@ trait PurchaseTraitForms
                 ->deleteAction(
                     fn (Action $action) => $action->after(fn (Get $get, Set $set) => self::updatePrices($set, $get)),
                 )
-                ->schema([
-                    Select::make('product_id')
-                        ->relationship('product', 'name')
-                        ->native(false)
-                        ->label('Nombre')
-                        ->searchable()
-                        ->live(onBlur: true)
-                        ->preload()
-                        ->required()
-                        ->afterStateUpdated(function (Get $get, Set $set) {
-                            self::updatePSPrices($get, $set);
-                        })
-                        ->disableOptionWhen(function ($value, $state, Get $get) {
-                            return collect($get('../*.product_id'))
-                                ->reject(fn ($id) => $id == $state)
-                                ->filter()
-                                ->contains($value);
-                        })
-                        ->createOptionForm(self::product_form()),
-                    TextInput::make('quantity')
-                        ->required()
-                        ->label('Cantidad')
-                        ->integer()
-                        ->afterStateUpdated(function (Get $get, Set $set) {
-                            self::updatePSPrices($get, $set);
-                        })
-                        ->live(onBlur: true)
-                        ->numeric(),
-                    MoneyInput::make('price')
-                        ->required()
-                        ->label('Precio')
-                        ->currency('PEN')
-                        ->locale('es_PE')
-                        ->live(onBlur: true)
-                        ->afterStateUpdated(function (Get $get, Set $set) {
-                            self::updatePSPrices($get, $set);
-                        })
-                        ->numeric(),
-                    MoneyInput::make('igv')
-                        ->required()
-                        ->label('I.G.V')
-                        ->currency('PEN')
-                        ->locale('es_PE')
-                        ->disabled()
-                        ->live()
-                        ->numeric(),
-                    MoneyInput::make('total_price')
-                        ->required()
-                        ->disabled()
-                        ->currency('PEN')
-                        ->locale('es_PE')
-                        ->label('Precio Total')
-                        ->numeric(),
-                ]),
+                ->emptyLabel('Aún no hay Productos registrados')
+                ->headers([
+                    Header::make('Producto'),
+                    Header::make('Cantidad'),
+                    Header::make('Precio'),
+                    Header::make('IGV'),
+                    Header::make('Precio Total'),
+
+                ])
+                ->schema(self::products_schema())
+                ->defaultItems(0),
+            TableRepeater::make('purchaseService')
+                ->label('Servicios')
+                ->relationship('purchaseService')
+                ->live(onBlur: true)
+                ->afterStateUpdated(function (Get $get, Set $set, $state) {
+                    self::updatePrices($set, $get);
+                })
+                ->deleteAction(
+                    fn (Action $action) => $action->after(fn (Get $get, Set $set) => self::updatePrices($set, $get)),
+                )
+                ->emptyLabel('Aún no hay servicios registrados')
+                ->headers([
+                    Header::make('Servicio'),
+                    Header::make('Precio'),
+                    Header::make('IGV'),
+                    Header::make('Precio Total'),
+                ])
+                ->schema(self::services_schema())
+                ->defaultItems(0)
+        ];
+    }
+
+    protected static function products_schema(): array
+    {
+        return [
+            Select::make('product_id')
+                ->relationship(
+                    name: 'product',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: fn (Builder $query) => $query->where('service_id', null)
+                )
+                ->native(false)
+                ->label('Nombre')
+                ->searchable()
+                ->live(onBlur: true)
+                ->preload()
+                ->required()
+                ->afterStateUpdated(function (Get $get, Set $set) {
+                    self::updatePSPrices($get, $set);
+                })
+                ->disableOptionWhen(function ($value, $state, Get $get) {
+                    return collect($get('../*.product_id'))
+                        ->reject(fn ($id) => $id == $state)
+                        ->filter()
+                        ->contains($value);
+                })
+                ->createOptionForm(self::product_schema()),
+            TextInput::make('quantity')
+                ->required()
+                ->label('Cantidad')
+                ->integer()
+                ->afterStateUpdated(function (Get $get, Set $set) {
+                    self::updatePSPrices($get, $set);
+                })
+                ->live(onBlur: true)
+                ->numeric(),
+            MoneyInput::make('price')
+                ->required()
+                ->label('Precio')
+                ->currency('PEN')
+                ->locale('es_PE')
+                ->live(onBlur: true)
+                ->afterStateUpdated(function (Get $get, Set $set) {
+                    self::updatePSPrices($get, $set);
+                }),
+            MoneyInput::make('igv')
+                ->required()
+                ->label('I.G.V')
+                ->reactive()
+                ->disabled()
+                ->dehydrated()
+                ->live()
+                ->numeric(),
+            MoneyInput::make('total_price')
+                ->required()
+                ->reactive()
+                ->disabled()
+                ->dehydrated()
+                ->label('Precio Total')
+                ->numeric(),
+        ];
+    }
+
+    protected static function services_schema(): array
+    {
+        return [
+            Select::make('service_id')
+                ->relationship('service', 'name')
+                ->preload()
+                ->searchable()
+                ->native(false)
+                ->live(onBlur: true)
+                ->required()
+                ->afterStateUpdated(fn (Get $get, Set $set) => self::updateServicePrice($get, $set))
+                ->disableOptionWhen(function ($value, $state, Get $get) {
+                    return collect($get('../*.service_id'))
+                        ->reject(fn ($id) => $id == $state)
+                        ->filter()
+                        ->contains($value);
+                })
+                ->createOptionForm(self::service_schema()),
+            MoneyInput::make('price')
+                ->label('Precio')
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (Get $get, Set $set) => self::updateServicePrice($get, $set))
+                ->required(),
+            MoneyInput::make('igv')
+                ->label('I.G.V.')
+                ->required()
+                ->disabled()
+                ->dehydrated(),
+            MoneyInput::make('total_price')
+                ->label('Precio Total')
+                ->required()
+                ->disabled()
+                ->dehydrated(),
+
         ];
     }
 
@@ -209,10 +288,14 @@ trait PurchaseTraitForms
     {
         return [
             TableRepeater::make('vouchers')
+                ->emptyLabel('Aún no hay comprobantes registrados')
                 ->label('Comprobantes')
                 ->relationship()
                 ->columnSpanFull()
                 ->defaultItems(0)
+                ->headers([
+                    Header::make('Documento')
+                ])
                 ->simple(
                     FileUpload::make('document_url')
                         ->label('Archivos')
@@ -222,6 +305,11 @@ trait PurchaseTraitForms
                         ->acceptedFileTypes(self::$files_accepted),
                 )
         ];
+    }
+
+    public static function set_reception_date(Get $get, Set $set): void
+    {
+        $set('date_of_reception', $get('date_of_issue'));
     }
 
 
@@ -239,12 +327,31 @@ trait PurchaseTraitForms
         }
     }
 
+    public static function updateServicePrice(Get $get, Set $set): void
+    {
+        if (($get('service_id') != null) && ($get('price') != null)) {
+            $igv =  $get('price') * 0.18;
+            $total_price = $get('price') + $igv;
+
+            $set('igv', $igv);
+            $set('total_price', $total_price);
+        }
+    }
+
     public static function updatePrices(Set $set, Get $get): void
     {
         $selectedProducts  = collect($get('productPurchase'))->filter(fn ($item) => !empty($item['product_id']) && !empty($item['quantity']) && !empty($item['price']));
-        $price = $selectedProducts->reduce(function ($subtotal, $product) {
+        $product_price = $selectedProducts->reduce(function ($subtotal, $product) {
             return $subtotal + ($product['quantity'] * $product['price']);
         });
+
+        $selectedServices = collect($get('purchaseService'))->filter(fn ($item) => !empty($item['service_id']) && !empty($item['price']));
+        $service_price = $selectedServices->reduce(fn ($subtotal, $service) => $subtotal + $service['price']);
+
+        $price = $product_price + $service_price;
+
+        // dd($price);
+
         $igv = $price * 0.18;
         $total = $price + $igv;
 

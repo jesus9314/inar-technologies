@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('description');
+
+            $table->foreignId('category_id')->nullable()->constrained();
+            $table->foreignId('affectation_id')->nullable()->constrained();
+            $table->foreignId('currency_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

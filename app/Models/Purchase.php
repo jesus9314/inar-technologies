@@ -59,6 +59,11 @@ class Purchase extends Model
         return $this->hasMany(ProductPurchase::class);
     }
 
+    public function purchaseService(): HasMany
+    {
+        return $this->hasMany(PurchaseService::class);
+    }
+
     public function scopeWithProducts($query)
     {
         $query->with('productPurchase');

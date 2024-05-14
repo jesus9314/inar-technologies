@@ -39,15 +39,14 @@ class ProductResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::product_form());
+        return self::product_form($form);
     }
 
     public static function table(Table $table): Table
     {
         return self::product_table($table);
     }
-    
+
     public static function getRelations(): array
     {
         return [

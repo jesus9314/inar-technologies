@@ -2,15 +2,21 @@
 
 namespace App\Traits\Forms;
 
+use Awcodes\TableRepeater\Components\TableRepeater as ComponentsTableRepeater;
+use Awcodes\TableRepeater\Header;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Support\Enums\Alignment;
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
 use Illuminate\Database\Eloquent\Builder;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use Illuminate\Support\Str;
@@ -19,7 +25,13 @@ trait ProductTraitForms
 {
     use TraitForms;
 
-    protected static function product_form(): array
+    protected static function product_form(Form $form): Form
+    {
+        return $form
+            ->schema(self::product_schema());
+    }
+
+    protected static function product_schema(): array
     {
         return [
             Wizard::make()

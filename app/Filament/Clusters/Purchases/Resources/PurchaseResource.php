@@ -31,8 +31,7 @@ class PurchaseResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::purchase_form());
+        return self::purchase_form($form);
     }
 
     public static function table(Table $table): Table

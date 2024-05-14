@@ -9,7 +9,9 @@ use EightyNine\ExcelImport\ExcelImportAction;
 use Filament\Actions;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ImportAction;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListProducts extends ListRecords
 {

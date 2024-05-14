@@ -6,6 +6,7 @@ use App\Filament\Clusters\ProductsManage;
 use App\Filament\Clusters\ProductsManage\Resources\PresentationResource\Pages;
 use App\Filament\Clusters\ProductsManage\Resources\PresentationResource\RelationManagers;
 use App\Models\Presentation;
+use App\Traits\Forms\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PresentationResource extends Resource
 {
+    use TraitForms;
+
     protected static ?string $model = Presentation::class;
 
     protected static ?string $navigationIcon = 'heroicon-c-newspaper';
@@ -28,25 +31,7 @@ class PresentationResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('bar_code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('description')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('factor')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-                Forms\Components\Select::make('product_id')
-                    ->relationship('product', 'name')
-                    ->required(),
-            ]);
+        return self::presentation_form($form);
     }
 
     public static function table(Table $table): Table

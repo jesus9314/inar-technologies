@@ -4,19 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Pages\ActivityUserLogPage;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use App\Traits\InfoList\TraitInfoLists;
 use App\Traits\InfoList\UserInfoList;
 use App\Traits\UserForms;
-use Filament\Forms;
-use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Infolists\Infolist;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
@@ -25,8 +18,6 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
@@ -104,11 +95,11 @@ class UserResource extends Resource
                 TextColumn::make('roles.name')
                     ->label('Rol')
                     ->badge()
-                    // ->color(fn (string $state): string => match ($state) {
-                    //     'super_admin' => 'danger',
-                    //     'panel_user' => 'danger',
-                    //     'supervisor' => 'danger',
-                    // })
+                // ->color(fn (string $state): string => match ($state) {
+                //     'super_admin' => 'danger',
+                //     'panel_user' => 'danger',
+                //     'supervisor' => 'danger',
+                // })
             ])
             ->filters([
                 //

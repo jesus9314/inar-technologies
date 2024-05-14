@@ -83,4 +83,9 @@ class Product extends Model
     {
         return $this->belongsTo(Service::class);
     }
+
+    public function productPurchase(): HasMany
+    {
+        return $this->hasMany(ProductPurchase::class);
+    }
 }

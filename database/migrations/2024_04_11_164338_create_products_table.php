@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name')->unique()->nullable();
             $table->string('slug')->nullable()->unique();
             $table->string('secondary_name')->nullable();
             $table->string('model')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->string('image_url')->nullable();
             $table->string('description')->nullable();
-            $table->integer('stock_initial');
+            $table->integer('stock_initial')->nullable();
             $table->integer('stock_final')->nullable();
             $table->integer('stock_min')->nullable();
             $table->integer('unity_price');

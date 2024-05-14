@@ -12,6 +12,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
+use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 
 trait TraitForms
 {
@@ -199,6 +200,42 @@ trait TraitForms
                 ->label('Establecimiento')
                 ->required()
                 ->maxLength(255),
+        ];
+    }
+
+    /**
+     * PresentationResource
+     */
+    protected static function presentation_form(Form $form): Form
+    {
+        return $form
+            ->schema(self::presentation_schema());
+    }
+
+    protected static function presentation_schema(): array
+    {
+        return [
+            TextInput::make('bar_code')
+                ->label('Código de Barras')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('description')
+                ->label('Descripción')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('factor')
+                ->label('Factor')
+                ->required()
+                ->numeric(),
+            MoneyInput::make('price')
+                ->label('Precio')
+                ->required(),
+            Select::make('product_id')
+                ->relationship('product', 'name')
+                ->searchable()
+                ->preload()
+                ->native(false)
+                ->required(),
         ];
     }
 

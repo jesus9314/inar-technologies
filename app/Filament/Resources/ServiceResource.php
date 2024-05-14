@@ -6,6 +6,7 @@ use App\Filament\Resources\ServiceResource\Pages;
 use App\Filament\Resources\ServiceResource\RelationManagers;
 use App\Models\Service;
 use App\Traits\Forms\ServiceTraitForms;
+use App\Traits\Tables\ServiceTraitTables;
 use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ServiceResource extends Resource
 {
-    use ServiceTraitForms;
+    use ServiceTraitForms, ServiceTraitTables;
 
     protected static ?string $model = Service::class;
 
@@ -25,41 +26,12 @@ class ServiceResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::service_form());
+        return self::service_form($form);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        return self::service_table($table);
     }
 
     public static function getRelations(): array

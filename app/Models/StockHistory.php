@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasLogActivities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class StockHistory extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, HasLogActivities;
 
     protected $fillable = [
         'old_quantity',
@@ -19,12 +18,6 @@ class StockHistory extends Model
         'product_id',
         'action_id',
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable();
-    }
 
     public function action(): BelongsTo
     {

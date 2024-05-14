@@ -19,4 +19,9 @@ class Affectation extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function service(): HasMany
+    {
+        return $this->hasMany(Service::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\Api;
 use App\Models\Product;
 use App\Models\ProductPurchase;
 use App\Models\Purchase;
+use App\Models\Service;
 use App\Models\Unit;
 use App\Models\User;
 use Exception;
@@ -22,6 +23,6 @@ class TestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return getUserAuth()->hasRole(['super_admin']) ? true : false;
+        return Service::with('product')->find(1)->product->category_id;
     }
 }
