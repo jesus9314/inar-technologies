@@ -4,8 +4,10 @@ namespace App\Filament\Clusters\Codes\Resources;
 
 use App\Filament\Clusters\Codes;
 use App\Filament\Clusters\Codes\Resources\RamFormFactorResource\Pages;
+use App\Filament\Clusters\Codes\Resources\RamFormFactorResource\Pages\RamFormFactorActivityLogPage;
 use App\Filament\Clusters\Codes\Resources\RamFormFactorResource\RelationManagers;
 use App\Models\RamFormFactor;
+use App\Traits\Tables\TraitTables;
 use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,54 +19,35 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RamFormFactorResource extends Resource
 {
-    use TraitForms;
+    use TraitForms, TraitTables;
 
     protected static ?string $model = RamFormFactor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-code-bracket-square';
+
+    protected static ?string $navigationLabel = 'Factores de Memorias Ram';
+
+    protected static ?string $modelLabel = 'Factor de Memorias Ram';
+
+    protected static ?string $pluralModelLabel = 'Factores de Memorias Ram';
 
     protected static ?string $cluster = Codes::class;
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::ram_form_factor_form());
+        return self::ram_form_factor_form($form);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        return self::ram_form_factor_table($table);
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageRamFormFactors::route('/'),
+            'activities' => RamFormFactorActivityLogPage::route('/{record}/activities'),
         ];
     }
 }

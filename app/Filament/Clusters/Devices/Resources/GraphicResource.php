@@ -7,6 +7,7 @@ use App\Filament\Clusters\Devices\Resources\GraphicResource\Pages;
 use App\Filament\Clusters\Devices\Resources\GraphicResource\RelationManagers;
 use App\Models\Graphic;
 use App\Traits\Devices\AditionalForms;
+use App\Traits\Forms\DevicesTraitForms;
 use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -24,7 +25,7 @@ use Illuminate\Support\Str;
 
 class GraphicResource extends Resource
 {
-    use TraitForms;
+    use DevicesTraitForms;
 
     protected static ?string $model = Graphic::class;
 
@@ -34,8 +35,7 @@ class GraphicResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::graphics_form());
+        return self::graphics_form($form);
     }
 
     public static function table(Table $table): Table

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasLogActivities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RamFormFactor extends Model
 {
-    use HasFactory;
+    use HasFactory, HasLogActivities;
 
     protected $fillable = [
         'description'

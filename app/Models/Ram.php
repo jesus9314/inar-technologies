@@ -11,6 +11,7 @@ class Ram extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'speed',
         'capacity',
         'latency',

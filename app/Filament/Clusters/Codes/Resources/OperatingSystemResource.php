@@ -4,8 +4,11 @@ namespace App\Filament\Clusters\Codes\Resources;
 
 use App\Filament\Clusters\Codes;
 use App\Filament\Clusters\Codes\Resources\OperatingSystemResource\Pages;
+use App\Filament\Clusters\Codes\Resources\OperatingSystemResource\Pages\OperatingSystemActivityLogPage;
 use App\Filament\Clusters\Codes\Resources\OperatingSystemResource\RelationManagers;
 use App\Models\OperatingSystem;
+use App\Traits\Forms\DevicesTraitForms;
+use App\Traits\Tables\DeviceTraitTables;
 use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -17,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OperatingSystemResource extends Resource
 {
-    use TraitForms;
+    use DevicesTraitForms, DeviceTraitTables;
 
     protected static ?string $model = OperatingSystem::class;
 
@@ -27,45 +30,19 @@ class OperatingSystemResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::operating_system_form());
+        return self::operating_system_form($form);
     }
 
     public static function table(Table $table): Table
     {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('image_url'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        return self::operating_system_table($table);
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageOperatingSystems::route('/'),
+            'activities' => OperatingSystemActivityLogPage::route('/{record}/activities'),
         ];
     }
 }

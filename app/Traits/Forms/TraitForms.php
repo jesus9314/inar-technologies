@@ -2,6 +2,8 @@
 
 namespace App\Traits\Forms;
 
+use App\Enums\ColorEnum;
+use App\Enums\ColorsEnums;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -239,207 +241,160 @@ trait TraitForms
         ];
     }
 
-    protected static function operating_system_form(): array
+    /**
+     * IssuePriorityResource
+     */
+    protected static function issue_priority_form(Form $form): Form
+    {
+        return $form
+            ->schema(self::issue_priority_schema());
+    }
+
+    protected static function issue_priority_schema(): array
     {
         return [
-            TextInput::make('description')
+            TextInput::make('name')
                 ->required()
+                ->label('Nombre')
                 ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image(),
+            Select::make('color')
+                ->searchable()
+                ->options(ColorsEnums::class),
         ];
     }
 
-    protected static function graphics_form(): array
+    /**
+     * MaintenancesStateResource
+     */
+    protected static function maintenances_state_form(Form $form): Form
     {
-        return [
-            TextInput::make('model')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('clock')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('memory_capacity')
-                ->required()
-                ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image()
-                ->required(),
-            TextInput::make('specifications_url')
-                ->required()
-                ->maxLength(255),
-            Select::make('brand_id')
-                ->relationship('brand', 'name')
-                ->createOptionForm(self::brand_schema())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('memory_type_id')
-                ->relationship('memoryType', 'description')
-                ->createOptionForm(self::memory_type_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-        ];
+        return $form->schema(self::maintenances_state_schema());
     }
 
-    protected static function peripheral_form(): array
-    {
-        return [
-            TextInput::make('description')
-                ->required()
-                ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image()
-                ->required(),
-            Select::make('brand_id')
-                ->relationship('brand', 'name')
-                ->createOptionForm(self::brand_schema())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('peripheral_type_id')
-                ->relationship('peripheralType', 'description')
-                ->createOptionForm(self::peripheral_type_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-        ];
-    }
-
-    protected static function ram_form(): array
-    {
-        return [
-            TextInput::make('speed')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('capacity')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('latency')
-                ->maxLength(255),
-            Textarea::make('description')
-                ->columnSpanFull(),
-            FileUpload::make('image_url')
-                ->image(),
-            TextInput::make('specifications_link')
-                ->maxLength(255),
-            Select::make('brand_id')
-                ->relationship('brand', 'name')
-                ->createOptionForm(self::brand_schema())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('ram_form_factor_id')
-                ->relationship('ramFormFactor', 'description')
-                ->createOptionForm(self::ram_form_factor_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('memory_type_id')
-                ->relationship('memoryType', 'description')
-                ->createOptionForm(self::memory_type_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-        ];
-    }
-
-    protected static function memory_type_form(): array
-    {
-        return [
-            TextInput::make('description')
-                ->required()
-                ->maxLength(255),
-        ];
-    }
-
-    protected static function ram_form_factor_form(): array
-    {
-        return [
-            TextInput::make('description')
-                ->required()
-                ->maxLength(255),
-        ];
-    }
-
-    protected static function peripheral_type_form(): array
-    {
-        return [
-            TextInput::make('description')
-                ->required()
-                ->maxLength(255),
-        ];
-    }
-
-    protected static function district_form(): array
+    protected static function maintenances_state_schema(): array
     {
         return [
             TextInput::make('name')
                 ->required()
                 ->maxLength(255),
-            TextInput::make('status')
-                ->required(),
-            Select::make('country_id')
-                ->relationship('country', 'name')
+            Select::make('type')
+                ->required()
+                ->label('Tipo')
                 ->searchable()
-                ->preload()
-                ->live()
-                ->required(),
-            Select::make('department_id')
-                ->relationship(
-                    name: 'department',
-                    titleAttribute: 'name',
-                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('country_id', $get('country_id'))
-                )
-                ->disabled(fn (Get $get): bool => !filled($get('country_id')))
-                ->live()
-                ->required(),
-            Select::make('province_id')
-                ->relationship(
-                    name: 'province',
-                    titleAttribute: 'name',
-                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('department_id', $get('department_id'))
-                )
-                ->disabled(fn (Get $get): bool => !filled($get('department_id')))
-                ->required(),
+                ->native(false)
+                ->options([
+                    'issue' => 'Problemas',
+                    'solution' => 'Solución',
+                    'maintenance' => 'Mantenimiento'
+                ]),
+            Select::make('color')
+                ->required('')
+                ->options(ColorEnum::class)
         ];
     }
 
-    protected static function device_type_form(): array
+    /**
+     * MemoryTypeResource
+     */
+    protected static function memory_type_form(Form $form): Form
+    {
+        return $form->schema(self::memory_type_schema());
+    }
+
+    protected static function memory_type_schema(): array
     {
         return [
             TextInput::make('description')
                 ->required()
                 ->maxLength(255),
-            TextInput::make('symbol')
-                ->required()
-                ->maxLength(255),
         ];
     }
 
-    protected static function validate_one_field(HasForms $livewire, TextInput $component): void
+    /**
+     * RamFormFactorResource
+     */
+    protected static function ram_form_factor_form(Form $form): Form
     {
-        $livewire->validateOnly($component->getStatePath());
+        return $form->schema(self::ram_form_factor_schema());
     }
 
-    protected static function affectation_form(Form $form): Form
-    {
-        return $form
-            ->schema(self::affectation_schema());
-    }
-
-    protected static function affectation_schema(): array
+    protected static function ram_form_factor_schema(): array
     {
         return [
-            TextInput::make('code')
-                ->label('Código')
-                ->required()
-                ->maxLength(255),
             TextInput::make('description')
-                ->label('Descripción')
                 ->required()
                 ->maxLength(255),
         ];
     }
+
+    // protected static function district_form(): array
+    // {
+    //     return [
+    //         TextInput::make('name')
+    //             ->required()
+    //             ->maxLength(255),
+    //         TextInput::make('status')
+    //             ->required(),
+    //         Select::make('country_id')
+    //             ->relationship('country', 'name')
+    //             ->searchable()
+    //             ->preload()
+    //             ->live()
+    //             ->required(),
+    //         Select::make('department_id')
+    //             ->relationship(
+    //                 name: 'department',
+    //                 titleAttribute: 'name',
+    //                 modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('country_id', $get('country_id'))
+    //             )
+    //             ->disabled(fn (Get $get): bool => !filled($get('country_id')))
+    //             ->live()
+    //             ->required(),
+    //         Select::make('province_id')
+    //             ->relationship(
+    //                 name: 'province',
+    //                 titleAttribute: 'name',
+    //                 modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('department_id', $get('department_id'))
+    //             )
+    //             ->disabled(fn (Get $get): bool => !filled($get('department_id')))
+    //             ->required(),
+    //     ];
+    // }
+
+    // protected static function device_type_form(): array
+    // {
+    //     return [
+    //         TextInput::make('description')
+    //             ->required()
+    //             ->maxLength(255),
+    //         TextInput::make('symbol')
+    //             ->required()
+    //             ->maxLength(255),
+    //     ];
+    // }
+
+    // protected static function validate_one_field(HasForms $livewire, TextInput $component): void
+    // {
+    //     $livewire->validateOnly($component->getStatePath());
+    // }
+
+    // protected static function affectation_form(Form $form): Form
+    // {
+    //     return $form
+    //         ->schema(self::affectation_schema());
+    // }
+
+    // protected static function affectation_schema(): array
+    // {
+    //     return [
+    //         TextInput::make('code')
+    //             ->label('Código')
+    //             ->required()
+    //             ->maxLength(255),
+    //         TextInput::make('description')
+    //             ->label('Descripción')
+    //             ->required()
+    //             ->maxLength(255),
+    //     ];
+    // }
 }

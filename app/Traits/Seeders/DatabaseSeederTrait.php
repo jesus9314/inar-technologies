@@ -13,6 +13,7 @@ use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DeviceTypeSeeder;
 use Database\Seeders\DistrictSeeder;
 use Database\Seeders\IdDocumentSeeder;
+use Database\Seeders\MaintenanceStatesSeeder;
 use Database\Seeders\MemoryTypeSeeder;
 use Database\Seeders\OperatingSystemSeeder;
 use Database\Seeders\PeripheralTypeSeeder;
@@ -38,6 +39,8 @@ trait DatabaseSeederTrait
             'purchase-vouchers',
             'brand_logos',
             'categories_img',
+            'operating_system_img',
+            'rams_img',
         ];
 
         foreach ($directories as $directory) {
@@ -73,6 +76,7 @@ trait DatabaseSeederTrait
             ApiSeeder::class,
             ActionSeeder::class,
             ShieldSeeder::class,
+            MaintenanceStatesSeeder::class,
         ];
     }
 

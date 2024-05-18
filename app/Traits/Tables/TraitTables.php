@@ -3,6 +3,8 @@
 namespace App\Traits\Tables;
 
 use App\Filament\Clusters\Codes\Resources\CurrencyResource;
+use App\Filament\Clusters\Codes\Resources\MemoryTypeResource;
+use App\Filament\Clusters\Codes\Resources\RamFormFactorResource;
 use App\Filament\Clusters\Codes\Resources\UnitResource;
 use App\Filament\Clusters\Codes\Resources\WarehouseResource;
 use App\Filament\Resources\BrandResource;
@@ -20,6 +22,85 @@ use Filament\Tables\Table;
 
 trait TraitTables
 {
+    //Desde aquí ahorramos tiempo haciendolo en un solo método
+
+    /**
+     * RamFormFactorResource
+     */
+    protected static function ram_form_factor_table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('description')
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    Action::make('activities')
+                    ->url(fn ($record) => RamFormFactorResource::getUrl('activities', ['record' => $record]))
+                    ->icon('heroicon-c-bell-alert'),
+                ])
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    /**
+     * MemoryTypeResource
+     */
+    protected static function memory_type_table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('description')
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    Action::make('activities')
+                        ->url(fn ($record) => MemoryTypeResource::getUrl('activities', ['record' => $record]))
+                        ->icon('heroicon-c-bell-alert'),
+                ])
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    //Aqui todo es como debería
     /**
      * AffectationResource
      */
@@ -396,6 +477,64 @@ trait TraitTables
     }
 
     protected static function warehouse_bulkActions(): array
+    {
+        return [
+            BulkActionGroup::make([
+                DeleteBulkAction::make(),
+            ]),
+        ];
+    }
+
+    /**
+     * IssuePriorityResource
+     */
+    protected static function issue_priority_table(Table $table): Table
+    {
+        return $table
+            ->columns(self::issue_priority_columns())
+            ->filters(self::issue_priority_filters())
+            ->actions(self::issue_priority_actions())
+            ->bulkActions(self::issue_priority_bulkActions());
+    }
+
+    protected static function issue_priority_columns(): array
+    {
+        return [
+            TextColumn::make('name')
+                ->searchable(),
+            TextColumn::make('color')
+                ->badge()
+                ->searchable(),
+            TextColumn::make('created_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+            TextColumn::make('updated_at')
+                ->dateTime()
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault: true),
+        ];
+    }
+
+    protected static function issue_priority_filters(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    protected static function issue_priority_actions(): array
+    {
+        return [
+            ActionGroup::make([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
+            ])
+        ];
+    }
+
+    protected static function issue_priority_bulkActions(): array
     {
         return [
             BulkActionGroup::make([

@@ -6,6 +6,7 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\DeviceResource\Pages;
 use App\Filament\Clusters\Devices\Resources\DeviceResource\RelationManagers;
 use App\Models\Device;
+use App\Traits\Forms\DevicesTraitForms;
 use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -26,94 +27,17 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DeviceResource extends Resource
 {
-    use TraitForms;
+    use DevicesTraitForms;
 
     protected static ?string $model = Device::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-bar';
 
     protected static ?string $cluster = Devices::class;
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('name')
-                    ->hiddenOn('create')
-                    ->columnSpanFull(),
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->preload()
-                    ->searchable()
-                    ->required(),
-                Select::make('device_type_id')
-                    ->relationship('deviceType', 'description')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Textarea::make('description')
-                    ->columnSpanFull(),
-                Textarea::make('aditional_info')
-                    ->columnSpanFull(),
-                TextInput::make('ram_total')
-                    ->numeric(),
-                FileUpload::make('speccy_snapshot_url')
-                    ->columnSpanFull(),
-                Select::make('device_state_id')
-                    ->relationship('deviceState', 'id')
-                    ->searchable()
-                    ->preload(),
-                Select::make('processor_id')
-                    ->relationship('processor', 'model')
-                    ->searchable()
-                    ->preload(),
-                Repeater::make('deviceOperatingSystems')
-                    ->relationship()
-                    ->label('Sistemas Operativos')
-                    ->schema([
-                        Select::make('operating_system_id')
-                            ->relationship('operatingSystem', 'description')
-                            ->createOptionForm(self::operating_system_form())
-                            ->preload()
-                            ->searchable()
-                    ])
-                    ->defaultItems(0),
-                Repeater::make('deviceGraphics')
-                    ->label('Tarjetas Gráficas')
-                    ->relationship()
-                    ->schema([
-                        Select::make('graphic_id')
-                            ->relationship('graphic', 'model')
-                            ->createOptionForm(self::graphics_form())
-                            ->preload()
-                            ->searchable()
-                    ])
-                    ->defaultItems(0),
-                Repeater::make('devicePeripherals')
-                    ->label('Periféricos')
-                    ->relationship()
-                    ->schema([
-                        Select::make('peripheral_id')
-                            ->relationship('peripheral', 'description')
-                            ->createOptionForm(self::peripheral_form())
-                            ->preload()
-                            ->searchable()
-                    ])
-                    ->defaultItems(0),
-                Repeater::make('deviceRams')
-                    ->label('Memorias Ram')
-                    ->relationship()
-                    ->schema([
-                        Select::make('ram_id')
-                            ->relationship('ram', 'id')
-                            ->createOptionForm(self::ram_form())
-                            ->preload()
-                            ->searchable(),
-                        TextInput::make('quantity')
-                            ->integer()
-                    ])
-                    ->defaultItems(0)
-            ]);
+        return self::device_form($form);
     }
 
     public static function table(Table $table): Table

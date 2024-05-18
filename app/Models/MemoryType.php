@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasLogActivities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MemoryType extends Model
 {
-    use HasFactory;
+    use HasFactory, HasLogActivities;
 
     protected $fillable = [
         'description'

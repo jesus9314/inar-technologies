@@ -26,6 +26,7 @@ trait UserForms
 {
 
     use TraitForms;
+
     //user forms
     public static function user_form(): array
     {

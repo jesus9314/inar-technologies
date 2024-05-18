@@ -24,131 +24,35 @@ use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 trait TraitForms
 {
-    protected static function operating_system_form(): array
+    /**
+     * MemoryTypeResource
+     */
+    protected static function memory_type_form(Form $form): Form
+    {
+        return $form->schema(self::memory_type_schema());
+    }
+
+    protected static function memory_type_schema(): array
     {
         return [
             TextInput::make('description')
+                ->label('Nombre')
+                ->columnSpanFull()
+                ->unique(ignoreRecord: true)
                 ->required()
                 ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image(),
         ];
     }
 
-    protected static function graphics_form(): array
+    /**
+     * RamFormFactorResource
+     */
+    protected static function ram_form_factor_form(Form $form): Form
     {
-        return [
-            TextInput::make('model')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('clock')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('memory_capacity')
-                ->required()
-                ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image()
-                ->required(),
-            TextInput::make('specifications_url')
-                ->required()
-                ->maxLength(255),
-            Select::make('brand_id')
-                ->relationship('brand', 'name')
-                ->createOptionForm(self::brand_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('memory_type_id')
-                ->relationship('memoryType', 'description')
-                ->createOptionForm(self::memory_type_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-        ];
+        return $form->schema(self::ram_form_factor_schema());
     }
 
-    protected static function peripheral_form(): array
-    {
-        return [
-            TextInput::make('description')
-                ->required()
-                ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image()
-                ->required(),
-            Select::make('brand_id')
-                ->relationship('brand', 'name')
-                ->createOptionForm(self::brand_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('peripheral_type_id')
-                ->relationship('peripheralType', 'description')
-                ->createOptionForm(self::peripheral_type_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-        ];
-    }
-
-    protected static function ram_form(): array
-    {
-        return [
-            TextInput::make('speed')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('capacity')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('latency')
-                ->maxLength(255),
-            Textarea::make('description')
-                ->columnSpanFull(),
-            FileUpload::make('image_url')
-                ->image(),
-            TextInput::make('specifications_link')
-                ->maxLength(255),
-            Select::make('brand_id')
-                ->relationship('brand', 'name')
-                ->createOptionForm(self::brand_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('ram_form_factor_id')
-                ->relationship('ramFormFactor', 'description')
-                ->createOptionForm(self::ram_form_factor_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('memory_type_id')
-                ->relationship('memoryType', 'description')
-                ->createOptionForm(self::memory_type_form())
-                ->searchable()
-                ->preload()
-                ->required(),
-        ];
-    }
-
-    protected static function memory_type_form(): array
-    {
-        return [
-            TextInput::make('description')
-                ->required()
-                ->maxLength(255),
-        ];
-    }
-
-    protected static function ram_form_factor_form(): array
-    {
-        return [
-            TextInput::make('description')
-                ->required()
-                ->maxLength(255),
-        ];
-    }
-
-    protected static function peripheral_type_form(): array
+    protected static function ram_form_factor_schema(): array
     {
         return [
             TextInput::make('description')

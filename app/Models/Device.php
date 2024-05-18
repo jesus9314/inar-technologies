@@ -66,4 +66,9 @@ class Device extends Model
     {
         return $this->belongsTo(DeviceType::class);
     }
+
+    public function maintenances(): HasMany
+    {
+        return $this->hasMany(Maintenance::class);
+    }
 }

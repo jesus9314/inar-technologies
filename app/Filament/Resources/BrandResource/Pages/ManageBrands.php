@@ -6,6 +6,7 @@ use App\Filament\Exports\BrandExporter;
 use App\Filament\Imports\BrandImporter;
 use App\Filament\Resources\BrandResource;
 use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ManageRecords;
@@ -17,7 +18,7 @@ class ManageBrands extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
+            CreateAction::make()
                 ->icon('heroicon-s-plus-circle'),
             ExportAction::make()
                 ->icon('heroicon-o-arrow-down-tray')

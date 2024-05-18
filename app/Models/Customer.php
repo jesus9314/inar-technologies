@@ -49,4 +49,9 @@ class Customer extends Model
     {
         return $this->morphMany(Phone::class, 'phoneable');
     }
+
+    public function maintenances(): HasMany
+    {
+        return $this->hasMany(Maintenance::class);
+    }
 }

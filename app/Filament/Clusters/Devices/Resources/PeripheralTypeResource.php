@@ -6,6 +6,7 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\PeripheralTypeResource\Pages;
 use App\Filament\Clusters\Devices\Resources\PeripheralTypeResource\RelationManagers;
 use App\Models\PeripheralType;
+use App\Traits\Forms\DevicesTraitForms;
 use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PeripheralTypeResource extends Resource
 {
-    use TraitForms;
+    use DevicesTraitForms;
 
     protected static ?string $model = PeripheralType::class;
 
@@ -31,8 +32,7 @@ class PeripheralTypeResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::peripheral_type_form());
+        return self::peripheral_type_form($form);
     }
 
     public static function table(Table $table): Table
