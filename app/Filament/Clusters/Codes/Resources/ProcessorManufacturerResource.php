@@ -21,7 +21,13 @@ class ProcessorManufacturerResource extends Resource
 
     protected static ?string $model = ProcessorManufacturer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-building-library';
+
+    protected static ?string $navigationGroup = 'Procesador';
+
+    protected static ?string $modelLabel = 'Fabricantes de procesadores';
+
+    protected static ?string $pluralModelLabel = 'fabricantes de procesadores';
 
     protected static ?string $cluster = Codes::class;
 

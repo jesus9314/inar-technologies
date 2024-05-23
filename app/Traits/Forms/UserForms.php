@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\Forms;
 
 use App\Models\Api;
 use App\Models\User;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
-use Filament\Forms\Components\ColorPicker;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard;
@@ -18,7 +15,8 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
+use Awcodes\TableRepeater\Components\TableRepeater;
+use Awcodes\TableRepeater\Header;
 use Rawilk\FilamentPasswordInput\Password;
 use Illuminate\Support\Str;
 
@@ -229,6 +227,11 @@ trait UserForms
         return [
             TableRepeater::make('phones')
                 ->label('Teléfonos')
+                ->headers([
+                    Header::make('Número'),
+                    Header::make('Descripción')
+                ])
+                ->emptyLabel('Aún no hay números telefónicos asociados')
                 ->relationship()
                 ->defaultItems(0)
                 ->schema([
@@ -242,6 +245,10 @@ trait UserForms
                 ]),
             TableRepeater::make('emails')
                 ->label('Correos Electrónicos')
+                ->emptyLabel('Aún no hay correos electrónicos asociados')
+                ->headers([
+                    Header::make('Correo Electrónico')
+                ])
                 ->relationship()
                 ->defaultItems(0)
                 ->schema([

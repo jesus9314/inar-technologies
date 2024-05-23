@@ -28,6 +28,8 @@ class WarehouseResource extends Resource
 
     protected static ?string $cluster = Codes::class;
 
+    protected static ?string $navigationGroup = 'Sunat';
+
     protected static ?string $modelLabel = 'Almacén';
 
     protected static ?string $pluralModelLabel = 'Almacenes';

@@ -3,6 +3,7 @@
 namespace App\Traits\Tables;
 
 use App\Filament\Clusters\Codes\Resources\OperatingSystemResource;
+use App\Filament\Clusters\Codes\Resources\ProcessorGenerationResource;
 use App\Filament\Clusters\Devices\Resources\ProcessorResource;
 use App\Filament\Clusters\Devices\Resources\RamResource;
 use Filament\Actions\Action;
@@ -18,6 +19,53 @@ use Filament\Tables\Table;
 
 trait DeviceTraitTables
 {
+    /**
+     * ProcessorGenerationResource
+     */
+    protected static function processor_generation_table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                TextColumn::make('name')
+                    ->label('Nombre')
+                    ->searchable(),
+                TextColumn::make('processorManufacturer.name')
+                    ->label('Fabricante')
+                    ->badge(),
+                TextColumn::make('key_name')
+                    ->label('Microarquitectura')
+                    ->searchable(),
+                TextColumn::make('year')
+                    ->label('Año de Lanzamiento'),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    Action::make('activities')
+                        ->url(fn ($record) => ProcessorGenerationResource::getUrl('activities', ['record' => $record]))
+                        ->icon('heroicon-c-bell-alert'),
+                ])
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
     /**
      * ProcessorResource
      */

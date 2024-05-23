@@ -6,10 +6,9 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Pages\ActivityUserLogPage;
 use App\Models\User;
 use App\Traits\InfoList\UserInfoList;
-use App\Traits\UserForms;
+use App\Traits\Forms\UserForms;
 use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
@@ -18,7 +17,6 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -26,9 +24,9 @@ class UserResource extends Resource
 
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationGroup = 'Manejo de Usuarios';
+    protected static ?string $navigationIcon = 'heroicon-m-users';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Manejo de Usuarios';
 
     protected static ?string $modelLabel = 'Usuario';
 

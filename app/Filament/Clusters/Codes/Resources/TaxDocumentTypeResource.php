@@ -23,6 +23,9 @@ class TaxDocumentTypeResource extends Resource
 
     protected static ?string $cluster = Codes::class;
 
+    protected static ?string $navigationGroup = 'Sunat';
+
+
     protected static ?string $modelLabel = 'Tipo de documento autorizado para efectos tributarios';
 
     protected static ?string $pluralModelLabel = 'Tipos de documentos autorizados para efectos tributarios';

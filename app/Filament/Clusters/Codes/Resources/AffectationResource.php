@@ -27,6 +27,8 @@ class AffectationResource extends Resource
 
     protected static ?string $cluster = Codes::class;
 
+    protected static ?string $navigationGroup = 'Sunat';
+
     protected static ?string $modelLabel = 'Tipo de Afectación al IGV';
 
     protected static ?string $pluralModelLabel = 'Tipos de Afectación al IGV';

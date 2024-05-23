@@ -27,6 +27,8 @@ class RamFormFactorResource extends Resource
 
     protected static ?string $navigationLabel = 'Factores de Memorias Ram';
 
+    protected static ?string $navigationGroup = 'Dispositivos';
+
     protected static ?string $modelLabel = 'Factor de Memorias Ram';
 
     protected static ?string $pluralModelLabel = 'Factores de Memorias Ram';

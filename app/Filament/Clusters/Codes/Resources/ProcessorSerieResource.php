@@ -21,7 +21,14 @@ class ProcessorSerieResource extends Resource
 
     protected static ?string $model = ProcessorSerie::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-receipt-percent';
+
+    protected static ?string $navigationGroup = 'Procesador';
+
+    protected static ?string $modelLabel = 'Series de procesadores';
+
+    protected static ?string $pluralModelLabel = 'series de procesadores';
+
 
     protected static ?string $cluster = Codes::class;
 

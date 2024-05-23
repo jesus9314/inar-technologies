@@ -18,7 +18,13 @@ class DeviceStateResource extends Resource
 {
     protected static ?string $model = DeviceState::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-server-stack';
+
+    protected static ?string $navigationGroup = 'Dispositivos';
+
+    protected static ?string $modelLabel = 'Estados de dispositivos';
+
+    protected static ?string $pluralModelLabel = 'estados de dispositivos';
 
     protected static ?string $cluster = Codes::class;
 

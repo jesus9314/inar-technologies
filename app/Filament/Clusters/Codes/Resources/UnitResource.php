@@ -28,6 +28,8 @@ class UnitResource extends Resource
 
     protected static ?string $cluster = Codes::class;
 
+    protected static ?string $navigationGroup = 'Sunat';
+
     protected static ?string $modelLabel = 'Unidad';
 
     protected static ?string $pluralModelLabel = 'Unidades';

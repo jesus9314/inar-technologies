@@ -2,7 +2,7 @@
 
 namespace App\Traits\Forms;
 
-use App\Traits\UserForms;
+use App\Traits\Forms\UserForms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;

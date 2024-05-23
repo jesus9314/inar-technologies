@@ -22,7 +22,13 @@ class ProcessorSufixResource extends Resource
 
     protected static ?string $model = ProcessorSufix::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-light-bulb';
+
+    protected static ?string $navigationGroup = 'Procesador';
+
+    protected static ?string $modelLabel = 'Sufijos de procesadores';
+
+    protected static ?string $pluralModelLabel = 'sufijos de procesadores';
 
     protected static ?string $cluster = Codes::class;
 

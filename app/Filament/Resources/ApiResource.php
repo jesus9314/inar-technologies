@@ -21,7 +21,7 @@ class ApiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-c-cursor-arrow-ripple';
 
-    protected static ?string $navigationGroup = 'Configuraciones';
+    protected static ?string $navigationGroup = 'Sistema';
 
     protected static ?string $modelLabel = 'API';
 

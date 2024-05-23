@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Filament\Pages;
 
@@ -9,4 +9,9 @@ class BackupsPage extends Backups
 {
     // add this for work with BezhanSalleh\FilamentShield
     use HasPageShield;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Sistema';
+    }
 }

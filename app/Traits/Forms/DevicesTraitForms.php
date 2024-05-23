@@ -2,6 +2,7 @@
 
 namespace App\Traits\Forms;
 
+use App\Enums\ProcessorManufacturerEnum;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceType;
@@ -91,6 +92,7 @@ trait DevicesTraitForms
             Select::make('processor_manufacturer_id')
                 ->label('Fabricante')
                 ->relationship('processorManufacturer', 'name')
+                // ->options(ProcessorManufacturerEnum::class)
                 ->preload()
                 ->searchable()
                 ->createOptionForm(self::processor_manufacturer_schema())

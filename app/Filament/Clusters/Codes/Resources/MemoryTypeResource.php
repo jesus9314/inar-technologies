@@ -26,6 +26,8 @@ class MemoryTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-m-credit-card';
 
+    protected static ?string $navigationGroup = 'Dispositivos';
+
     protected static ?string $navigationLabel = 'Tipo de Memorias';
 
     protected static ?string $modelLabel = 'Tipo de Memorias';

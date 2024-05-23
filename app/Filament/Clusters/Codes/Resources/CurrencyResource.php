@@ -28,6 +28,8 @@ class CurrencyResource extends Resource
 
     protected static ?string $cluster = Codes::class;
 
+    protected static ?string $navigationGroup = 'Sunat';
+
     protected static ?string $modelLabel = 'Moneda';
 
     protected static ?string $pluralModelLabel = 'Monedas';

@@ -25,6 +25,8 @@ class IdDocumentResource extends Resource
 
     protected static ?string $cluster = Codes::class;
 
+    protected static ?string $navigationGroup = 'Sunat';
+
     protected static ?string $modelLabel = 'Documento de Identidad';
 
     protected static ?string $pluralModelLabel = 'Documentos de Identidad';

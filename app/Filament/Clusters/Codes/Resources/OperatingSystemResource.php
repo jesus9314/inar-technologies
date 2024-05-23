@@ -26,6 +26,12 @@ class OperatingSystemResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Dispositivos';
+
+    protected static ?string $modelLabel = 'Sistemas Operativos';
+
+    protected static ?string $pluralModelLabel = 'sistemas operativos';
+
     protected static ?string $cluster = Codes::class;
 
     public static function form(Form $form): Form

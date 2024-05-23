@@ -2,7 +2,7 @@
 
 return [
     'navigation_label' => 'Registros',
-    'navigation_group' => 'Configuraciones',
+    'navigation_group' => 'Sistema',
     'title' => 'Registros',
     'search_placeholder' => 'Seleccionar o buscar un archivo de registro',
     'no_logs' => 'No hay registros para mostrar',
