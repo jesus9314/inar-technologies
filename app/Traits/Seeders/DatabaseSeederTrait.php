@@ -18,6 +18,10 @@ use Database\Seeders\MemoryTypeSeeder;
 use Database\Seeders\OperatingSystemSeeder;
 use Database\Seeders\PeripheralTypeSeeder;
 use Database\Seeders\ProcessorConditionSeeder;
+use Database\Seeders\ProcessorGenerationSeeder;
+use Database\Seeders\ProcessorManufaturerSeeder;
+use Database\Seeders\ProcessorSerieSeeder;
+use Database\Seeders\ProcessorSufixSeeder;
 use Database\Seeders\ProvinceSeeder;
 use Database\Seeders\RamFormFactorSeeder;
 use Database\Seeders\ShieldSeeder;
@@ -41,6 +45,7 @@ trait DatabaseSeederTrait
             'categories_img',
             'operating_system_img',
             'rams_img',
+            'processor_img',
         ];
 
         foreach ($directories as $directory) {
@@ -77,6 +82,10 @@ trait DatabaseSeederTrait
             ActionSeeder::class,
             ShieldSeeder::class,
             MaintenanceStatesSeeder::class,
+            ProcessorManufaturerSeeder::class,
+            ProcessorSerieSeeder::class,
+            ProcessorSufixSeeder::class,
+            ProcessorGenerationSeeder::class,
         ];
     }
 

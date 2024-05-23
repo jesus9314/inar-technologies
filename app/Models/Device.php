@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[ObservedBy([DeviceObserver::class])]
+// #[ObservedBy([DeviceObserver::class])]
 class Device extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'aditional_info',
         'ram_total',
@@ -26,6 +27,11 @@ class Device extends Model
         'device_type_id',
         'user_id'
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function deviceState(): BelongsTo
     {

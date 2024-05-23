@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('processors', function (Blueprint $table) {
             $table->id();
-            $table->string('model');
+            $table->string('name')->unique();
+            $table->string('slug');
+            $table->boolean('auto_name');
+            $table->string('model')->nullable();
+            $table->string('threads')->nullable();
             $table->string('generation')->nullable();
             $table->string('cores')->nullable();
             $table->string('socket')->nullable();
@@ -24,9 +28,8 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->string('specifications_url')->nullable();
 
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('processor_condition_id')->constrained();
-            $table->foreignId('memory_type_id')->constrained();
+            $table->foreignId('processor_condition_id')->nullable()->constrained();
+            $table->foreignId('memory_type_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

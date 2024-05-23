@@ -7,7 +7,7 @@ use App\Filament\Clusters\Codes\Resources\AffectationResource\Pages;
 use App\Filament\Clusters\Codes\Resources\AffectationResource\RelationManagers;
 use App\Models\Affectation;
 use App\Traits\Tables\TraitTables;
-use App\Traits\TraitForms;
+use App\Traits\Forms\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;

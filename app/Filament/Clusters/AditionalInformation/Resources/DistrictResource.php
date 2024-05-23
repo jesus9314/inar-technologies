@@ -6,7 +6,7 @@ use App\Filament\Clusters\AditionalInformation;
 use App\Filament\Clusters\AditionalInformation\Resources\DistrictResource\Pages;
 use App\Filament\Clusters\AditionalInformation\Resources\DistrictResource\RelationManagers;
 use App\Models\District;
-use App\Traits\TraitForms;
+use App\Traits\Forms\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;

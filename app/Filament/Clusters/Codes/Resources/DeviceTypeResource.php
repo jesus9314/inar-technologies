@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Clusters\Devices\Resources;
+namespace App\Filament\Clusters\Codes\Resources;
 
-use App\Filament\Clusters\Devices;
-use App\Filament\Clusters\Devices\Resources\DeviceTypeResource\Pages;
-use App\Filament\Clusters\Devices\Resources\DeviceTypeResource\RelationManagers;
+use App\Filament\Clusters\Codes;
+use App\Filament\Clusters\Codes\Resources\DeviceTypeResource\Pages;
+use App\Filament\Clusters\Codes\Resources\DeviceTypeResource\RelationManagers;
 use App\Models\DeviceType;
-use App\Traits\TraitForms;
+use App\Traits\Forms\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,14 +21,19 @@ class DeviceTypeResource extends Resource
 
     protected static ?string $model = DeviceType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-tag';
 
-    protected static ?string $cluster = Devices::class;
+    protected static ?string $navigationGroup = 'Procesador';
+
+    protected static ?string $modelLabel = 'Tipo de procesador';
+
+    protected static ?string $pluralModelLabel = 'Tipos de procesadores';
+
+    protected static ?string $cluster = Codes::class;
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::device_type_form());
+        return self::device_type_form($form);
     }
 
     public static function table(Table $table): Table

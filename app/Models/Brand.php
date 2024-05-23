@@ -33,11 +33,6 @@ class Brand extends Model
         return $this->hasMany(Product::class);
     }
 
-    public function processors(): HasMany
-    {
-        return $this->hasMany(Processor::class);
-    }
-
     public function graphics(): HasMany
     {
         return $this->hasMany(Graphic::class);

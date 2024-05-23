@@ -4,6 +4,7 @@ namespace App\Filament\Clusters\Devices\Resources;
 
 use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\RamResource\Pages;
+use App\Filament\Clusters\Devices\Resources\RamResource\Pages\RamActivityLogPage;
 use App\Filament\Clusters\Devices\Resources\RamResource\RelationManagers;
 use App\Models\Ram;
 use App\Traits\Forms\DevicesTraitForms;
@@ -23,7 +24,9 @@ class RamResource extends Resource
 
     protected static ?string $model = Ram::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-home-modern';
+
+    protected static ?string $navigationGroup = 'Componentes';
 
     protected static ?string $navigationLabel = 'Memorias Ram';
 
@@ -54,6 +57,7 @@ class RamResource extends Resource
     {
         return [
             'index' => Pages\ListRams::route('/'),
+            'activities' => RamActivityLogPage::route('/{record}/activities'),
             // 'create' => Pages\CreateRam::route('/create'),
             // 'view' => Pages\ViewRam::route('/{record}'),
             // 'edit' => Pages\EditRam::route('/{record}/edit'),

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Clusters\Devices\Resources\DeviceTypeResource\Pages;
+namespace App\Filament\Clusters\Codes\Resources\DeviceTypeResource\Pages;
 
-use App\Filament\Clusters\Devices\Resources\DeviceTypeResource;
+use App\Filament\Clusters\Codes\Resources\DeviceTypeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 

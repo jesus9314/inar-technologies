@@ -19,6 +19,54 @@ use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 trait TraitForms
 {
     /**
+     * ProcessorSufixResource
+     */
+    protected static function processor_sufix_form(Form $form): Form
+    {
+        return $form->schema(self::processor_sufix_schema());
+    }
+
+    protected static function processor_sufix_schema(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label('Sufijo')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('description')
+                ->label('Descripcion')
+                ->maxLength(255),
+            Select::make('processor_manufacturer_id')
+                ->relationship('processor_manufacturer', 'name')
+                ->label('Fabricante')
+                ->preload()
+                ->searchable()
+                ->native(false)
+                ->required(),
+        ];
+    }
+
+    /**
+     * ProcessorConditionResource
+     */
+    protected static function processor_condition_form(Form $form): Form
+    {
+        return $form->schema(self::processor_condition_schema());
+    }
+
+    protected static function processor_condition_schema(): array
+    {
+        return [
+            TextInput::make('description')
+                ->label('Nombre')
+                ->columnSpanFull()
+                ->unique(ignoreRecord: true)
+                ->required()
+                ->maxLength(255)
+        ];
+    }
+
+    /**
      * BrandResource
      */
     protected static function brand_form(Form $form): Form
@@ -306,7 +354,9 @@ trait TraitForms
         return [
             TextInput::make('description')
                 ->required()
-                ->maxLength(255),
+                ->label('Nombre')
+                ->maxLength(255)
+                ->columnSpanFull(),
         ];
     }
 
@@ -322,79 +372,98 @@ trait TraitForms
     {
         return [
             TextInput::make('description')
+                ->label('Nombre')
+                ->columnSpanFull()
                 ->required()
                 ->maxLength(255),
         ];
     }
 
-    // protected static function district_form(): array
-    // {
-    //     return [
-    //         TextInput::make('name')
-    //             ->required()
-    //             ->maxLength(255),
-    //         TextInput::make('status')
-    //             ->required(),
-    //         Select::make('country_id')
-    //             ->relationship('country', 'name')
-    //             ->searchable()
-    //             ->preload()
-    //             ->live()
-    //             ->required(),
-    //         Select::make('department_id')
-    //             ->relationship(
-    //                 name: 'department',
-    //                 titleAttribute: 'name',
-    //                 modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('country_id', $get('country_id'))
-    //             )
-    //             ->disabled(fn (Get $get): bool => !filled($get('country_id')))
-    //             ->live()
-    //             ->required(),
-    //         Select::make('province_id')
-    //             ->relationship(
-    //                 name: 'province',
-    //                 titleAttribute: 'name',
-    //                 modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('department_id', $get('department_id'))
-    //             )
-    //             ->disabled(fn (Get $get): bool => !filled($get('department_id')))
-    //             ->required(),
-    //     ];
-    // }
+    /**
+     * DeviceTypeResource
+     */
+    protected static function device_type_form(Form $form): Form
+    {
+        return $form()->schema(self::device_type_schema());
+    }
 
-    // protected static function device_type_form(): array
-    // {
-    //     return [
-    //         TextInput::make('description')
-    //             ->required()
-    //             ->maxLength(255),
-    //         TextInput::make('symbol')
-    //             ->required()
-    //             ->maxLength(255),
-    //     ];
-    // }
+    protected static function device_type_schema(): array
+    {
+        return [
+            TextInput::make('description')
+                ->required()
+                ->label('Descripción')
+                ->maxLength(255),
+            TextInput::make('symbol')
+                ->label('Símbolo')
+                ->required()
+                ->maxLength(255),
+        ];
+    }
 
-    // protected static function validate_one_field(HasForms $livewire, TextInput $component): void
-    // {
-    //     $livewire->validateOnly($component->getStatePath());
-    // }
+    /**
+     * DistrictResource
+     */
+    protected static function district_form(): array
+    {
+        return [
+            TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('status')
+                ->required(),
+            Select::make('country_id')
+                ->relationship('country', 'name')
+                ->searchable()
+                ->preload()
+                ->live()
+                ->required(),
+            Select::make('department_id')
+                ->relationship(
+                    name: 'department',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('country_id', $get('country_id'))
+                )
+                ->disabled(fn (Get $get): bool => !filled($get('country_id')))
+                ->live()
+                ->required(),
+            Select::make('province_id')
+                ->relationship(
+                    name: 'province',
+                    titleAttribute: 'name',
+                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('department_id', $get('department_id'))
+                )
+                ->disabled(fn (Get $get): bool => !filled($get('department_id')))
+                ->required(),
+        ];
+    }
 
-    // protected static function affectation_form(Form $form): Form
-    // {
-    //     return $form
-    //         ->schema(self::affectation_schema());
-    // }
+    protected static function validate_one_field(HasForms $livewire, TextInput $component): void
+    {
+        $livewire->validateOnly($component->getStatePath());
+    }
+    
+    /**
+     * AffectattionResource
+     */
+    protected static function affectation_form(Form $form): Form
+    {
+        return $form
+            ->columns(2)
+            ->schema(self::affectation_schema());
+    }
 
-    // protected static function affectation_schema(): array
-    // {
-    //     return [
-    //         TextInput::make('code')
-    //             ->label('Código')
-    //             ->required()
-    //             ->maxLength(255),
-    //         TextInput::make('description')
-    //             ->label('Descripción')
-    //             ->required()
-    //             ->maxLength(255),
-    //     ];
-    // }
+    protected static function affectation_schema(): array
+    {
+        return [
+            TextInput::make('code')
+                ->label('Código')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('description')
+                ->label('Nombre')
+                ->required()
+                ->maxLength(255),
+        ];
+    }
 }

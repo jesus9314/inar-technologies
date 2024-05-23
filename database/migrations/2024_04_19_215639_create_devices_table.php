@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name')->nullable();
+            $table->string('name');
+            $table->string('slug');
             $table->text('description')->nullable();
             $table->text('aditional_info')->nullable();
             $table->float('ram_total')->nullable();

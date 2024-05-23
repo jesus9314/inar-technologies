@@ -8,7 +8,7 @@ use App\Filament\Clusters\Codes\Resources\RamFormFactorResource\Pages\RamFormFac
 use App\Filament\Clusters\Codes\Resources\RamFormFactorResource\RelationManagers;
 use App\Models\RamFormFactor;
 use App\Traits\Tables\TraitTables;
-use App\Traits\TraitForms;
+use App\Traits\Forms\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
