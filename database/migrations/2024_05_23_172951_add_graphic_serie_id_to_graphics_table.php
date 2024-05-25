@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peripheral_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->timestamps();
+        Schema::table('graphics', function (Blueprint $table) {
+            $table->foreignId('graphic_serie_id')->nullable()->constrained();
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peripheral_types');
+        Schema::table('graphics', function (Blueprint $table) {
+            $table->foreignId('graphic_serie_id')->nullable()->constrained();
+        });
     }
 };

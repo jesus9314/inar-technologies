@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('graphics', function (Blueprint $table) {
             $table->id();
-            $table->string('model');
-            $table->string('clock');
-            $table->string('memory_capacity');
-            $table->string('image_url');
-            $table->string('specifications_url');
+            $table->string('name');
+            $table->string('slug');
+            $table->string('auto_name');
+            $table->string('model')->nullable();
+            $table->string('clock')->nullable();
+            $table->string('memory_capacity')->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('specifications_url')->nullable();
 
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('memory_type_id')->constrained();
+            $table->foreignId('memory_type_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

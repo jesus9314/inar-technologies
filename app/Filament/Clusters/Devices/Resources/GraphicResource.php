@@ -29,7 +29,15 @@ class GraphicResource extends Resource
 
     protected static ?string $model = Graphic::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-trophy';
+
+    protected static ?string $navigationGroup = 'Componentes';
+
+    protected static ?string $navigationLabel = 'Tarjetas Gráficas';
+
+    protected static ?string $modelLabel = 'memoria ram';
+
+    protected static ?string $pluralModelLabel = 'memorias Ram';
 
     protected static ?string $cluster = Devices::class;
 

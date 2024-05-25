@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Filament\Clusters\Devices\Resources;
+namespace App\Filament\Clusters\Codes\Resources;
 
-use App\Filament\Clusters\Devices;
-use App\Filament\Clusters\Devices\Resources\PeripheralResource\Pages;
-use App\Filament\Clusters\Devices\Resources\PeripheralResource\RelationManagers;
-use App\Models\Peripheral;
+use App\Filament\Clusters\Codes;
+use App\Filament\Clusters\Codes\Resources\PeripheralTypeResource\Pages;
+use App\Filament\Clusters\Codes\Resources\PeripheralTypeResource\RelationManagers;
+use App\Models\PeripheralType;
 use App\Traits\Forms\DevicesTraitForms;
-use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,28 +15,25 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PeripheralResource extends Resource
+class PeripheralTypeResource extends Resource
 {
     use DevicesTraitForms;
 
-    protected static ?string $model = Peripheral::class;
+    protected static ?string $model = PeripheralType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-cube-transparent';
+    protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
 
-    protected static ?string $navigationGroup = 'Componentes';
+    protected static ?string $navigationGroup = 'Dispositivos';
 
-    protected static ?string $navigationLabel = 'Periféricos';
+    protected static ?string $modelLabel = 'Tipos de Periféricos';
 
-    protected static ?string $modelLabel = 'periférico';
+    protected static ?string $pluralModelLabel = 'tipos de Periféricos';
 
-    protected static ?string $pluralModelLabel = 'periféricos';
-
-
-    protected static ?string $cluster = Devices::class;
+    protected static ?string $cluster = Codes::class;
 
     public static function form(Form $form): Form
     {
-        return self::peripheral_form($form);
+        return self::peripheral_type_form($form);
     }
 
     public static function table(Table $table): Table
@@ -46,13 +42,6 @@ class PeripheralResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image_url'),
-                Tables\Columns\TextColumn::make('brand.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('peripheralType.id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -80,7 +69,7 @@ class PeripheralResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePeripherals::route('/'),
+            'index' => Pages\ManagePeripheralTypes::route('/'),
         ];
     }
 }

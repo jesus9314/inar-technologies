@@ -95,7 +95,7 @@ trait TraitForms
                 ->maxLength(255),
             TextInput::make('slug')
                 ->disabled()
-                ->reactive()
+                ->dehydrated()
                 ->unique(ignoreRecord: true)
                 ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->required()

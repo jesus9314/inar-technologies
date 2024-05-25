@@ -12,6 +12,9 @@ use Database\Seeders\CurrencySeeder;
 use Database\Seeders\DepartmentSeeder;
 use Database\Seeders\DeviceTypeSeeder;
 use Database\Seeders\DistrictSeeder;
+use Database\Seeders\GraphicManufacturerSeeder;
+use Database\Seeders\GraphicSerieSeeder;
+use Database\Seeders\GraphicSufixSeeder;
 use Database\Seeders\IdDocumentSeeder;
 use Database\Seeders\MaintenanceStatesSeeder;
 use Database\Seeders\MemoryTypeSeeder;
@@ -46,6 +49,8 @@ trait DatabaseSeederTrait
             'operating_system_img',
             'rams_img',
             'processor_img',
+            'peripheral_img',
+            'graphics_img',
         ];
 
         foreach ($directories as $directory) {
@@ -86,6 +91,9 @@ trait DatabaseSeederTrait
             ProcessorSerieSeeder::class,
             ProcessorSufixSeeder::class,
             ProcessorGenerationSeeder::class,
+            GraphicManufacturerSeeder::class,
+            GraphicSerieSeeder::class,
+            GraphicSufixSeeder::class,
         ];
     }
 

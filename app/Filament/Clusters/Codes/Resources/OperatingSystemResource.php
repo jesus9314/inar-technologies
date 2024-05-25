@@ -24,11 +24,11 @@ class OperatingSystemResource extends Resource
 
     protected static ?string $model = OperatingSystem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-eye';
 
     protected static ?string $navigationGroup = 'Dispositivos';
 
-    protected static ?string $modelLabel = 'Sistemas Operativos';
+    protected static ?string $modelLabel = 'sistema operativo';
 
     protected static ?string $pluralModelLabel = 'sistemas operativos';
 

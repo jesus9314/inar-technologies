@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peripherals', function (Blueprint $table) {
+        Schema::create('graphic_graphic_sufix', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image_url')->nullable();
 
-            $table->foreignId('brand_id')->constrained();
-            $table->foreignId('peripheral_type_id')->constrained();
+            $table->foreignId('graphic_id')->constrained();
+            $table->foreignId('graphic_sufix_id')->constrained();
+
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('peripherals');
+        Schema::dropIfExists('graphic_graphic_sufix');
     }
 };

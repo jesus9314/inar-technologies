@@ -6,7 +6,11 @@ use App\Enums\ProcessorManufacturerEnum;
 use App\Models\Brand;
 use App\Models\Device;
 use App\Models\DeviceType;
+use App\Models\GraphicManufacturer;
+use App\Models\GraphicSerie;
+use App\Models\GraphicSufix;
 use App\Models\MemoryType;
+use App\Models\Processor;
 use App\Models\ProcessorGeneration;
 use App\Models\ProcessorManufacturer;
 use App\Models\ProcessorSerie;
@@ -25,6 +29,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -36,6 +41,94 @@ use Illuminate\Support\Str;
 trait DevicesTraitForms
 {
     use TraitForms;
+
+    /**
+     * GraphicSufixResource
+     */
+    protected static function graphic_sufix_form(Form $form): Form
+    {
+        return $form->schema(self::graphic_sufix_schema());
+    }
+
+    protected static function graphic_sufix_schema(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label('Nombre')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('description')
+                ->label('Descripción')
+                ->maxLength(255),
+            Select::make('priority')
+                ->label('Prioridad')
+                ->options([
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,
+                    '5' => 5,
+                    '6' => 6,
+                ])
+                ->required(),
+            Select::make('graphic_manufacturer_id')
+                ->relationship('graphicManufacturer', 'name')
+                ->searchable()
+                ->preload()
+                ->native(false)
+                ->createOptionForm(self::graphic_manufacturer_schema())
+                ->required(),
+        ];
+    }
+
+    /**
+     * GraphicSerieResource
+     */
+    protected static function graphic_serie_form(Form $form): Form
+    {
+        return $form->schema(self::graphic_serie_schema());
+    }
+
+    protected static function graphic_serie_schema(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label('Nombre')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('prefix')
+                ->label('Prefijo')
+                ->required()
+                ->maxLength(255),
+            Select::make('graphic_manufacturer_id')
+                ->label('Fabricante')
+                ->relationship('graphicManufacturer', 'name')
+                ->createOptionForm(self::graphic_manufacturer_schema())
+                ->searchable()
+                ->preload()
+                ->native(false)
+                ->required(),
+        ];
+    }
+
+    /**
+     * GraphicManufacturerResource
+     */
+    protected static function graphic_manufacturer_form(Form $form): Form
+    {
+        return $form->schema(self::graphic_manufacturer_schema());
+    }
+
+    protected static function graphic_manufacturer_schema(): array
+    {
+        return [
+            TextInput::make('name')
+                ->label('Nombre')
+                ->columnSpanFull()
+                ->required()
+                ->maxLength(255),
+        ];
+    }
 
     /**
      * ProcessorSeriResource
@@ -166,7 +259,7 @@ trait DevicesTraitForms
                                 // ->hiddenOn('create')
                                 ->disabled()
                                 ->dehydrated()
-                                ->helperText('El nombre y el slug se crearán automáticamente despues de seleccionar un tipo de dispositivo, el dueño y el procesador'),
+                                ->helperText('El nombre y el slug se crearán automáticamente despues de seleccionar un tipo de dispositivo y el dueño'),
                             TextInput::make('slug')
                                 ->disabled()
                                 ->dehydrated(),
@@ -189,19 +282,29 @@ trait DevicesTraitForms
                                 ->searchable()
                                 ->required(),
                             Select::make('processor_id')
-                                ->relationship('processor', 'model')
+                                ->relationship('processor', 'name')
+                                ->label('Procesador')
                                 ->native(false)
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_device_name($get, $set))
+                                ->createOptionForm(self::proccessor_schema())
                                 ->searchable()
                                 ->preload(),
+                            TextInput::make('identifier')
+                                ->label('Identificador')
+                                ->helperText('Puedes Escribir lo que gustes aquí para poder identificar este dispositivo en otros recursos (ej. Pc de Hijo mayor)'),
                             TextInput::make('ram_total')
+                                ->label('Memoria ram total')
+                                ->integer()
                                 ->numeric(),
                             Select::make('device_state_id')
+                                ->label('Estado del dispositivo')
                                 ->relationship('deviceState', 'id')
                                 ->native(false)
                                 ->searchable()
                                 ->preload(),
+                            FileUpload::make('speccy_snapshot_url')
+                                ->label('Snaapshot Speccy')
+                                ->helperText(str('De la aplicación **Speccy** guarda un snapshot en la seccion **file**->**save snapshot** y guardala aquí.')->inlineMarkdown()->toHtmlString())
+                                ->columnSpanFull(),
                         ])
                         ->columns(2),
                     Step::make('Componenentes')
@@ -212,6 +315,7 @@ trait DevicesTraitForms
                                         ->schema([
                                             TableRepeater::make('deviceOperatingSystems')
                                                 ->relationship()
+                                                ->emptyLabel('Aún no hay sistemas operativos registrados')
                                                 ->label('Sistemas Operativos')
                                                 ->headers([
                                                     Header::make('Sistema Operativo')
@@ -223,6 +327,7 @@ trait DevicesTraitForms
                                                         ->native(false)
                                                         ->createOptionForm(self::operating_system_schema())
                                                         ->preload()
+                                                        ->required()
                                                         ->searchable()
                                                 ])
                                                 ->defaultItems(0)
@@ -232,16 +337,18 @@ trait DevicesTraitForms
                                         ->schema([
                                             TableRepeater::make('deviceGraphics')
                                                 ->label('Tarjetas Gráficas')
+                                                ->emptyLabel('Aún no hay tarjetas gráficas registrados')
                                                 ->relationship()
                                                 ->headers([
-                                                    Header::make('Modelo')
+                                                    Header::make('Nombre')
                                                 ])
                                                 ->schema([
                                                     Select::make('graphic_id')
                                                         ->label('Tarjetas gráficas')
-                                                        ->relationship('graphic', 'model')
+                                                        ->relationship('graphic', 'name')
                                                         ->createOptionForm(self::graphics_schema())
                                                         ->preload()
+                                                        ->required()
                                                         ->searchable()
                                                 ])
                                                 ->columnSpanFull()
@@ -252,14 +359,16 @@ trait DevicesTraitForms
                                             TableRepeater::make('devicePeripherals')
                                                 ->label('Periféricos')
                                                 ->relationship()
+                                                ->emptyLabel('Aún no hay periféricos registrados')
                                                 ->headers([
                                                     Header::make('Periférico')
                                                 ])
                                                 ->schema([
                                                     Select::make('peripheral_id')
                                                         ->label('Periféricos')
-                                                        ->relationship('peripheral', 'description')
+                                                        ->relationship('peripheral', 'name')
                                                         ->createOptionForm(self::peripheral_schema())
+                                                        ->required()
                                                         ->preload()
                                                         ->searchable()
                                                 ])
@@ -271,6 +380,7 @@ trait DevicesTraitForms
                                             TableRepeater::make('deviceRams')
                                                 ->label('Memorias Ram')
                                                 ->relationship()
+                                                ->emptyLabel('Aún no hay memorias ram registradas')
                                                 ->headers([
                                                     Header::make('Memoria Ram'),
                                                     Header::make('Cantidad')
@@ -280,8 +390,13 @@ trait DevicesTraitForms
                                                         ->relationship('ram', 'name')
                                                         ->createOptionForm(self::ram_schema())
                                                         ->preload()
+                                                        ->required()
                                                         ->searchable(),
                                                     TextInput::make('quantity')
+                                                        ->label('Cantidad')
+                                                        ->numeric()
+                                                        ->integer()
+                                                        ->required()
                                                         ->integer()
                                                 ])
                                                 ->defaultItems(0)
@@ -297,10 +412,6 @@ trait DevicesTraitForms
                             TiptapEditor::make('aditional_info')
                                 ->label('Información adicional')
                                 ->columnSpanFull(),
-                            FileUpload::make('speccy_snapshot_url')
-                                ->label('Snaapshot Speccy')
-                                ->helperText(str('De la aplicación **Speccy** guarda un snapshot en la seccion **file**->**save snapshot** y guardala aquí.')->inlineMarkdown()->toHtmlString())
-                                ->columnSpanFull(),
                         ])
                 ])
                 ->columnSpanFull()
@@ -310,11 +421,9 @@ trait DevicesTraitForms
 
     protected static function get_device_name(Get $get, Set $set): void
     {
-        if (!is_null($get('device_type_id')) && !is_null($get('user_id')) && !is_null($get('processor_id'))) {
+        if (!is_null($get('device_type_id')) && !is_null($get('user_id'))) {
             //obtener el símbol del dispositivo y poner solo en mayúsculas y filtrar tipo slug
             $deviceDesc = strtoupper(DeviceType::find($get('device_type_id'))->symbol);
-
-            //obtener el procesador 
 
             // Obtener el número de dispositivos del usuario y rellenar con ceros
             $userDeviceCount = str_pad(User::find($get('user_id'))->count(), 4, '0', STR_PAD_LEFT);
@@ -342,9 +451,11 @@ trait DevicesTraitForms
     {
         return [
             TextInput::make('description')
+                ->label('Nombre')
                 ->required()
                 ->maxLength(255),
             FileUpload::make('image_url')
+                ->label('Imagen')
                 ->image()
                 ->directory('operating_system_files')
                 ->optimize('webp')
@@ -363,39 +474,151 @@ trait DevicesTraitForms
     protected static function graphics_schema(): array
     {
         return [
-            TextInput::make('model')
-                ->label('Modelo')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('clock')
-                ->label('Velocidad de Reloj')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('memory_capacity')
-                ->label('Capacidad de la memoria')
-                ->required()
-                ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image()
-                ->required(),
-            TextInput::make('specifications_url')
-                ->label('Link de especificaciones')
-                ->prefixIcon('')
-                ->required()
-                ->maxLength(255),
-            Select::make('brand_id')
-                ->relationship('brand', 'name')
-                ->createOptionForm(self::brand_schema())
-                ->searchable()
-                ->preload()
-                ->required(),
-            Select::make('memory_type_id')
-                ->relationship('memoryType', 'description')
-                ->createOptionForm(self::memory_type_schema())
-                ->searchable()
-                ->preload()
-                ->required(),
+            Wizard::make()
+                ->columnSpanFull()
+                ->skippable()
+                ->schema([
+                    Step::make('Nombre')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('name')
+                                ->required()
+                                ->disabled(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->dehydrated(),
+                            TextInput::make('slug')
+                                ->required()
+                                ->disabled()
+                                ->dehydrated(),
+                            Select::make('graphic_manufacturer_id')
+                                ->relationship('graphicManufacturer', 'name')
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->label('Fabricante')
+                                ->live()
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_graphic_name($get, $set))
+                                ->preload()
+                                ->createOptionForm(self::graphic_manufacturer_schema())
+                                ->searchable(),
+                            Select::make('graphic_serie_id')
+                                ->label('Sufijo')
+                                ->relationship(
+                                    name: 'graphicSerie',
+                                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('graphic_manufacturer_id', $get('graphic_manufacturer_id'))
+                                )
+                                ->getOptionLabelFromRecordUsing(fn (GraphicSerie $record) => "$record->name - [Prefijo: $record->prefix]")
+                                ->createOptionForm(self::graphic_serie_schema())
+                                ->label('Serie')
+                                ->live()
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_graphic_name($get, $set))
+                                ->preload()
+                                ->searchable(),
+                            TextInput::make('model')
+                                ->label('Modelo')
+                                ->live()
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_graphic_name($get, $set))
+                                ->maxLength(255),
+                            Select::make('graphic_sufix_id')
+                                ->label('Sufijo')
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->relationship(
+                                    name: 'graphicSufix',
+                                    titleAttribute: 'name',
+                                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('graphic_manufacturer_id', $get('graphic_manufacturer_id'))
+                                )
+                                ->getOptionLabelFromRecordUsing(fn (GraphicSufix $record) => "$record->name - [$record->description]")
+                                ->searchable()
+                                ->live()
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_graphic_name($get, $set))
+                                ->createOptionForm(self::graphic_sufix_schema())
+                                ->preload()
+                                ->multiple()
+                                ->native(false),
+                            ToggleButtons::make('auto_name')
+                                ->label('Generar Automáticamente el nombre?')
+                                ->columnSpanFull()
+                                ->helperText('Para Tarjetas gráficas modernas, el algoritmo generará automáticamente los nombres, pero si son antiguos o están fuera de las nomenclaturas, desactiva esta opción para indicarlo manualmente')
+                                ->inline()
+                                ->live()
+                                ->default(true)
+                                ->boolean(),
+                        ]),
+                    Step::make('Datos Adicionales')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('clock')
+                                ->label('Velocidad de Reloj')
+                                ->maxLength(255),
+                            TextInput::make('memory_capacity')
+                                ->label('Capacidad de la memoria')
+                                ->maxLength(255),
+                            TextInput::make('specifications_url')
+                                ->label('Link de especificaciones')
+                                ->prefixIcon('')
+                                ->maxLength(255),
+                            Select::make('memory_type_id')
+                                ->label('Tipo de memoria')
+                                ->relationship('memoryType', 'description')
+                                ->createOptionForm(self::memory_type_schema())
+                                ->searchable()
+                                ->preload(),
+                            FileUpload::make('image_url')
+                                ->columnSpanFull()
+                                ->label('Imagen')
+                                ->optimize('webp')
+                                ->resize(50)
+                                ->directory('graphics_img')
+                                ->image(),
+                        ])
+                ])
         ];
+    }
+
+    protected static function get_graphic_name(Get $get, Set $set): void
+    {
+        if ($get('auto_name')) {
+            if (!is_null($get('graphic_manufacturer_id'))  && !is_null($get('graphic_serie_id')) && !is_null($get('model')) && !is_null($get('graphic_sufix_id'))) {
+                $manufacturer = ucfirst(GraphicManufacturer::find($get('graphic_manufacturer_id'))->name);
+                $serie = GraphicSerie::find($get('graphic_serie_id'))->prefix;
+                $model = $get('model');
+                $sufixIds = $get('graphic_sufix_id');
+
+                //Obtener sufijos y prioridades
+                $sufixes = [];
+                foreach ($sufixIds as $id) {
+                    $sufix = GraphicSufix::find($id);
+                    if ($sufix) {
+                        $sufixes[$sufix->id] = [
+                            'name' => $sufix->name,
+                            'priority' => $sufix->priority
+                        ];
+                    }
+                }
+
+                // Ordenar sufijos por prioridad
+                $orderedSufixes = [];
+                foreach ($sufixes as $priority => $sufixData) {
+                    $orderedSufixes[$priority][] = $sufixData['name'];
+                }
+                ksort($orderedSufixes);
+
+                // Concatenar sufijos en un string
+                $finalString = '';
+                foreach ($orderedSufixes as $priority => $sufixNames) {
+                    $sufixString = implode(', ', $sufixNames);
+                    $finalString .= "$sufixString ";
+                }
+                $finalString = trim($finalString);
+
+                $name = "$manufacturer $serie" . "$model " . $finalString;
+                $set('name', $name);
+                $set('slug', Str::slug($name));
+            }
+        } else {
+            if (!is_null($get('name'))) {
+                $set('slug', Str::slug($get('name')));
+            }
+        }
     }
 
     /**
@@ -409,24 +632,32 @@ trait DevicesTraitForms
     protected static function peripheral_schema(): array
     {
         return [
-            TextInput::make('description')
+            TextInput::make('name')
+                ->label('Nombre')
                 ->required()
                 ->maxLength(255),
-            FileUpload::make('image_url')
-                ->image()
-                ->required(),
             Select::make('brand_id')
                 ->relationship('brand', 'name')
                 ->createOptionForm(self::brand_schema())
                 ->searchable()
+                ->label('Marca')
                 ->preload()
                 ->required(),
             Select::make('peripheral_type_id')
-                ->relationship('peripheralType', 'description')
+                ->label('Tipo de Periférico')
+                ->relationship('peripheralType', 'name')
                 ->createOptionForm(self::peripheral_type_schema())
                 ->searchable()
+                ->native(false)
                 ->preload()
                 ->required(),
+            FileUpload::make('image_url')
+                ->columnSpanFull()
+                ->label('Imagen')
+                ->optimize('webp')
+                ->directory('peripheral_img')
+                ->resize(50)
+                ->image(),
         ];
     }
 
@@ -441,7 +672,12 @@ trait DevicesTraitForms
     protected static function peripheral_type_schema(): array
     {
         return [
-            TextInput::make('description')
+            TextInput::make('name')
+                ->unique(ignoreRecord: true)
+                ->label('Nombre')
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (HasForms $livewire, TextInput $componente) => self::validate_one_field($livewire, $componente))
+                ->columnSpanFull()
                 ->required()
                 ->maxLength(255),
         ];
@@ -625,6 +861,7 @@ trait DevicesTraitForms
                                 ->label('Modelo')
                                 ->required(fn (Get $get) => $get('auto_name') ? true : false)
                                 ->afterStateUpdated(fn (Get $get, Set $set) => self::get_processor_name($get, $set))
+                                ->live(onBlur: true)
                                 ->helperText('Es el número luego de la generación')
                                 ->maxLength(255),
                             Select::make('processor_sufix_id')
@@ -639,9 +876,7 @@ trait DevicesTraitForms
                                 ->createOptionForm(self::processor_sufix_schema())
                                 ->preload()
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_processor_name($get, $set))
-                                ->helperText('Es la letra al final ')
-                                ->required(fn (Get $get) => $get('auto_name') ? true : false),
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_processor_name($get, $set)),
                             ToggleButtons::make('auto_name')
                                 ->label('Generar Automáticamente el nombre?')
                                 ->columnSpanFull()
@@ -712,11 +947,11 @@ trait DevicesTraitForms
     protected static function get_processor_name(Get $get, Set $set): void
     {
         if ($get('auto_name')) {
-            if (!is_null($get('processor_manufacturer_id')) && !is_null($get('model')) && !is_null($get('processor_serie_id')) && !is_null($get('processor_sufix_id')) && !is_null($get('processor_generation_id'))) {
+            if (!is_null($get('processor_manufacturer_id')) && !is_null($get('model')) && !is_null($get('processor_serie_id')) && !is_null($get('processor_generation_id'))) {
                 $manufacturer = (ProcessorManufacturer::find($get('processor_manufacturer_id'))->name);
                 $model = $get('model');
                 $serie = ProcessorSerie::find($get('processor_serie_id'))->name;
-                $sufijo = strtoupper(ProcessorSufix::find($get('processor_sufix_id'))->name);
+                $sufijo = $get('processor_sufix_id') ? strtoupper(ProcessorSufix::find($get('processor_sufix_id'))->name) : '';
                 $generation = ProcessorGeneration::find($get('processor_generation_id'))->prefix;
                 $name = "$manufacturer $serie $generation" . $model . $sufijo;
                 $set('name', $name);

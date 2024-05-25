@@ -30,9 +30,9 @@ class RamResource extends Resource
 
     protected static ?string $navigationLabel = 'Memorias Ram';
 
-    protected static ?string $modelLabel = 'Memoria Ram';
+    protected static ?string $modelLabel = 'memoria Ram';
 
-    protected static ?string $pluralModelLabel = 'Memorias Ram';
+    protected static ?string $pluralModelLabel = 'memorias Ram';
 
     protected static ?string $cluster = Devices::class;
 

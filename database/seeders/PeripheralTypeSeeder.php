@@ -15,37 +15,40 @@ class PeripheralTypeSeeder extends Seeder
     {
         $types = [
             [
-                'description' => 'Teclado'
+                'name' => 'Estabilizador'
             ],
             [
-                'description' => 'Mouse'
+                'name' => 'Teclado'
             ],
             [
-                'description' => 'Pantalla'
+                'name' => 'Mouse'
             ],
             [
-                'description' => 'Impresora'
+                'name' => 'Pantalla'
             ],
             [
-                'description' => 'Parlantes'
+                'name' => 'Impresora'
             ],
             [
-                'description' => 'Audifonos'
+                'name' => 'Parlantes'
             ],
             [
-                'description' => 'Micrófono'
+                'name' => 'Audifonos'
             ],
             [
-                'description' => 'Webcam'
+                'name' => 'Micrófono'
             ],
             [
-                'description' => 'Hub USB'
+                'name' => 'Webcam'
+            ],
+            [
+                'name' => 'Hub USB'
             ],
         ];
 
         foreach ($types as $type) {
             PeripheralType::create([
-                'description' => $type['description'],
+                'name' => $type['name'],
             ]);
         }
     }

@@ -1,46 +1,53 @@
 <?php
 
-namespace App\Filament\Clusters\Devices\Resources;
+namespace App\Filament\Clusters\Codes\Resources;
 
-use App\Filament\Clusters\Devices;
-use App\Filament\Clusters\Devices\Resources\PeripheralTypeResource\Pages;
-use App\Filament\Clusters\Devices\Resources\PeripheralTypeResource\RelationManagers;
-use App\Models\PeripheralType;
+use App\Filament\Clusters\Codes;
+use App\Filament\Clusters\Codes\Resources\GraphicSerieResource\Pages;
+use App\Filament\Clusters\Codes\Resources\GraphicSerieResource\RelationManagers;
+use App\Models\GraphicSerie;
 use App\Traits\Forms\DevicesTraitForms;
-use App\Traits\TraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PeripheralTypeResource extends Resource
+class GraphicSerieResource extends Resource
 {
     use DevicesTraitForms;
 
-    protected static ?string $model = PeripheralType::class;
+    protected static ?string $model = GraphicSerie::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-m-square-3-stack-3d';
 
-    protected static ?string $cluster = Devices::class;
+    protected static ?string $navigationGroup = 'Tarjetas Gráficas';
+
+    protected static ?string $modelLabel = 'Series de gráficas';
+
+    protected static ?string $pluralModelLabel = 'series de gráficas';
+
+
+    protected static ?string $cluster = Codes::class;
 
     public static function form(Form $form): Form
     {
-        return self::peripheral_type_form($form);
+        return self::graphic_serie_form($form);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('prefix')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('graphic_manufacturer_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -54,11 +61,9 @@ class PeripheralTypeResource extends Resource
                 //
             ])
             ->actions([
-                ActionGroup::make([
-                    ViewAction::make(),
-                    EditAction::make(),
-                    DeleteAction::make(),
-                ])
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -70,7 +75,7 @@ class PeripheralTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePeripheralTypes::route('/'),
+            'index' => Pages\ManageGraphicSeries::route('/'),
         ];
     }
 }

@@ -11,7 +11,7 @@ class PeripheralType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'description'
+        'name'
     ];
 
     public function peripherals(): HasMany
