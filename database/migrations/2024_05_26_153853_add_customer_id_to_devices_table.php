@@ -11,15 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
-            $table->id();
-            $table->string('lat');
-            $table->string('lng');
-            $table->string('description')->nullable();
-            $table->string('reference')->nullable();
-            $table->string('address');
+        Schema::table('devices', function (Blueprint $table) {
             $table->foreignId('customer_id')->constrained();
-            $table->timestamps();
         });
     }
 
@@ -28,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::table('devices', function (Blueprint $table) {
+            $table->foreignId('customer_id')->constrained();
+        });
     }
 };

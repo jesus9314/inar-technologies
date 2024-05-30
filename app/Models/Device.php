@@ -26,7 +26,7 @@ class Device extends Model
         'processor_id',
         'device_id',
         'device_type_id',
-        'user_id'
+        'customer_id'
     ];
 
     public function getRouteKeyName(): string
@@ -64,9 +64,9 @@ class Device extends Model
         return $this->hasMany(DeviceRam::class);
     }
 
-    public function user(): BelongsTo
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function deviceType(): BelongsTo

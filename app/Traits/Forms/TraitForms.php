@@ -84,10 +84,6 @@ trait TraitForms
                 ->unique()
                 ->required()
                 ->live(onBlur: true)
-                ->columnSpan([
-                    'default' => 1,
-                    'md' => 1,
-                ])
                 ->afterStateUpdated(function (Set $set, $state, HasForms $livewire, TextInput $component): void {
                     self::validate_one_field($livewire, $component);
                     $set('slug', Str::slug($state));
@@ -442,7 +438,7 @@ trait TraitForms
     {
         $livewire->validateOnly($component->getStatePath());
     }
-    
+
     /**
      * AffectattionResource
      */

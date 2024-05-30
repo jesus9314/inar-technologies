@@ -4,17 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Facades\Filament;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -66,6 +63,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     protected function casts(): array
     {
         return [
+            'id' => 'string',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
@@ -75,6 +73,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     {
         // dd($this->hasRole(['super_admin']));
         return $this->hasRole(['super_admin']) || $this->hasRole(['supervisor']) ? true : false;
+        // return true;
     }
 
     public function getFilamentAvatarUrl(): ?string
@@ -110,11 +109,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'force_delete_any',
             'assign'
         ];
-    }
-
-    public function devices(): HasMany
-    {
-        return $this->hasMany(Device::class);
     }
 
     public function idDocument(): BelongsTo

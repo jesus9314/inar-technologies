@@ -4,6 +4,7 @@ namespace App\Traits\Forms;
 
 use App\Enums\ProcessorManufacturerEnum;
 use App\Models\Brand;
+use App\Models\Customer;
 use App\Models\Device;
 use App\Models\DeviceType;
 use App\Models\GraphicManufacturer;
@@ -15,16 +16,16 @@ use App\Models\ProcessorGeneration;
 use App\Models\ProcessorManufacturer;
 use App\Models\ProcessorSerie;
 use App\Models\ProcessorSufix;
+use App\Models\Ram;
 use App\Models\RamFormFactor;
 use App\Models\User;
 use Awcodes\TableRepeater\Components\TableRepeater;
 use Awcodes\TableRepeater\Header;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\Wizard;
@@ -35,12 +36,11 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 trait DevicesTraitForms
 {
-    use TraitForms;
+    use TraitForms, UserForms;
 
     /**
      * GraphicSufixResource
@@ -272,8 +272,9 @@ trait DevicesTraitForms
                                 ->searchable()
                                 ->preload()
                                 ->required(),
-                            Select::make('user_id')
-                                ->relationship('user', 'name')
+                            Select::make('customer_id')
+                                ->relationship('customer', 'name')
+                                ->createOptionForm(self::customer_schema())
                                 ->native(false)
                                 ->label('Dueño')
                                 ->live(onBlur: true)
@@ -292,7 +293,10 @@ trait DevicesTraitForms
                                 ->label('Identificador')
                                 ->helperText('Puedes Escribir lo que gustes aquí para poder identificar este dispositivo en otros recursos (ej. Pc de Hijo mayor)'),
                             TextInput::make('ram_total')
-                                ->label('Memoria ram total')
+                                ->label('Ram total')
+                                ->helperText('Se rellena automáticamente dependiendo las memorias registradas en la siguiente sección')
+                                ->disabled()
+                                ->dehydrated()
                                 ->integer()
                                 ->numeric(),
                             Select::make('device_state_id')
@@ -375,14 +379,19 @@ trait DevicesTraitForms
                                                 ->defaultItems(0)
                                                 ->columnSpanFull(),
                                         ]),
-                                    Tab::make('Memoria Ram')
+                                    Tab::make('Ram')
+                                        ->live()
                                         ->schema([
                                             TableRepeater::make('deviceRams')
-                                                ->label('Memorias Ram')
+                                                ->label('Ram')
                                                 ->relationship()
+                                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_total_ram($get, $set))
+                                                ->deleteAction(
+                                                    fn (Action $action) => $action->after(fn (Get $get, Set $set) => self::get_total_ram($get, $set)),
+                                                )
                                                 ->emptyLabel('Aún no hay memorias ram registradas')
                                                 ->headers([
-                                                    Header::make('Memoria Ram'),
+                                                    Header::make('Ram'),
                                                     Header::make('Cantidad')
                                                 ])
                                                 ->schema([
@@ -419,14 +428,26 @@ trait DevicesTraitForms
         ];
     }
 
+    protected static function get_total_ram(Get $get, Set $set): void
+    {
+        $selectedRams = collect($get('deviceRams'))->filter(fn ($item) => !empty($item['ram_id']) && $item['quantity']);
+        $total_ram = $selectedRams->reduce(function ($subtotal, $ram) {
+            $ram_capacity = intval(Ram::find($ram['ram_id'])->capacity);
+            // dd(($ram_capacity));
+            return $subtotal + ($ram['quantity'] * $ram_capacity);
+        });
+
+        $set('ram_total', $total_ram);
+    }
+
     protected static function get_device_name(Get $get, Set $set): void
     {
-        if (!is_null($get('device_type_id')) && !is_null($get('user_id'))) {
+        if (!is_null($get('device_type_id')) && !is_null($get('customer_id')) && !is_null($get('processor_id'))) {
             //obtener el símbol del dispositivo y poner solo en mayúsculas y filtrar tipo slug
             $deviceDesc = strtoupper(DeviceType::find($get('device_type_id'))->symbol);
 
             // Obtener el número de dispositivos del usuario y rellenar con ceros
-            $userDeviceCount = str_pad(User::find($get('user_id'))->count(), 4, '0', STR_PAD_LEFT);
+            $userDeviceCount = str_pad(Customer::find($get('customer_id'))->count(), 4, '0', STR_PAD_LEFT);
 
             // Obtener el total de dispositivos en el modelo y rellenar con ceros
             $totalDeviceCount =  str_pad(Device::all()->count(), 4, '0', STR_PAD_LEFT);
@@ -708,9 +729,9 @@ trait DevicesTraitForms
                             Select::make('brand_id')
                                 ->label('Marca')
                                 ->relationship('brand', 'name')
-                                ->createOptionForm(self::brand_schema())
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(fn (Get $get, Set $set) => self::get_ram_name($get, $set))
+                                ->createOptionForm(self::brand_schema())
                                 ->searchable()
                                 ->preload()
                                 ->required(),

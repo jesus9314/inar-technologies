@@ -17,11 +17,15 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Awcodes\TableRepeater\Components\TableRepeater;
 use Awcodes\TableRepeater\Header;
+use Filament\Forms\Form;
 use Rawilk\FilamentPasswordInput\Password;
 use Illuminate\Support\Str;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 trait UserForms
 {
+    use TraitForms;
+
     //user forms
     public static function user_form(): array
     {
@@ -194,7 +198,12 @@ trait UserForms
         ];
     }
 
-    public static function customer_form(): array
+    public static function customer_form(Form $form): Form
+    {
+        return $form->schema(self::customer_schema());
+    }
+
+    public static function customer_schema(): array
     {
         return [
             Wizard::make([
@@ -235,10 +244,9 @@ trait UserForms
                 ->relationship()
                 ->defaultItems(0)
                 ->schema([
-                    TextInput::make('number')
+                    PhoneInput::make('number')
                         ->label('Número')
-                        ->required()
-                        ->maxLength(255),
+                        ->required(),
                     TextInput::make('description')
                         ->label('Descripción')
                         ->columnSpanFull(),
@@ -282,15 +290,36 @@ trait UserForms
                 ->placeholder('Escribe una dirección ...')
                 ->geolocate() // add a suffix button which requests and reverse geocodes the device location
                 ->geolocateIcon('heroicon-o-map'); // override the default icon for the geolocate button;
+            $headers = [
+                Header::make('Descripción'),
+                Header::make('Referencia'),
+                Header::make('Latitud'),
+                Header::make('Longitud'),
+                Header::make('Dirección'),
+                Header::make('Ubicación'),
+            ];
         } elseif (!getApiStatus(Api::find(2))) {
             $location_input = TextInput::make('address')
                 ->label('Direccion');
+            $headers = [
+                Header::make('Descripción')
+                    ->markAsRequired(),
+                Header::make('Referencia')
+                    ->markAsRequired(),
+                // Header::make('Latitud'),
+                // Header::make('Longitud'),
+                // Header::make('Dirección'),
+                Header::make('Ubicación')
+                    ->markAsRequired(),
+            ];
         }
 
         return [
             TableRepeater::make('locations')
                 ->relationship()
+                ->headers($headers)
                 ->defaultItems(0)
+                ->emptyLabel('Aún no hay direcciones registradas')
                 ->schema([
                     TextInput::make('description')
                         ->label('Descripción')

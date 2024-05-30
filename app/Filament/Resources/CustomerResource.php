@@ -3,9 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerResource\Pages;
+use App\Filament\Resources\CustomerResource\Pages\CustomerActivityLogPage;
 use App\Models\Customer;
 use App\Traits\Forms\UserForms;
 use Cheesegrits\FilamentGoogleMaps\Concerns\InteractsWithMaps;
+use Filament\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -34,8 +36,7 @@ class CustomerResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema(self::customer_form());
+        return self::customer_form($form);
     }
 
     public static function table(Table $table): Table
@@ -67,6 +68,7 @@ class CustomerResource extends Resource
                     ViewAction::make(),
                     EditAction::make(),
                     DeleteAction::make(),
+                    Action::make('activities')->url(fn ($record) => CustomerResource::getUrl('activities', ['record' => $record])),
                 ])
             ])
             ->bulkActions([
@@ -90,6 +92,7 @@ class CustomerResource extends Resource
             'create' => Pages\CreateCustomer::route('/create'),
             'view' => Pages\ViewCustomer::route('/{record}'),
             'edit' => Pages\EditCustomer::route('/{record}/edit'),
+            'activities' => CustomerActivityLogPage::route('/{record}/activities'),
         ];
     }
 }
