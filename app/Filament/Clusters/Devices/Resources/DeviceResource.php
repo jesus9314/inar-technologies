@@ -35,6 +35,12 @@ class DeviceResource extends Resource
 
     protected static ?string $cluster = Devices::class;
 
+    protected static ?string $navigationLabel = 'Dispositivos';
+
+    protected static ?string $modelLabel = 'dispositivo';
+
+    protected static ?string $pluralModelLabel = 'dispositivos';
+
     public static function form(Form $form): Form
     {
         return self::device_form($form);
@@ -46,16 +52,13 @@ class DeviceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('customer.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ram_total')
+                Tables\Columns\TextColumn::make('processor.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deviceState.description')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('processor_id')
+                Tables\Columns\TextColumn::make('identifier')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

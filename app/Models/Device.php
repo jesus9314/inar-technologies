@@ -26,7 +26,8 @@ class Device extends Model
         'processor_id',
         'device_id',
         'device_type_id',
-        'customer_id'
+        'customer_id',
+        'motherboard_id'
     ];
 
     public function getRouteKeyName(): string
@@ -77,5 +78,10 @@ class Device extends Model
     public function maintenances(): HasMany
     {
         return $this->hasMany(Maintenance::class);
+    }
+
+    public function motherboard(): BelongsTo
+    {
+        return $this->belongsTo(Motherboard::class);
     }
 }

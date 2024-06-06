@@ -43,6 +43,128 @@ trait DevicesTraitForms
     use TraitForms, UserForms;
 
     /**
+     * MotherboardResource
+     */
+    protected static function motherboard_form(Form $form): Form
+    {
+        return $form->schema(self::motherboard_schema());
+    }
+
+    protected static function motherboard_schema(): array
+    {
+        return [
+            Wizard::make()
+                ->columnSpanFull()
+                ->skippable()
+                ->schema([
+                    Step::make('Nombre')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('name')
+                                ->disabled(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->dehydrated()
+                                ->label('Nombre')
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_motherboard_name($get, $set))
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('slug')
+                                ->disabled()
+                                ->dehydrated()
+                                ->required()
+                                ->maxLength(255),
+                            Select::make('brand_id')
+                                ->label('Marca')
+                                ->searchable()
+                                ->preload()
+                                ->live(onBlur: true)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_motherboard_name($get, $set))
+                                ->native(false)
+                                ->createOptionForm(self::brand_schema())
+                                ->relationship('brand', 'name'),
+                            TextInput::make('model')
+                                ->label('Modelo')
+                                ->live(onBlur: true)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_motherboard_name($get, $set))
+                                ->helperText('Nombre del modelo (e.g., TOMAHAWK)')
+                                ->maxLength(255),
+                            TextInput::make('form_factor')
+                                ->label('Factor de forma')
+                                ->live(onBlur: true)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_motherboard_name($get, $set))
+                                ->helperText('Tipo de factor de forma (e.g., ATX, Micro ATX, Mini ITX)s')
+                                ->maxLength(255),
+                            TextInput::make('socket')
+                                ->label('Zócalo')
+                                ->live(onBlur: true)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_motherboard_name($get, $set))
+                                ->helperText(' Tipo de socket del procesador (e.g., AM4, LGA 1200)')
+                                ->maxLength(255),
+                            TextInput::make('chipset')
+                                ->live(onBlur: true)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_motherboard_name($get, $set))
+                                ->label('Chipset')
+                                ->helperText('Tipo de chipset (e.g., B450, Z490)')
+                                ->maxLength(255),
+                            ToggleButtons::make('auto_name')
+                                ->label('Generar Automáticamente el nombre?')
+                                ->columnSpanFull()
+                                ->helperText('Por lo general el algoritmo generará correctamente el nombre de la placa madre en base a las nomenclaturas, pero si no sucede así, puedes desactivar esta opción para indicarla manualmente')
+                                ->inline()
+                                ->live()
+                                ->default(true)
+                                ->boolean(),
+                        ]),
+                    Step::make('Información adicional')
+                        ->columns(2)
+                        ->schema([
+                            TextInput::make('expansion_slots')
+                                ->label('Ranuras de expansión')
+                                ->helperText('Información sobre las ranuras de expansión (e.g., PCIe x16, PCIe x1)')
+                                ->maxLength(255),
+                            TextInput::make('io_ports')
+                                ->label('Puertos de E/S')
+                                ->helperText('Información sobre los puertos de entrada/salida (e.g., USB 3.0, HDMI, Ethernet)')
+                                ->maxLength(255),
+                            TextInput::make('features')->label('Puertos de E/S')
+                                ->label('Características adicionales')
+                                ->helperText(' Cualquier característica adicional relevante (e.g., soporte para RGB, WiFi integrado)')
+                                ->maxLength(255),
+                            TextInput::make('specs_link')
+                                ->label('Link de especificaciones')
+                                ->suffixIcon('heroicon-m-globe-alt')
+                                ->helperText('Puede ingresar el link de especificaciones de la página oficial del fabricante')
+                        ]),
+                ])
+        ];
+    }
+
+    public static function get_motherboard_name(Get $get, Set $set): void
+    {
+        if ($get('auto_name')) {
+            if (!is_null($get('brand_id')) && !is_null($get('model')) && !is_null($get('form_factor')) && !is_null($get('socket')) && !is_null($get('chipset'))) {
+                $brand = ucfirst(Brand::find($get('brand_id'))->name);
+                $model = ucfirst($get('model'));
+                $form_factor = ucfirst($get('form_factor'));
+                $socket = $get('socket');
+                $chipset = $get('chipset');
+                $name = "{$brand} {$chipset} {$model} {$form_factor} ({$socket})";
+                $set('name', $name);
+                $set('slug', Str::slug($name));
+            }
+        } else {
+            if (!is_null($get('name'))) {
+                $set('slug', Str::slug($get('name')));
+            }
+        }
+    }
+
+    /**
      * GraphicSufixResource
      */
     protected static function graphic_sufix_form(Form $form): Form
@@ -263,6 +385,14 @@ trait DevicesTraitForms
                             TextInput::make('slug')
                                 ->disabled()
                                 ->dehydrated(),
+                            Select::make('motherboard_id')
+                                ->label('Placa Madre')
+                                ->relationship('motherboard', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->createOptionForm(self::motherboard_schema())
+                                ->editOptionForm(self::motherboard_schema())
+                                ->columnSpanFull(),
                             Select::make('device_type_id')
                                 ->relationship('deviceType', 'description')
                                 ->native(false)
@@ -275,6 +405,7 @@ trait DevicesTraitForms
                             Select::make('customer_id')
                                 ->relationship('customer', 'name')
                                 ->createOptionForm(self::customer_schema())
+                                ->editOptionForm(self::customer_schema())
                                 ->native(false)
                                 ->label('Dueño')
                                 ->live(onBlur: true)
@@ -287,6 +418,7 @@ trait DevicesTraitForms
                                 ->label('Procesador')
                                 ->native(false)
                                 ->createOptionForm(self::proccessor_schema())
+                                ->editOptionForm(self::proccessor_schema())
                                 ->searchable()
                                 ->preload(),
                             TextInput::make('identifier')

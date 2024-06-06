@@ -42,4 +42,9 @@ class Brand extends Model
     {
         return $this->hasMany(Peripheral::class);
     }
+
+    public function motherBoards(): HasMany
+    {
+        return $this->hasMany(Motherboard::class);
+    }
 }
