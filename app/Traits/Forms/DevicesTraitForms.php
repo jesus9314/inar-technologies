@@ -27,6 +27,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
@@ -41,6 +42,159 @@ use Illuminate\Support\Str;
 trait DevicesTraitForms
 {
     use TraitForms, UserForms;
+
+    /**
+     * StorageResourcec
+     */
+    protected static function storage_form(Form $form): Form
+    {
+        return $form->schema(self::storage_schema());
+    }
+
+    protected static function storage_schema(): array
+    {
+        return [
+            Wizard::make()
+                ->columnSpanFull()
+                ->skippable()
+                ->columns(2)
+                ->schema([
+                    Step::make('Nombre')
+                        ->schema([
+                            TextInput::make('name')
+                                ->label('Nombre')
+                                ->disabled(fn (Get $get) => $get('auto_name') ? true : false)
+                                ->dehydrated()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_storage_name($get, $set))
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('slug')
+                                ->disabled()
+                                ->dehydrated()
+                                ->required()
+                                ->maxLength(255),
+                            Select::make('type')
+                                ->label('Tipo')
+                                ->helperText('Tipo de almacenamiento (SSD o HDD)')
+                                ->options([
+                                    'SSD' => 'SSD',
+                                    'HDD' => 'HDD',
+                                ])
+                                ->native(false)
+                                ->searchable()
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false),
+                            Select::make('brand_id')
+                                ->label('Marca')
+                                ->relationship('brand', 'name')
+                                ->searchable()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_storage_name($get, $set))
+                                ->preload()
+                                ->native(false)
+                                ->createOptionForm(self::brand_schema())
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false),
+                            TextInput::make('model')
+                                ->label('Modelo')
+                                ->helperText('Nombre del modelo del dispositivo')
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_storage_name($get, $set))
+                                ->maxLength(255)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false),
+                            TextInput::make('capacity')
+                                ->label('Capacidad')
+                                ->helperText(' Capacidad de almacenamiento (e.g., 500GB, 1TB).')
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_storage_name($get, $set))
+                                ->maxLength(255)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false),
+                            Select::make('interface')
+                                ->label('Interfaz')
+                                ->options(self::$interfaces)
+                                ->helperText('Tipo de interfaz (e.g., SATA, NVMe)')
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_storage_name($get, $set))
+                                ->searchable()
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false),
+                            Select::make('form_factor')
+                                ->label('Factor de forma')
+                                ->helperText('Factor de forma del dispositivo (e.g., 2.5", 3.5", M.2)')
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Get $get, Set $set) => self::get_storage_name($get, $set))
+                                ->native(false)
+                                ->searchable()
+                                ->options(self::$form_factor)
+                                ->required(fn (Get $get) => $get('auto_name') ? true : false),
+                            ToggleButtons::make('auto_name')
+                                ->label('Generar Automáticamente el nombre?')
+                                ->columnSpanFull()
+                                ->helperText('Por lo general el algoritmo generará el nombre, pero si no se genera correctamente al estar fuera de nomenclaturas, puedes desactivar esta opcion para indicar el nombre manualmente')
+                                ->inline()
+                                ->live()
+                                ->default(true)
+                                ->boolean(),
+                        ]),
+                    Step::make('Información Adicional')
+                        ->schema([
+                            TextInput::make('read_speed')
+                                ->numeric(),
+                            TextInput::make('write_speed')
+                                ->numeric(),
+                            TextInput::make('specs_link')
+                                ->maxLength(255),
+                        ]),
+                ])
+
+
+        ];
+    }
+
+    protected static $interfaces = [
+        'SATA I' => 'SATA I',
+        'SATA II' => 'SATA II',
+        'SATA III' => 'SATA III',
+        'NVMe' => 'NVMe',
+        'PCIe' => 'PCIe',
+        'mSATA' => 'mSSATA',
+        'M.2 SATA' => 'M.2 SATA',
+        'M.2 NVMe' => 'M.2 NVMe',
+        'U.2' => 'U.2',
+        'SCSI' => 'SCSI',
+        'SAS' => 'SAS',
+        'IDE/PATA' => 'IDE/PATA',
+    ];
+
+    protected static $form_factor = [
+        '3.5"' => '3.5',
+        '2.5"' => '2.5',
+        'M.2 2280' => 'M.2 2280  (22mm x 80mm)', // 22mm x 80mm
+        'M.2 2260' => 'M.2 2260 (22mm x 60mm)', // 22mm x 60mm
+        'M.2 2242' => 'M.2 2242 (22mm x 42mm)', // 22mm x 42mm
+        'mSATA' => 'mSATA',
+        'U.2' => 'U.2',
+        'PCIe' => 'PCIe',
+    ];
+
+    protected static function get_storage_name(Get $get, Set $set): void
+    {
+        if ($get('auto_name')) {
+            if (!is_null($get('brand_id')) && !is_null($get('model')) && !is_null($get('type')) && !is_null($get('capacity')) && !is_null($get('interface')) && !is_null($get('form_factor'))) {
+                $brand = ucfirst(Brand::find($get('brand_id'))->name);
+                $model = $get('model');
+                $type = $get('type');
+                $capacity = $get('capacity');
+                $interface = $get('interface');
+                $form_factor = $get('form_factor');
+                $name = "{$brand} {$model} ({$capacity}, {$interface}, {$form_factor})";
+                $set('name', $name);
+                $set('slug', Str::slug($name));
+            }
+        } else {
+            if (!is_null($get('name'))) {
+                $set('slug', Str::slug($get('name')));
+            }
+        }
+    }
 
     /**
      * MotherboardResource
@@ -378,7 +532,6 @@ trait DevicesTraitForms
                     Step::make('Información Básica')
                         ->schema([
                             TextInput::make('name')
-                                // ->hiddenOn('create')
                                 ->disabled()
                                 ->dehydrated()
                                 ->helperText('El nombre y el slug se crearán automáticamente despues de seleccionar un tipo de dispositivo y el dueño'),
@@ -439,6 +592,7 @@ trait DevicesTraitForms
                                 ->preload(),
                             FileUpload::make('speccy_snapshot_url')
                                 ->label('Snaapshot Speccy')
+                                ->directory('snapshots')
                                 ->helperText(str('De la aplicación **Speccy** guarda un snapshot en la seccion **file**->**save snapshot** y guardala aquí.')->inlineMarkdown()->toHtmlString())
                                 ->columnSpanFull(),
                         ])
@@ -465,6 +619,33 @@ trait DevicesTraitForms
                                                         ->preload()
                                                         ->required()
                                                         ->searchable()
+                                                ])
+                                                ->defaultItems(0)
+                                                ->columnSpanFull(),
+                                        ]),
+                                    Tab::make('Almacenamiento')
+                                        ->schema([
+                                            TableRepeater::make('deviceStorages')
+                                                ->relationship()
+                                                ->emptyLabel('Aún no hay almacenamientos registrados')
+                                                ->label('Almacenamiento')
+                                                ->headers([
+                                                    Header::make('Almacenamiento'),
+                                                    Header::make('Cantidad')
+                                                ])
+                                                ->schema([
+                                                    Select::make('storage_id')
+                                                        ->relationship('storage', 'name')
+                                                        ->native(false)
+                                                        ->createOptionForm(self::storage_schema())
+                                                        ->preload()
+                                                        ->required()
+                                                        ->searchable(),
+                                                    TextInput::make('quantity')
+                                                        ->minValue(1)
+                                                        ->numeric()
+                                                        ->integer()
+                                                        ->default(1)
                                                 ])
                                                 ->defaultItems(0)
                                                 ->columnSpanFull(),

@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('name');
             $table->string('slug');
-            $table->string('identifier');
+            $table->string('identifier')->nullable();
             $table->text('description')->nullable();
             $table->text('aditional_info')->nullable();
             $table->float('ram_total')->nullable();

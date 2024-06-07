@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 // #[ObservedBy([DeviceObserver::class])]
@@ -63,6 +64,11 @@ class Device extends Model
     public function deviceRams(): HasMany
     {
         return $this->hasMany(DeviceRam::class);
+    }
+
+    public function deviceStorages(): HasMany
+    {
+        return $this->hasMany(DeviceStorage::class);
     }
 
     public function customer(): BelongsTo

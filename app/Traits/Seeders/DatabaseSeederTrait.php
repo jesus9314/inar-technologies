@@ -51,6 +51,7 @@ trait DatabaseSeederTrait
             'processor_img',
             'peripheral_img',
             'graphics_img',
+            'snapshots',
         ];
 
         foreach ($directories as $directory) {

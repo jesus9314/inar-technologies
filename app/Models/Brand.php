@@ -47,4 +47,9 @@ class Brand extends Model
     {
         return $this->hasMany(Motherboard::class);
     }
+
+    public function storages(): HasMany
+    {
+        return $this->hasMany(Storage::class);
+    }
 }
