@@ -6,6 +6,7 @@ use App\Filament\Clusters\Codes;
 use App\Filament\Clusters\Codes\Resources\DeviceStateResource\Pages;
 use App\Filament\Clusters\Codes\Resources\DeviceStateResource\RelationManagers;
 use App\Models\DeviceState;
+use App\Traits\Forms\DevicesTraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DeviceStateResource extends Resource
 {
+    use DevicesTraitForms;
+
     protected static ?string $model = DeviceState::class;
 
     protected static ?string $navigationIcon = 'heroicon-m-server-stack';
@@ -32,7 +35,7 @@ class DeviceStateResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('description')
+                Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
             ]);

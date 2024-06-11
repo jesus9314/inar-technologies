@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\DeviceState;
 use App\Models\DeviceStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DeviceStatusSeeder extends Seeder
+class DeviceStateSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -28,7 +29,7 @@ class DeviceStatusSeeder extends Seeder
         ];
 
         foreach ($statuses as $status) {
-            DeviceStatus::create(['name' => $status]);
+            DeviceState::create(['name' => $status]);
         }
     }
 }

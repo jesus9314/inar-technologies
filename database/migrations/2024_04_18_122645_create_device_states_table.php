@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('device_states', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->string('name');
             $table->timestamps();
         });
     }

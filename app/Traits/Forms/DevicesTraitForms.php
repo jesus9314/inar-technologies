@@ -46,6 +46,10 @@ trait DevicesTraitForms
     use TraitForms, UserForms;
 
     /**
+     * DeviceStateResource
+     */
+
+    /**
      * StorageResourcec
      */
     protected static function storage_form(Form $form): Form

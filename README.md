@@ -59,9 +59,19 @@ Abre el archivo .env en tu editor de texto favorito y configura los valores nece
 
 Para instalar y configurar todo lo necesario para el proyecto, ejecuta el comando personalizado:
 
+1. Este comando realiza las migraciones, corre los seeders correspondientes, y hace las configuraciones correspondientes a FilamentShield
+
 ```bash
 php artisan project:install
 ```
+
+<font color="red">**¡Advertencia!** El siguiente comando no se debe usar en producción 2. Este comando realiza todo lo del anterior, pero refresca la base de datos, eliminando toda la información almacenada, se recomienda usarla con el cautelo necesario
+
+```bash
+php artisan project:install --fresh
+```
+
+</font>
 
 Este comando se encargará de ejecutar las migraciones, sembrar la base de datos y cualquier otra configuración necesaria.
 

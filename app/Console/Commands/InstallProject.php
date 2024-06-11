@@ -11,7 +11,7 @@ class InstallProject extends Command
      *
      * @var string
      */
-    protected $signature = 'project:install';
+    protected $signature = 'project:install {--fresh : Rollback and re-run all migrations}';
 
     /**
      * The console command description.
@@ -27,13 +27,32 @@ class InstallProject extends Command
     {
         $this->info('Starting project installation...');
 
+        // Obtén el valor de la opción --fresh
+        $fresh = $this->option('fresh');
+
+        if ($fresh) {
+            $commands = [
+                ['migrate:fresh', ['--seed' => true]], // Corremos las migraciones con los seeders correspondientes y refrescamos la base de datos
+                'shield:install',       // installamos el shield de filament
+                ['db:seed', ['--class' => 'ShieldSeeder']],  // Corremos el seeder para genrar los roles
+                'shield:super-admin',   // selecionamos el super-admin
+            ];
+        } else {
+            $commands = [
+                ['migrate', ['--seed' => true]], // Corremos las migraciones con los seeders correspondientes
+                'shield:install',       // installamos el shield de filament
+                ['db:seed', ['--class' => 'ShieldSeeder']],  // Corremos el seeder para genrar los roles
+                'shield:super-admin',   // selecionamos el super-admin
+            ];
+        }
+
         // List of commands to run
-        $commands = [
-            ['migrate:fresh', ['--seed' => true]], // Corremos las migraciones con los seeders correspondientes
-            'shield:install',       // installamos el shield de filament
-            ['db:seed', ['--class' => 'ShieldSeeder']],  // Corremos el seeder para genrar los roles
-            'shield:super-admin',   // selecionamos el super-admin
-        ];
+        // $commands = [
+        //     ['migrate:fresh', ['--seed' => true]], // Corremos las migraciones con los seeders correspondientes
+        //     'shield:install',       // installamos el shield de filament
+        //     ['db:seed', ['--class' => 'ShieldSeeder']],  // Corremos el seeder para genrar los roles
+        //     'shield:super-admin',   // selecionamos el super-admin
+        // ];
 
         foreach ($commands as $command) {
             if (is_array($command)) {
