@@ -90,4 +90,9 @@ class Device extends Model
     {
         return $this->belongsTo(Motherboard::class);
     }
+
+    public function deviceStatus(): BelongsTo
+    {
+        return $this->belongsTo(DeviceStatus::class, 'device_status_id');
+    }
 }
