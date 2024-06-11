@@ -92,24 +92,24 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return filament()->getUserAvatarUrl($this);
     }
 
-    public static function getPermissionPrefixes(): array
-    {
-        return [
-            'view',
-            'view_any',
-            'create',
-            'update',
-            'restore',
-            'restore_any',
-            'replicate',
-            'reorder',
-            'delete',
-            'delete_any',
-            'force_delete',
-            'force_delete_any',
-            'assign'
-        ];
-    }
+    // public static function getPermissionPrefixes(): array
+    // {
+    //     return [
+    //         'view',
+    //         'view_any',
+    //         'create',
+    //         'update',
+    //         'restore',
+    //         'restore_any',
+    //         'replicate',
+    //         'reorder',
+    //         'delete',
+    //         'delete_any',
+    //         'force_delete',
+    //         'force_delete_any',
+    //         'assign'
+    //     ];
+    // }
 
     public function idDocument(): BelongsTo
     {

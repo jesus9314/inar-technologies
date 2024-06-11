@@ -23,6 +23,6 @@ class TestController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return Service::with('product')->find(1)->product->category_id;
+        return User::find(1)->getAllPermissions();
     }
 }

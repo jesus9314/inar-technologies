@@ -21,6 +21,7 @@ use App\Models\RamFormFactor;
 use App\Models\User;
 use Awcodes\TableRepeater\Components\TableRepeater;
 use Awcodes\TableRepeater\Header;
+use Carbon\Carbon;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -38,6 +39,7 @@ use Filament\Forms\Set;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 trait DevicesTraitForms
 {
@@ -591,8 +593,16 @@ trait DevicesTraitForms
                                 ->searchable()
                                 ->preload(),
                             FileUpload::make('speccy_snapshot_url')
+                                ->downloadable()
+                                ->preserveFilenames()
                                 ->label('Snaapshot Speccy')
                                 ->directory('snapshots')
+                                ->getUploadedFileNameForStorageUsing(
+                                    function (TemporaryUploadedFile $file): string {
+                                        $date = Carbon::now()->format('Ymd_His');
+                                        return str($file->getClientOriginalName())->prepend("{$date}-");
+                                    }
+                                )
                                 ->helperText(str('De la aplicación **Speccy** guarda un snapshot en la seccion **file**->**save snapshot** y guardala aquí.')->inlineMarkdown()->toHtmlString())
                                 ->columnSpanFull(),
                         ])
@@ -755,7 +765,7 @@ trait DevicesTraitForms
 
     protected static function get_device_name(Get $get, Set $set): void
     {
-        if (!is_null($get('device_type_id')) && !is_null($get('customer_id')) && !is_null($get('processor_id'))) {
+        if (!is_null($get('device_type_id')) && !is_null($get('customer_id'))) {
             //obtener el símbol del dispositivo y poner solo en mayúsculas y filtrar tipo slug
             $deviceDesc = strtoupper(DeviceType::find($get('device_type_id'))->symbol);
 

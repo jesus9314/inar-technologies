@@ -75,6 +75,7 @@ trait UserForms
                 ->label('Tipo de documento')
                 ->relationship('idDocument', 'description')
                 ->afterStateUpdated(fn (Get $get, Set $set) => self::set_data_from_api($get, $set))
+                ->default(2)
                 ->searchable()
                 ->preload()
                 ->live(),
@@ -400,9 +401,9 @@ trait UserForms
             if ($document_type != null && $document_number != null) {
                 if ($document_type == 2) {
                     $data = getDataFromDni($document_number);
-                    $set('name', $data->nombres);
-                    $set('last_name_m', $data->apellidoMaterno);
-                    $set('last_name_p', $data->apellidoPaterno);
+                    $set('name', capitalizeEachWord($data->nombres));
+                    $set('last_name_m', capitalizeEachWord($data->apellidoMaterno));
+                    $set('last_name_p', capitalizeEachWord($data->apellidoPaterno));
                 } elseif ($document_type == 4) {
                     $data = getDataFromRuc($document_number);
                     $set('name', $data->razonSocial);

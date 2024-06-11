@@ -105,15 +105,20 @@ class UserResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->hidden(
+                            fn ($record) => !User::find($record->id)->hasRole('super_admin')
+                        ),
                     Tables\Actions\Action::make('activities')
+                        ->hidden(
+                            fn ($record) => !User::find(auth()->user()->id)->can('activities_user')
+                        )
                         ->url(fn ($record) => UserResource::getUrl('activities', ['record' => $record]))
                         ->icon('heroicon-c-bell-alert'),
                     Tables\Actions\DeleteAction::make()
-                        ->hidden(function ($record) {
-                            $user = User::find($record->id);
-                            return $user->hasRole('super_admin');
-                        }),
+                        ->hidden(
+                            fn ($record) => $record->id == 1 ? true : false
+                        ),
                 ])
             ])
             ->bulkActions([

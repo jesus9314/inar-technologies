@@ -88,3 +88,15 @@ if (!function_exists('getUserAuth')) {
     }
 }
 
+/**
+ * Retorna cualquier oración convertida en letra capital cada palabra
+ */
+if (!function_exists('capitalizeEachWord')) {
+    function capitalizeEachWord($string): string
+    {
+        // Convertir toda la cadena a minúsculas con soporte para caracteres multibyte
+        $string = mb_strtolower($string, 'UTF-8');
+        // Convertir la primera letra de cada palabra a mayúsculas
+        return mb_convert_case($string, MB_CASE_TITLE, 'UTF-8');
+    }
+}
