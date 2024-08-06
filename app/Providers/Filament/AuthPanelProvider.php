@@ -32,6 +32,7 @@ use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
+use TomatoPHP\FilamentPWA\FilamentPWAPlugin;
 
 class AuthPanelProvider extends PanelProvider
 {
@@ -77,6 +78,7 @@ class AuthPanelProvider extends PanelProvider
                 SetTheme::class,
             ])
             ->plugins([
+                FilamentPWAPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)

@@ -37,6 +37,7 @@
         "spatie/laravel-backup": "^8.8",
         "spatie/laravel-package-tools": "^1.16",
         "swisnl/filament-backgrounds": "^1.1",
+        "tomatophp/filament-pwa": "^1.0",
         "ysfkaya/filament-phone-input": "^2.3",
         "z3d0x/filament-logger": "^0.7.1"
     },

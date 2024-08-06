@@ -1,0 +1,50 @@
+<?php
+
+return [
+    "sections" => [
+        "general" => "General",
+        "style" => "Estilo",
+        "icons" => "Iconos",
+        "splash" => "Pantallas de bienvenida",
+        "shortcuts" => "Atajos",
+    ],
+    "settings" => [
+        "title" => "Aplicación web progresiva",
+        "description" => "Configura tu aplicación web progresiva",
+    ],
+    "form" => [
+        "pwa_app_name" => "Nombre de la aplicación",
+        "pwa_short_name" => "Nombre corto",
+        "pwa_start_url" => "URL de inicio",
+        "pwa_background_color" => "Color de fondo",
+        "pwa_theme_color" => "Color del tema",
+        "pwa_status_bar" => "Barra de estado",
+        "pwa_display" => "Mostrar",
+        "pwa_orientation" => "Orientación",
+        "pwa_icons_72x72" => "72x72 Icono",
+        "pwa_icons_96x96" => "96x96 Icono",
+        "pwa_icons_128x128" => "128x128 Icono",
+        "pwa_icons_144x144" => "144x144 Icono",
+        "pwa_icons_152x152" => "152x152 Icono",
+        "pwa_icons_192x192" => "192x192 Icono",
+        "pwa_icons_384x384" => "384x384 Icono",
+        "pwa_icons_512x512" => "512x512 Icono",
+        "pwa_splash_640x1136" => "640x1136 Chapoteo",
+        "pwa_splash_750x1334" => "750x1334 Chapoteo",
+        "pwa_splash_828x1792" => "828x1792 Chapoteo",
+        "pwa_splash_1125x2436" => "1125x2436 Chapoteo",
+        "pwa_splash_1242x2208" => "1242x2208 Chapoteo",
+        "pwa_splash_1242x2688" => "1242x2688 Chapoteo",
+        "pwa_splash_1536x2048" => "1536x2048 Chapoteo",
+        "pwa_splash_1668x2224" => "1668x2224 Chapoteo",
+        "pwa_splash_1668x2388" => "1668x2388 Chapoteo",
+        "pwa_splash_2048x2732" => "2048x2732 Chapoteo",
+        "pwa_shortcuts" => "Atajos",
+        "pwa_shortcuts_name" => "Nombre",
+        "pwa_shortcuts_description" => "Descripción",
+        "pwa_shortcuts_url" => "URL",
+        "pwa_shortcuts_icon" => "Icono",
+
+
+    ],
+];
