@@ -48,6 +48,22 @@ trait DevicesTraitForms
     /**
      * DeviceStateResource
      */
+    protected static function device_state_form(Form $form): Form
+    {
+        return $form->schema(self::device_state_schema());
+    }
+
+    protected static function device_state_schema(): array
+    {
+        return [
+            TextInput::make('name')
+                ->hiddenLabel()
+                ->placeholder('Nombre')
+                ->columnSpanFull()
+                ->required()
+                ->maxLength(255),
+        ];
+    }
 
     /**
      * StorageResourcec
@@ -592,7 +608,8 @@ trait DevicesTraitForms
                                 ->numeric(),
                             Select::make('device_state_id')
                                 ->label('Estado del dispositivo')
-                                ->relationship('deviceState', 'id')
+                                ->relationship('deviceState', 'name')
+                                ->createOptionForm(self::device_state_schema())
                                 ->native(false)
                                 ->searchable()
                                 ->preload(),

@@ -10,6 +10,7 @@ use Database\Seeders\CategorySeeder;
 use Database\Seeders\CountrySeeder;
 use Database\Seeders\CurrencySeeder;
 use Database\Seeders\DepartmentSeeder;
+use Database\Seeders\DeviceStateSeeder;
 use Database\Seeders\DeviceTypeSeeder;
 use Database\Seeders\DistrictSeeder;
 use Database\Seeders\GraphicManufacturerSeeder;
@@ -95,6 +96,7 @@ trait DatabaseSeederTrait
             GraphicManufacturerSeeder::class,
             GraphicSerieSeeder::class,
             GraphicSufixSeeder::class,
+            DeviceStateSeeder::class,
         ];
     }
 

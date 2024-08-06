@@ -73,8 +73,6 @@ php artisan project:install --fresh
 
 </font>
 
-Este comando se encargará de ejecutar las migraciones, sembrar la base de datos y cualquier otra configuración necesaria.
-
 ### Optimizat el proyecto
 
 Para optimizar todo proyecto de filament son necesarios los siguientes comandos:

@@ -15,6 +15,7 @@ class DeviceStateSeeder extends Seeder
     public function run(): void
     {
         $statuses = [
+            'Nuevo',
             'Pendiente de Revisión',
             'En Diagnóstico',
             'En Espera de Repuestos',

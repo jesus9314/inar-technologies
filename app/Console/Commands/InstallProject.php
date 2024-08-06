@@ -46,14 +46,6 @@ class InstallProject extends Command
             ];
         }
 
-        // List of commands to run
-        // $commands = [
-        //     ['migrate:fresh', ['--seed' => true]], // Corremos las migraciones con los seeders correspondientes
-        //     'shield:install',       // installamos el shield de filament
-        //     ['db:seed', ['--class' => 'ShieldSeeder']],  // Corremos el seeder para genrar los roles
-        //     'shield:super-admin',   // selecionamos el super-admin
-        // ];
-
         foreach ($commands as $command) {
             if (is_array($command)) {
                 $this->call($command[0], $command[1]);
