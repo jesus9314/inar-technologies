@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\MeetingObserver;
+use Carbon\Carbon;
 use Guava\Calendar\Contracts\Eventable;
 use Guava\Calendar\ValueObjects\Event;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -34,12 +35,13 @@ class Meeting extends Model implements Eventable
 
     public function toEvent(): array | Event
     {
+        $start_hour = Carbon::createFromFormat('Y-m-d H:i:s', $this->starts_at)->format('g:i A');
         return Event::make($this)
             ->title($this->title)
             ->start($this->starts_at)
             ->end($this->ends_at)
             ->durationEditable(false)
-            ->extendedProp('participants', $this->users()->count())
+            ->extendedProps(['participants' => $this->users()->count(), 'start_hour' => $start_hour])
         ;
     }
 }

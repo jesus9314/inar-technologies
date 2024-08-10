@@ -10,8 +10,8 @@
         <span class="event-name" x-text="event.title">
         </span>
         </span>
-        <span class="time" x-text="timeText">
+        <span class="time" x-text="event.extendedProps.start_hour">
         </span>
-        <span><span x-text="event.extendedProps.participants"></span> participants</span>
+        <span><span x-text="event.extendedProps.participants"></span> participantes</span>
     </div>
 </div>
