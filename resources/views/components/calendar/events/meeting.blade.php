@@ -1,17 +1,13 @@
-{{-- <div class="flex flex-col">
-    <span x-text="timeText"></span>
-    <span x-text="event.title"></span>
-    <span><span x-text="event.extendedProps.participants"></span> participants</span>
-</div> --}}
-
-
-<div class="bottom flex-grow h-30 py-1 w-full cursor-pointer">
-    <div class="event bg-blue-400 text-white rounded p-1 text-sm mb-1 flex flex-col">
-        <span class="event-name" x-text="event.title">
+<div id="calendar-event"
+    class="event text-gray-500 rounded-md text-xs flex flex-col gap-[2px] justify-between items-start border-l-4 px-1 ml-[-1rem]"
+    :class="event.extendedProps.borderColor">
+    <span class="font-extralight tracking-tighter leading-none capitalize" x-text="event.title">
+    </span>
+    <div class="font-semibold tracking-tighter" :class="event.extendedProps.textColor">
+        <span x-text="event.extendedProps.start_hour">
         </span>
+        -
+        <span x-text="event.extendedProps.end_hour">
         </span>
-        <span class="time" x-text="event.extendedProps.start_hour">
-        </span>
-        <span><span x-text="event.extendedProps.participants"></span> participantes</span>
     </div>
 </div>

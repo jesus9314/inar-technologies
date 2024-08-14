@@ -11,14 +11,14 @@ class SitesSettings extends SettingsMigration
         $this->migrator->add('sites.site_keywords', 'Graphics, Marketing, Programming');
         $this->migrator->add('sites.site_profile', '');
         $this->migrator->add('sites.site_logo', '');
-        $this->migrator->add('sites.site_author', 'Fady Mondy');
-        $this->migrator->add('sites.site_address', 'Cairo, Egypt');
+        $this->migrator->add('sites.site_author', 'Jesus Inchicaque');
+        $this->migrator->add('sites.site_address', 'Lima, Perú');
         $this->migrator->add('sites.site_email', 'info@3x1.io');
         $this->migrator->add('sites.site_phone', '+201207860084');
-        $this->migrator->add('sites.site_phone_code', '+2');
-        $this->migrator->add('sites.site_location', 'Egypt');
-        $this->migrator->add('sites.site_currency', 'EGP');
-        $this->migrator->add('sites.site_language', 'English');
+        $this->migrator->add('sites.site_phone_code', '+51');
+        $this->migrator->add('sites.site_location', 'Perú');
+        $this->migrator->add('sites.site_currency', 'PEN');
+        $this->migrator->add('sites.site_language', 'Spanish');
         $this->migrator->add('sites.site_social', []);
     }
 }
