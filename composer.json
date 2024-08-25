@@ -21,6 +21,7 @@
         "geo-sot/filament-env-editor": "^0.0.2",
         "guava/calendar": "^1.4",
         "hasnayeen/themes": "^3.0",
+        "husam-tariq/filament-timepicker": "^3.0",
         "icetalker/filament-stepper": "^1.2",
         "icetalker/filament-table-repeater": "^1.2",
         "illuminate/contracts": "^11.3",

@@ -8,7 +8,9 @@ use Illuminate\Support\Collection;
 use Filament\Forms\Form;
 use Guava\Calendar\Actions\CreateAction;
 use Carbon\Carbon;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
+use Guava\Calendar\Actions\EditAction;
 use Guava\Calendar\Widgets\CalendarWidget;
 
 class Calendar extends CalendarWidget
@@ -45,18 +47,38 @@ class Calendar extends CalendarWidget
         ];
     }
 
+    // public function getDateClickContextMenuActions(): array
+    // {
+    //     return [
+    //         CreateAction::make('ctxCreateMeeting')
+    //             ->model(Meeting::class)
+    //             ->label('Crear Reunión')
+    //             ->mountUsing(function (Form $form, array $arguments) {
+                    
+    //                 $date = data_get($arguments, 'dateStr');
+    //                 // dd(Carbon::parse($date)->format('Y-m-d'));
+    //                 if ($date) {
+    //                     $form->fill([
+    //                         'custom_schedules' => false,
+    //                         'date' => Carbon::parse($date)->format('M d, Y'),
+    //                     ]);
+    //                 }
+    //             }),
+    //     ];
+    // }
+
     public function getDateClickContextMenuActions(): array
     {
         return [
             CreateAction::make('ctxCreateMeeting')
                 ->model(Meeting::class)
-                ->label('Crear Reunión')
                 ->mountUsing(function (Form $form, array $arguments) {
                     $date = data_get($arguments, 'dateStr');
+
                     if ($date) {
                         $form->fill([
-                            'custom_schedules' => false,
-                            'date' => Carbon::parse($date),
+                            'starts_at' => Carbon::make($date)->setHour(12),
+                            'ends_at' => Carbon::make($date)->setHour(13),
                         ]);
                     }
                 }),

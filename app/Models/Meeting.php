@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Observers\MeetingObserver;
 use App\Traits\Models\MeetingTrait;
 use App\Traits\Widgets\CalendarTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
 use Guava\Calendar\Contracts\Eventable;
 use Guava\Calendar\ValueObjects\Event;
@@ -35,12 +36,23 @@ class Meeting extends Model implements Eventable
         return $this->belongsToMany(User::class);
     }
 
+    // public function toEvent(): array | Event
+    // {
+    //     return Event::make($this)
+    //         ->title($this->title)
+    //         ->start($this->starts_at)
+    //         ->end($this->ends_at)
+    //         ->durationEditable(false)
+    //         ->extendedProp('participants', $this->users()->count())
+    //     ;
+    // }
+
     public function toEvent(): array | Event
     {
         $data = [
             'bgColor' => self::getBgColorByDate($this->ends_at),
             'extendedProps' => [
-                'start_hour' => self::getHourFormat($this->starts_at),
+                'starts_at' => self::getHourFormat($this->starts_at),
                 'end_hour' => self::getHourFormat($this->ends_at),
                 'borderColor' => self::getBorderClass($this->ends_at),
                 'textColor' => self::getHourColor($this->ends_at),
@@ -49,8 +61,8 @@ class Meeting extends Model implements Eventable
         return Event::make($this)
             ->backgroundColor($data['bgColor'])
             ->title($this->title)
-            ->start($this->starts_at)
-            ->end($this->ends_at)
+            ->start(self::getHourFormat($this->starts_at))
+            ->end(self::getHourFormat($this->ends_at))
             ->durationEditable(false)
             ->extendedProps($data['extendedProps'])
         ;

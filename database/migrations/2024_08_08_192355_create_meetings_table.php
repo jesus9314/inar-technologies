@@ -19,10 +19,11 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
+
             $table->timestamps();
         });
 
-        Schema::create('meeting_user', function(Blueprint $table){
+        Schema::create('meeting_user', function (Blueprint $table) {
             $table->foreignIdFor(Meeting::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
         });

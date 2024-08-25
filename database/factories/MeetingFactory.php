@@ -18,8 +18,7 @@ class MeetingFactory extends Factory
     public function definition(): array
     {
         $startsAt = Carbon::make($this->faker->dateTimeBetween('now', '+1 week'))
-            ->setMinutes($this->faker->randomElement([0, 30]))
-        ;
+            ->setMinutes($this->faker->randomElement([0, 30]));
         $endsAt = $startsAt->clone()->addHours($this->faker->numberBetween(1, 3));
 
         return [
@@ -27,6 +26,8 @@ class MeetingFactory extends Factory
             'description' => $this->faker->paragraph,
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
+            'start_time' => $this->faker->randomElement(['09', '11', '13', '15', '17']),
+            'custom_schedules' => $this->faker->boolean()
         ];
     }
 }

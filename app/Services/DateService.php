@@ -19,6 +19,9 @@ class DateService
         $reservations = Meeting::whereDate('starts_at', $date)
             ->pluck('starts_at')
             ->toArray();
+        $reservations = array_map(function ($reservation) {
+            return Carbon::parse($reservation);
+        }, $reservations);
 
         $availableTimes = $times->filter(function ($time) use ($reservations) {
             return ! in_array($time, $reservations);

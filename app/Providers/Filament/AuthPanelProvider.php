@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\BackupsPage;
+use App\Models\User;
 use Awcodes\FilamentGravatar\GravatarPlugin;
 use Awcodes\FilamentGravatar\GravatarProvider;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -26,6 +27,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
@@ -87,7 +89,7 @@ class AuthPanelProvider extends PanelProvider
                         hasAvatars: true, // Enables the avatar upload form component (default = fals9e)
                         slug: 'my-profile' // Sets the slug for the profile page (default = 'my-profile')
                     )
-                    ->avatarUploadComponent(fn () => FileUpload::make('avatar_url')
+                    ->avatarUploadComponent(fn() => FileUpload::make('avatar_url')
                         ->avatar()
                         ->imageEditor()
                         ->directory('avatars')

@@ -3,6 +3,7 @@
 namespace App\Traits\Forms;
 
 use App\Models\Api;
+use App\Models\Customer;
 use App\Models\User;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
@@ -17,6 +18,8 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Awcodes\TableRepeater\Components\TableRepeater;
 use Awcodes\TableRepeater\Header;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Rawilk\FilamentPasswordInput\Password;
 use Illuminate\Support\Str;
@@ -68,13 +71,13 @@ trait UserForms
                     self::validate_one_field($livewire, $component);
                     self::set_data_from_api($get, $set);
                 })
-                ->helperText(fn () => self::getHelperText())
+                ->helperText(fn() => self::getHelperText())
                 ->required()
                 ->maxLength(255),
             Select::make('id_document_id')
                 ->label('Tipo de documento')
                 ->relationship('idDocument', 'description')
-                ->afterStateUpdated(fn (Get $get, Set $set) => self::set_data_from_api($get, $set))
+                ->afterStateUpdated(fn(Get $get, Set $set) => self::set_data_from_api($get, $set))
                 ->default(2)
                 ->searchable()
                 ->preload()
@@ -85,11 +88,11 @@ trait UserForms
                 ->maxLength(255),
             TextInput::make('last_name_m')
                 ->label('Apellido Materno')
-                ->hidden(fn (Get $get) => $get('id_document_id') == 4)
+                ->hidden(fn(Get $get) => $get('id_document_id') == 4)
                 ->maxLength(255),
             TextInput::make('last_name_p')
                 ->label('Apellido Paterno')
-                ->hidden(fn (Get $get) => $get('id_document_id') == 4)
+                ->hidden(fn(Get $get) => $get('id_document_id') == 4)
                 ->maxLength(255),
             FileUpload::make('avatar_url')
                 ->label('Foto de Perfil')
@@ -106,7 +109,7 @@ trait UserForms
         return [
             TextInput::make('email')
                 ->email()
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->unique(ignoreRecord: true)
                 ->required()
                 ->disabledOn('edit')
@@ -142,13 +145,13 @@ trait UserForms
                     self::set_data_from_api($get, $set);
                     self::validate_one_field($livewire, $component);
                 })
-                ->helperText(fn () => self::getHelperText())
+                ->helperText(fn() => self::getHelperText())
                 ->required()
                 ->maxLength(255),
             Select::make('id_document_id')
                 ->label('Tipo de documento')
                 ->relationship('idDocument', 'description')
-                ->afterStateUpdated(fn (Get $get, Set $set) => self::set_data_from_api($get, $set))
+                ->afterStateUpdated(fn(Get $get, Set $set) => self::set_data_from_api($get, $set))
                 ->searchable()
                 ->preload()
                 ->live(),
@@ -158,11 +161,11 @@ trait UserForms
                 ->maxLength(255),
             TextInput::make('last_name_m')
                 ->label('Apellido Materno')
-                ->hidden(fn (Get $get) => $get('id_document_id') == 4)
+                ->hidden(fn(Get $get) => $get('id_document_id') == 4)
                 ->maxLength(255),
             TextInput::make('last_name_p')
                 ->label('Apellido Paterno')
-                ->hidden(fn (Get $get) => $get('id_document_id') == 4)
+                ->hidden(fn(Get $get) => $get('id_document_id') == 4)
                 ->maxLength(255),
         ];
     }
@@ -173,10 +176,10 @@ trait UserForms
             TextInput::make('email')
                 ->email()
                 ->unique(ignoreRecord: true)
-                ->required()
+                // ->required()
                 ->live(onBlur: true)
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
-                ->disabledOn('edit')
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                // ->disabledOn('edit')
                 ->maxLength(255),
             Password::make('password')
                 ->password()
@@ -187,7 +190,7 @@ trait UserForms
                     // 'edit',
                     'view'
                 ])
-                ->required()
+                // ->required()
                 ->maxLength(12),
             FileUpload::make('avatar_url')
                 ->label('Foto de Perfil')
@@ -225,7 +228,7 @@ trait UserForms
                     ]),
                 Step::make('Direcciones')
                     ->schema(self::location_form()),
-                Step::make('Información adicional')
+                Step::make("Teléfonos & Email's")
                     ->schema(self::get_aditional_info())
             ])->columnSpanFull()
                 ->skippable(),
@@ -238,8 +241,11 @@ trait UserForms
             TableRepeater::make('phones')
                 ->label('Teléfonos')
                 ->headers([
-                    Header::make('Número'),
-                    Header::make('Descripción')
+                    Header::make('Número')
+                        ->markAsRequired(),
+                    Header::make('Descripción'),
+                    Header::make('whatsapp'),
+                    Header::make('Enlace')
                 ])
                 ->emptyLabel('Aún no hay números telefónicos asociados')
                 ->relationship()
@@ -247,10 +253,33 @@ trait UserForms
                 ->schema([
                     PhoneInput::make('number')
                         ->label('Número')
-                        ->required(),
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn(Get $get, Set $set) => self::getWspLink($get, $set)),
                     TextInput::make('description')
                         ->label('Descripción')
                         ->columnSpanFull(),
+                    Toggle::make('wsp')
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn(Get $get, Set $set) => self::getWspLink($get, $set)),
+                    TextInput::make('wsp_link')
+                        ->disabled()
+                        ->dehydrated()
+                        ->live(onBlur: true)
+                        ->url()
+                        ->suffixAction(
+                            Action::make('openLink')
+                                ->icon('heroicon-o-chat-bubble-bottom-center-text')
+                                ->url(fn($state) => $state)
+                                ->extraAttributes([
+                                    'target' => '_blank',
+                                    'title' => 'Chatea con tu cliente'
+                                ])
+                                ->disabled(fn($state) => $state ? false : true)
+                            // ->action(function($state){
+                            //     return redirect()->away($state);
+                            // })
+                        )
                 ]),
             TableRepeater::make('emails')
                 ->label('Correos Electrónicos')
@@ -269,6 +298,21 @@ trait UserForms
                         ->maxLength(255),
                 ])
         ];
+    }
+
+    protected static function getWspLink(Get $get, Set $set): void
+    {
+        if ($get('wsp')) {
+            $phone_number = $get('number');
+            if ($phone_number) {
+                $link = "https://wa.me/{$phone_number}";
+                $set('wsp_link', $link);
+            } else {
+                $set('wsp_link', '');
+            }
+        } else {
+            $set('wsp_link', '');
+        }
     }
 
     public static function location_form(): array
@@ -303,10 +347,8 @@ trait UserForms
             $location_input = TextInput::make('address')
                 ->label('Direccion');
             $headers = [
-                Header::make('Descripción')
-                    ->markAsRequired(),
-                Header::make('Referencia')
-                    ->markAsRequired(),
+                Header::make('Descripción'),
+                Header::make('Referencia'),
                 // Header::make('Latitud'),
                 // Header::make('Longitud'),
                 // Header::make('Dirección'),
@@ -377,7 +419,7 @@ trait UserForms
                 ->reactive()
                 ->lazy()
                 ->columns(2)
-                ->itemLabel(fn (array $state): ?string => Str::upper($state['description']) ?? null)
+                ->itemLabel(fn(array $state): ?string => Str::upper($state['description']) ?? null)
         ];
     }
 

@@ -15,6 +15,12 @@ class Phone extends Model
         'description',
         'phoneable_id',
         'phoneable_type',
+        'wsp',
+        'wsp_link'
+    ];
+
+    protected $casts = [
+        'wsp' => 'boolean'
     ];
 
     public function phoneable(): MorphTo

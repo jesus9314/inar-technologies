@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Meeting;
 use App\Models\User;
 use App\Traits\Seeders\DatabaseSeederTrait;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,5 +27,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(self::getSeeders());
+
+        // Collection::times(5, function () {
+        //     Meeting::factory()
+        //         ->hasUsers(random_int(1, 3))
+        //         ->create()
+        //     ;
+        // });
     }
 }

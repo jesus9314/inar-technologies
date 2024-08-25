@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
             $table->string('number');
+            $table->boolean('wsp');
+            $table->string('wsp_link');
             $table->text('description')->nullable();
             $table->morphs('phoneable');
             $table->timestamps();

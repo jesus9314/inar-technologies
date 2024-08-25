@@ -50,4 +50,13 @@ trait MeetingTrait
     {
         return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('g:i A');
     }
+
+    protected static function getFullDate(string $fecha, string $hora): Carbon
+    {
+        // Combina la fecha y la hora en un formato que Carbon pueda entender
+        $fechaHoraString = $fecha . ' ' . $hora;
+
+        // Crea un objeto Carbon a partir de la cadena combinada
+        return Carbon::createFromFormat('Y-m-d H:i', $fechaHoraString);
+    }
 }
