@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\Pages\CustomerActivityLogPage;
 use App\Models\Customer;
+use App\Models\Device;
+use App\Traits\Forms\CommonForms;
 use App\Traits\Forms\UserForms;
 use Cheesegrits\FilamentGoogleMaps\Concerns\InteractsWithMaps;
 use Filament\Actions\Action;
@@ -19,7 +21,7 @@ use Filament\Tables\Table;
 
 class CustomerResource extends Resource
 {
-    use UserForms, InteractsWithMaps;
+    use CommonForms, InteractsWithMaps;
 
     protected static ?string $model = Customer::class;
 
@@ -68,7 +70,7 @@ class CustomerResource extends Resource
                     ViewAction::make(),
                     EditAction::make(),
                     DeleteAction::make(),
-                    Action::make('activities')->url(fn ($record) => CustomerResource::getUrl('activities', ['record' => $record])),
+                    Action::make('activities')->url(fn($record) => CustomerResource::getUrl('activities', ['record' => $record])),
                 ])
             ])
             ->bulkActions([

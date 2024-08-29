@@ -6,6 +6,7 @@ use App\Filament\Clusters\Devices;
 use App\Filament\Clusters\Devices\Resources\DeviceResource\Pages;
 use App\Filament\Clusters\Devices\Resources\DeviceResource\RelationManagers;
 use App\Models\Device;
+use App\Traits\Forms\CommonForms;
 use App\Traits\Forms\DevicesTraitForms;
 use App\Traits\TraitForms;
 use Filament\Forms;
@@ -27,7 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DeviceResource extends Resource
 {
-    use DevicesTraitForms;
+    use CommonForms;
 
     protected static ?string $model = Device::class;
 

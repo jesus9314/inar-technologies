@@ -19,6 +19,7 @@ use Filament\Forms\Set;
 use Awcodes\TableRepeater\Components\TableRepeater;
 use Awcodes\TableRepeater\Header;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Rawilk\FilamentPasswordInput\Password;
@@ -167,6 +168,17 @@ trait UserForms
                 ->label('Apellido Paterno')
                 ->hidden(fn(Get $get) => $get('id_document_id') == 4)
                 ->maxLength(255),
+            Section::make('Dispositivos')
+                ->description('Registra y asocia los dispositivos al usuario')
+                ->schema([
+                    select::make('devices')
+                        ->relationship(name: 'devices', titleAttribute: 'name')
+                        ->multiple()
+                        ->preload()
+                        ->searchable()
+                        ->native(false)
+                        // ->createOptionForm(self::device_schema())
+                ])
         ];
     }
 
@@ -211,7 +223,7 @@ trait UserForms
     {
         return [
             Wizard::make([
-                Step::make('Información del cliente')
+                Step::make('Información Básica')
                     ->schema(self::get_costumer_personal_info_form())
                     ->columns(2),
                 Step::make('Información de la cuenta')
@@ -229,13 +241,27 @@ trait UserForms
                 Step::make('Direcciones')
                     ->schema(self::location_form()),
                 Step::make("Teléfonos & Email's")
-                    ->schema(self::get_aditional_info())
+                    ->schema(self::get_aditional_info()),
+                // Step::make('Dispositivos')
+                //     ->schema(self::get_devices_form())
             ])->columnSpanFull()
                 ->skippable(),
         ];
     }
 
-    public static function get_aditional_info(): array
+    protected static function get_devices_form(): array
+    {
+        return [
+            select::make('devices')
+                ->relationship(name: 'devices', titleAttribute: 'name')
+                ->multiple()
+                ->preload()
+                ->searchable()
+                ->native(false)
+        ];
+    }
+
+    protected static function get_aditional_info(): array
     {
         return [
             TableRepeater::make('phones')

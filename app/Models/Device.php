@@ -71,9 +71,14 @@ class Device extends Model
         return $this->hasMany(DeviceStorage::class);
     }
 
-    public function customer(): BelongsTo
+    public function customers(): HasMany
     {
-        return $this->belongsTo(Customer::class);
+        return $this->hasMany(Customer::class);
+    }
+
+    public function customerDevice(): HasMany
+    {
+        return $this->hasMany(CustomerDevice::class);
     }
 
     public function deviceType(): BelongsTo
@@ -90,5 +95,4 @@ class Device extends Model
     {
         return $this->belongsTo(Motherboard::class);
     }
-
 }

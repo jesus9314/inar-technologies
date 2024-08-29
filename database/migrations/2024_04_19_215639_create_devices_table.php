@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('slug');
+            $table->string('slug')->nullable();
             $table->string('identifier')->nullable();
             $table->text('description')->nullable();
             $table->text('aditional_info')->nullable();
