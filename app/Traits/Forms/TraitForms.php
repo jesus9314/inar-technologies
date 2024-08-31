@@ -18,33 +18,33 @@ use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 
 trait TraitForms
 {
-    /**
-     * ProcessorSufixResource
-     */
-    protected static function processor_sufix_form(Form $form): Form
-    {
-        return $form->schema(self::processor_sufix_schema());
-    }
+    // /**
+    //  * ProcessorSufixResource
+    //  */
+    // protected static function processor_sufix_form(Form $form): Form
+    // {
+    //     return $form->schema(self::processor_sufix_schema());
+    // }
 
-    protected static function processor_sufix_schema(): array
-    {
-        return [
-            TextInput::make('name')
-                ->label('Sufijo')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('description')
-                ->label('Descripcion')
-                ->maxLength(255),
-            Select::make('processor_manufacturer_id')
-                ->relationship('processor_manufacturer', 'name')
-                ->label('Fabricante')
-                ->preload()
-                ->searchable()
-                ->native(false)
-                ->required(),
-        ];
-    }
+    // protected static function processor_sufix_schema(): array
+    // {
+    //     return [
+    //         TextInput::make('name')
+    //             ->label('Sufijo')
+    //             ->required()
+    //             ->maxLength(255),
+    //         TextInput::make('description')
+    //             ->label('Descripcion')
+    //             ->maxLength(255),
+    //         Select::make('processor_manufacturer_id')
+    //             ->relationship('processor_manufacturer', 'name')
+    //             ->label('Fabricante')
+    //             ->preload()
+    //             ->searchable()
+    //             ->native(false)
+    //             ->required(),
+    //     ];
+    // }
 
     /**
      * ProcessorConditionResource

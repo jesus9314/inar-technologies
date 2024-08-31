@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Meeting;
-use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,15 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->foreignId('customer_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
-
             $table->timestamps();
-        });
-
-        Schema::create('meeting_user', function (Blueprint $table) {
-            $table->foreignIdFor(Meeting::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
         });
     }
 

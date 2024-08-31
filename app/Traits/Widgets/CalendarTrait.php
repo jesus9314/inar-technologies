@@ -2,14 +2,9 @@
 
 namespace App\Traits\Widgets;
 
-use App\Services\DateService;
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
+use App\Traits\Forms\CommonForms;
 use Filament\Forms\Components;
-use Carbon\Carbon;
-use Filament\Forms\Components\Component;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use FilamentTiptapEditor\TiptapEditor;
-use HusamTariq\FilamentTimePicker\Forms\Components\TimePickerField;
 
 trait CalendarTrait
 {
@@ -21,23 +16,41 @@ trait CalendarTrait
     {
         return [
             Components\TextInput::make('title')
+                ->label('Título')
                 ->required(),
-            Components\RichEditor::make('description'),
             Components\Group::make([
                 Components\DateTimePicker::make('starts_at')
+                    ->label('Inicio')
                     ->native(false)
                     ->seconds(false)
                     ->required(),
                 Components\DateTimePicker::make('ends_at')
+                    ->label('Final')
                     ->native(false)
                     ->seconds(false)
                     ->required(),
             ])->columns(),
-            Components\Select::make('users')
-                ->relationship('users', 'name')
+            TinyEditor::make('description')
+                ->label('Descripción')
+                ->profile('default')
+                ->resize('both'),
+            Components\Select::make('customer')
+                ->label('Dueño')
                 ->searchable()
                 ->preload()
-                ->multiple(),
+                ->native(false)
+                ->getSearchResultsUsing(function (string $search) {
+                    return \App\Models\Customer::query()
+                        ->where('name', 'like', "%{$search}%")
+                        ->orWhere('document_number', 'like', "%{$search}%")
+                        ->get()
+                        ->mapWithKeys(function ($item) {
+                            return [$item->id => $item->display_name];
+                        });
+                })
+                ->getOptionLabelUsing(function ($value) {
+                    return \App\Models\Customer::find($value)?->display_name;
+                })
         ];
     }
 }

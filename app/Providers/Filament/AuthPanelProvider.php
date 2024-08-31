@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\BackupsPage;
+use App\Filament\Widgets\CustomerStats;
+use app\Filament\Widgets\MyCalendar;
 use App\Models\User;
 use Awcodes\FilamentGravatar\GravatarPlugin;
 use Awcodes\FilamentGravatar\GravatarProvider;
@@ -62,7 +64,9 @@ class AuthPanelProvider extends PanelProvider
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->widgets([
                 Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
+                // CustomerStats::class,
+                Widgets\FilamentInfoWidget::class,
+                // MyCalendar::class,
             ])
             // ->resources([
             //     config('filament-logger.activity_resource')
@@ -125,6 +129,7 @@ class AuthPanelProvider extends PanelProvider
                 FilamentLogManager::make(),
                 EnvironmentIndicatorPlugin::make()
             ])
+            ->unsavedChangesAlerts()
             ->authMiddleware([
                 Authenticate::class,
             ]);

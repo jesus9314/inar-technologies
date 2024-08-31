@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-// #[ObservedBy(CustomerObserver::class)]
+#[ObservedBy(CustomerObserver::class)]
 class Customer extends Model
 {
     use HasFactory, HasLogActivities;
@@ -27,6 +27,13 @@ class Customer extends Model
         'user_id',
         'id_document_id'
     ];
+
+    protected $appends = ['display_name'];
+
+    public function getDisplayNameAttribute()
+    {
+        return "{$this->name} ({$this->document_number})";
+    }
 
     public function user(): HasOne
     {
@@ -66,5 +73,10 @@ class Customer extends Model
     public function maintenances(): HasMany
     {
         return $this->hasMany(Maintenance::class);
+    }
+
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
     }
 }

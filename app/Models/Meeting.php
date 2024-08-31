@@ -12,6 +12,7 @@ use Guava\Calendar\ValueObjects\Event;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 #[ObservedBy(MeetingObserver::class)]
@@ -31,21 +32,10 @@ class Meeting extends Model implements Eventable
         'ends_at' => 'datetime',
     ];
 
-    public function users(): BelongsToMany
+    public function customer(): BelongsTo
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(Customer::class);
     }
-
-    // public function toEvent(): array | Event
-    // {
-    //     return Event::make($this)
-    //         ->title($this->title)
-    //         ->start($this->starts_at)
-    //         ->end($this->ends_at)
-    //         ->durationEditable(false)
-    //         ->extendedProp('participants', $this->users()->count())
-    //     ;
-    // }
 
     public function toEvent(): array | Event
     {

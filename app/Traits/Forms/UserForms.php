@@ -31,35 +31,35 @@ trait UserForms
     use TraitForms;
 
     //user forms
-    public static function user_form(): array
-    {
-        return [
-            Wizard::make([
-                Step::make('Información Personal')
-                    ->schema(self::get_personal_info_form())
-                    ->icon('heroicon-o-user')
-                    ->columns(2),
-                // ->description(fn () => self::get_info_desc()),
-                Step::make('Información de Cuenta')
-                    ->schema(self::get_account_info_form())
-                    ->icon('heroicon-m-book-open')
-                    ->columns(2),
-                Step::make('Rol')
-                    ->icon('heroicon-s-building-office')
-                    ->schema([
-                        Select::make('roles')
-                            ->multiple()
-                            ->preload()
-                            ->relationship('roles', 'name'),
-                    ])
-                    ->visible(getUserAuth()->hasRole('super_admin')),
-                Step::make('Información adicional')
-                    ->schema(self::get_aditional_info())
-            ])
-                ->columnSpanFull()
-                ->skippable(),
-        ];
-    }
+    // public static function user_form(): array
+    // {
+    //     return [
+    //         Wizard::make([
+    //             Step::make('Información Personal')
+    //                 ->schema(self::get_personal_info_form())
+    //                 ->icon('heroicon-o-user')
+    //                 ->columns(2),
+    //             // ->description(fn () => self::get_info_desc()),
+    //             Step::make('Información de Cuenta')
+    //                 ->schema(self::get_account_info_form())
+    //                 ->icon('heroicon-m-book-open')
+    //                 ->columns(2),
+    //             Step::make('Rol')
+    //                 ->icon('heroicon-s-building-office')
+    //                 ->schema([
+    //                     Select::make('roles')
+    //                         ->multiple()
+    //                         ->preload()
+    //                         ->relationship('roles', 'name'),
+    //                 ])
+    //                 ->visible(getUserAuth()->hasRole('super_admin')),
+    //             Step::make('Información adicional')
+    //                 ->schema(self::get_aditional_info())
+    //         ])
+    //             ->columnSpanFull()
+    //             ->skippable(),
+    //     ];
+    // }
 
     public static function get_personal_info_form(): array
     {
@@ -129,6 +129,68 @@ trait UserForms
         ];
     }
 
+    protected static function get_aditional_info(): array
+    {
+        return [
+            TableRepeater::make('phones')
+                ->label('Teléfonos')
+                ->headers([
+                    Header::make('Número')
+                        ->markAsRequired(),
+                    Header::make('Descripción'),
+                    Header::make('whatsapp'),
+                    Header::make('Enlace')
+                ])
+                ->emptyLabel('Aún no hay números telefónicos asociados')
+                ->relationship()
+                ->defaultItems(0)
+                ->schema([
+                    PhoneInput::make('number')
+                        ->label('Número')
+                        ->required()
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn(Get $get, Set $set) => self::getWspLink($get, $set)),
+                    TextInput::make('description')
+                        ->label('Descripción')
+                        ->columnSpanFull(),
+                    Toggle::make('wsp')
+                        ->live(onBlur: true)
+                        ->afterStateUpdated(fn(Get $get, Set $set) => self::getWspLink($get, $set)),
+                    TextInput::make('wsp_link')
+                        ->disabled()
+                        ->dehydrated()
+                        ->live(onBlur: true)
+                        ->url()
+                        ->suffixAction(
+                            Action::make('openLink')
+                                ->icon('heroicon-o-chat-bubble-bottom-center-text')
+                                ->url(fn($state) => $state)
+                                ->extraAttributes([
+                                    'target' => '_blank',
+                                    'title' => 'Chatea con tu cliente'
+                                ])
+                                ->disabled(fn($state) => $state ? false : true)
+                        )
+                ]),
+            TableRepeater::make('emails')
+                ->label('Correos Electrónicos')
+                ->emptyLabel('Aún no hay correos electrónicos asociados')
+                ->headers([
+                    Header::make('Correo Electrónico')
+                ])
+                ->relationship()
+                ->defaultItems(0)
+                ->schema([
+                    TextInput::make('email')
+                        ->label('Correo')
+                        ->email()
+                        ->required()
+                        ->suffixIcon('heroicon-c-at-symbol')
+                        ->maxLength(255),
+                ])
+        ];
+    }
+
     public static function get_info_desc(): string
     {
         return getApiStatus(Api::find(1)) ? 'La información se llenará automáticamente en base al tipo de documento seleccionados [DNI, RUC]' : '';
@@ -177,7 +239,7 @@ trait UserForms
                         ->preload()
                         ->searchable()
                         ->native(false)
-                        // ->createOptionForm(self::device_schema())
+                    // ->createOptionForm(self::device_schema())
                 ])
         ];
     }
@@ -188,10 +250,8 @@ trait UserForms
             TextInput::make('email')
                 ->email()
                 ->unique(ignoreRecord: true)
-                // ->required()
                 ->live(onBlur: true)
                 ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
-                // ->disabledOn('edit')
                 ->maxLength(255),
             Password::make('password')
                 ->password()
@@ -199,10 +259,8 @@ trait UserForms
                 ->copyable(color: 'success')
                 ->revealable()
                 ->hiddenOn([
-                    // 'edit',
                     'view'
                 ])
-                // ->required()
                 ->maxLength(12),
             FileUpload::make('avatar_url')
                 ->label('Foto de Perfil')
@@ -258,71 +316,6 @@ trait UserForms
                 ->preload()
                 ->searchable()
                 ->native(false)
-        ];
-    }
-
-    protected static function get_aditional_info(): array
-    {
-        return [
-            TableRepeater::make('phones')
-                ->label('Teléfonos')
-                ->headers([
-                    Header::make('Número')
-                        ->markAsRequired(),
-                    Header::make('Descripción'),
-                    Header::make('whatsapp'),
-                    Header::make('Enlace')
-                ])
-                ->emptyLabel('Aún no hay números telefónicos asociados')
-                ->relationship()
-                ->defaultItems(0)
-                ->schema([
-                    PhoneInput::make('number')
-                        ->label('Número')
-                        ->required()
-                        ->live(onBlur: true)
-                        ->afterStateUpdated(fn(Get $get, Set $set) => self::getWspLink($get, $set)),
-                    TextInput::make('description')
-                        ->label('Descripción')
-                        ->columnSpanFull(),
-                    Toggle::make('wsp')
-                        ->live(onBlur: true)
-                        ->afterStateUpdated(fn(Get $get, Set $set) => self::getWspLink($get, $set)),
-                    TextInput::make('wsp_link')
-                        ->disabled()
-                        ->dehydrated()
-                        ->live(onBlur: true)
-                        ->url()
-                        ->suffixAction(
-                            Action::make('openLink')
-                                ->icon('heroicon-o-chat-bubble-bottom-center-text')
-                                ->url(fn($state) => $state)
-                                ->extraAttributes([
-                                    'target' => '_blank',
-                                    'title' => 'Chatea con tu cliente'
-                                ])
-                                ->disabled(fn($state) => $state ? false : true)
-                            // ->action(function($state){
-                            //     return redirect()->away($state);
-                            // })
-                        )
-                ]),
-            TableRepeater::make('emails')
-                ->label('Correos Electrónicos')
-                ->emptyLabel('Aún no hay correos electrónicos asociados')
-                ->headers([
-                    Header::make('Correo Electrónico')
-                ])
-                ->relationship()
-                ->defaultItems(0)
-                ->schema([
-                    TextInput::make('email')
-                        ->label('Correo')
-                        ->email()
-                        ->required()
-                        ->suffixIcon('heroicon-c-at-symbol')
-                        ->maxLength(255),
-                ])
         ];
     }
 

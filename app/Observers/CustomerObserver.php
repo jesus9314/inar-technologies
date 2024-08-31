@@ -3,7 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Customer;
-use App\Models\User;
+use App\Models\CustomerLog;
+use Illuminate\Support\Carbon;
 
 class CustomerObserver
 {
@@ -12,14 +13,17 @@ class CustomerObserver
      */
     public function created(Customer $customer): void
     {
-        
-        $user = User::where('customer_id', $customer->id)->get();
-        dd($user);
-        if ($customer->user) {
-            $user->name = "$customer->last_name_p $customer->last_name_m, $customer->name";
+        $today = Carbon::today()->toDateString();
+        $existingLog = CustomerLog::where('date', $today)->first();
+
+        if ($existingLog) {
+            $existingLog->increment('count');
+        } else {
+            CustomerLog::create([
+                'date' => $today,
+                'count' => 1,
+            ]);
         }
-        // dd($customer);
-        $user->save();
     }
 
     /**

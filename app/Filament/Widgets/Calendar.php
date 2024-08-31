@@ -2,7 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Customer;
+use App\Models\Device;
 use App\Models\Meeting;
+use App\Traits\Forms\CommonForms;
 use App\Traits\Widgets\CalendarTrait;
 use Illuminate\Support\Collection;
 use Filament\Forms\Form;
@@ -15,7 +18,7 @@ use Guava\Calendar\Widgets\CalendarWidget;
 
 class Calendar extends CalendarWidget
 {
-    use CalendarTrait;
+    use CalendarTrait, CommonForms;
 
     protected ?string $locale = 'es';
 
@@ -24,6 +27,11 @@ class Calendar extends CalendarWidget
     protected bool $eventClickEnabled = true;
 
     protected bool $eventDragEnabled = true;
+
+    public static function canView(): bool
+    {
+        return true;
+    }
 
     public function getEvents(array $fetchInfo = []): Collection | array
     {
@@ -41,37 +49,53 @@ class Calendar extends CalendarWidget
     public function getHeaderActions(): array
     {
         return [
-            CreateAction::make('crear reunión')
-                ->label('Crear Reunión')
+            CreateAction::make('createMeeting')
+                ->label('Agendar Cita')
+                ->color('danger')
+                ->modalHeading('Agendar Cita')
+                ->icon('heroicon-o-user-group')
+                ->closeModalByClickingAway(false)
+                ->stickyModalHeader()
+                ->stickyModalFooter()
+                ->slideOver()
+                ->modal()
                 ->model(Meeting::class),
+            CreateAction::make('createCustomer')
+                ->label('Nuevo Cliente')
+                ->modalHeading('Nuevo Cliente')
+                ->closeModalByClickingAway(false)
+                ->stickyModalHeader()
+                ->stickyModalFooter()
+                ->slideOver()
+                ->color('success')
+                ->icon('heroicon-s-user')
+                ->model(Customer::class),
+            CreateAction::make('createDevice')
+                ->label('Nuevo Dispositivo')
+                ->modalHeading('Nuevo Dispositivo')
+                ->closeModalByClickingAway(false)
+                ->stickyModalHeader()
+                ->stickyModalFooter()
+                ->slideOver()
+                ->color('warning')
+                ->icon('heroicon-o-computer-desktop')
+                ->model(Device::class)
         ];
     }
-
-    // public function getDateClickContextMenuActions(): array
-    // {
-    //     return [
-    //         CreateAction::make('ctxCreateMeeting')
-    //             ->model(Meeting::class)
-    //             ->label('Crear Reunión')
-    //             ->mountUsing(function (Form $form, array $arguments) {
-                    
-    //                 $date = data_get($arguments, 'dateStr');
-    //                 // dd(Carbon::parse($date)->format('Y-m-d'));
-    //                 if ($date) {
-    //                     $form->fill([
-    //                         'custom_schedules' => false,
-    //                         'date' => Carbon::parse($date)->format('M d, Y'),
-    //                     ]);
-    //                 }
-    //             }),
-    //     ];
-    // }
 
     public function getDateClickContextMenuActions(): array
     {
         return [
             CreateAction::make('ctxCreateMeeting')
                 ->model(Meeting::class)
+                ->color('danger')
+                ->modalHeading('Agendar Cita')
+                ->icon('heroicon-o-user-group')
+                ->closeModalByClickingAway(false)
+                ->stickyModalHeader()
+                ->stickyModalFooter()
+                ->slideOver()
+                ->label('Agendar Cita')
                 ->mountUsing(function (Form $form, array $arguments) {
                     $date = data_get($arguments, 'dateStr');
 
@@ -87,7 +111,13 @@ class Calendar extends CalendarWidget
 
     public function getSchema(?string $model = null): ?array
     {
-        return self::getCalendarSchema();
+        // return self::getCalendarSchema();
+
+        return match ($model) {
+            Meeting::class => self::getCalendarSchema(),
+            Customer::class => self::customer_schema(),
+            Device::class => self::device_schema()
+        };
     }
 
     public function getEventClickContextMenuActions(): array

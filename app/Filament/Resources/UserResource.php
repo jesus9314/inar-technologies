@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\Pages\ActivityUserLogPage;
 use App\Models\User;
+use App\Traits\Forms\CommonForms;
 use App\Traits\InfoList\UserInfoList;
 use App\Traits\Forms\UserForms;
 use Filament\Forms\Form;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
 {
-    use UserForms, UserInfoList;
+    use CommonForms, UserInfoList;
 
     protected static ?string $model = User::class;
 
@@ -36,8 +37,6 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $AuthUser = User::find(auth()->user()->id);
-
         return $form
             ->schema(self::user_form());
     }
@@ -79,7 +78,7 @@ class UserResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 ImageColumn::make('avatar_url')
-                    ->defaultImageUrl(fn ($record): string => 'https://ui-avatars.com/api/?background=000000&color=FFFFFF&name=' . $record->name)
+                    ->defaultImageUrl(fn($record): string => 'https://ui-avatars.com/api/?background=000000&color=FFFFFF&name=' . $record->name)
                     ->label('Foto')
                     ->circular(),
                 Tables\Columns\TextColumn::make('theme')
@@ -107,17 +106,17 @@ class UserResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make()
                         ->hidden(
-                            fn ($record) => !User::find($record->id)->hasRole('super_admin')
+                            fn($record) => !User::find($record->id)->hasRole('super_admin')
                         ),
                     Tables\Actions\Action::make('activities')
                         ->hidden(
-                            fn ($record) => !User::find(auth()->user()->id)->can('activities_user')
+                            fn($record) => !User::find(auth()->user()->id)->can('activities_user')
                         )
-                        ->url(fn ($record) => UserResource::getUrl('activities', ['record' => $record]))
+                        ->url(fn($record) => UserResource::getUrl('activities', ['record' => $record]))
                         ->icon('heroicon-c-bell-alert'),
                     Tables\Actions\DeleteAction::make()
                         ->hidden(
-                            fn ($record) => $record->id == 1 ? true : false
+                            fn($record) => $record->id == 1 ? true : false
                         ),
                 ])
             ])
@@ -127,7 +126,7 @@ class UserResource extends Resource
                 ]),
             ])
             ->checkIfRecordIsSelectableUsing(
-                fn (Model $record): bool => !$record->hasRole('super_admin'),
+                fn(Model $record): bool => !$record->hasRole('super_admin'),
             );
     }
 
