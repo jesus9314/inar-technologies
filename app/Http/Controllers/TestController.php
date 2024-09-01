@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Api;
+use App\Models\Customer;
 use App\Models\CustomerLog;
 use App\Models\Meeting;
 use App\Models\Product;
@@ -34,13 +35,13 @@ class TestController extends Controller
         //     ->pluck('starts_at')
         //     ->toArray();
         // return App\Models\CustomerLog::all();
-        $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth()->format('Y-m-d');
-        $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d');
+        $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
+        $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
 
         // Consulta la cantidad total de clientes registrados en el mes pasado
-        $totalCustomers = CustomerLog::whereBetween('date', [$startOfLastMonth, $endOfLastMonth]);
+        $newCustomers = Customer::whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->count();
 
-        return $totalCustomers;
+        return $newCustomers;
 
         // return (CustomerLog::where('date', '>=', now()->subDays(30))
         //     ->orderBy('date')

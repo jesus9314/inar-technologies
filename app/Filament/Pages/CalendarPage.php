@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Livewire\CalendarStats;
 use Filament\Pages\Page;
 
 class CalendarPage extends Page
@@ -23,7 +24,7 @@ class CalendarPage extends Page
     protected function getHeaderWidgets(): array
     {
         return [
-            \App\Filament\Widgets\CustomerStats::class,
+            CalendarStats::class,
             // Calendar::class,
         ];
     }

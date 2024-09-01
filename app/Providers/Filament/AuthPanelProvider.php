@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\BackupsPage;
+use App\Filament\Widgets\CustomAccountWidget;
 use App\Filament\Widgets\CustomerStats;
 use app\Filament\Widgets\MyCalendar;
 use App\Models\User;
@@ -63,14 +64,8 @@ class AuthPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->widgets([
-                Widgets\AccountWidget::class,
-                // CustomerStats::class,
-                Widgets\FilamentInfoWidget::class,
-                // MyCalendar::class,
+                CustomAccountWidget::class,
             ])
-            // ->resources([
-            //     config('filament-logger.activity_resource')
-            // ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

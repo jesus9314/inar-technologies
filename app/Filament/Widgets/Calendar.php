@@ -30,7 +30,7 @@ class Calendar extends CalendarWidget
 
     public static function canView(): bool
     {
-        return true;
+        return false;
     }
 
     public function getEvents(array $fetchInfo = []): Collection | array
