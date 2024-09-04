@@ -16,6 +16,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -65,10 +66,10 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->label('Correo')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->label('Verificado')
-                    ->dateTime()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('email_verified_at')
+                //     ->label('Verificado')
+                //     ->dateTime()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -81,14 +82,14 @@ class UserResource extends Resource
                     ->defaultImageUrl(fn($record): string => 'https://ui-avatars.com/api/?background=000000&color=FFFFFF&name=' . $record->name)
                     ->label('Foto')
                     ->circular(),
-                Tables\Columns\TextColumn::make('theme')
-                    ->searchable(),
-                ColorColumn::make('theme_color')
-                    ->label('Color')
-                    ->copyable()
-                    ->copyMessage('Código del color copiado')
-                    ->copyMessageDuration(1500)
-                    ->searchable(),
+                // Tables\Columns\TextColumn::make('theme')
+                //     ->searchable(),
+                // ColorColumn::make('theme_color')
+                //     ->label('Color')
+                //     ->copyable()
+                //     ->copyMessage('Código del color copiado')
+                //     ->copyMessageDuration(1500)
+                //     ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Rol')
                     ->badge()
@@ -106,7 +107,7 @@ class UserResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make()
                         ->hidden(
-                            fn($record) => !User::find($record->id)->hasRole('super_admin')
+                            fn($record) => User::find($record->id)->hasRole('super_admin')
                         ),
                     Tables\Actions\Action::make('activities')
                         ->hidden(
@@ -119,7 +120,7 @@ class UserResource extends Resource
                             fn($record) => $record->id == 1 ? true : false
                         ),
                 ])
-            ])
+                    ],position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

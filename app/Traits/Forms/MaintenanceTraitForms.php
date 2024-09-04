@@ -2,6 +2,7 @@
 
 namespace App\Traits\Forms;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use App\Traits\Forms\UserForms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait MaintenanceTraitForms
 {
-    use UserForms;
+    use CommonForms;
 
     private static function maintenance_form(Form $form): Form
     {
@@ -46,7 +47,7 @@ trait MaintenanceTraitForms
             Select::make('customer_id')
                 ->relationship('customer', 'name')
                 ->label('Cliente')
-                ->createOptionForm(self::customer_form())
+                ->createOptionForm(fn () => self::customer_schema())
                 ->searchable()
                 ->preload()
                 ->required(),
@@ -69,7 +70,7 @@ trait MaintenanceTraitForms
                 ->searchable()
                 ->preload()
                 ->required(),
-            TiptapEditor::make('description')
+            TinyEditor::make('description')
                 ->required()
                 ->columnSpanFull(),
         ];

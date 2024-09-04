@@ -35,17 +35,12 @@ class TestController extends Controller
         //     ->pluck('starts_at')
         //     ->toArray();
         // return App\Models\CustomerLog::all();
-        $startOfLastMonth = Carbon::now()->subMonth()->startOfMonth();
-        $endOfLastMonth = Carbon::now()->subMonth()->endOfMonth();
-
-        // Consulta la cantidad total de clientes registrados en el mes pasado
-        $newCustomers = Customer::whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])->count();
-
-        return $newCustomers;
+       
 
         // return (CustomerLog::where('date', '>=', now()->subDays(30))
         //     ->orderBy('date')
         //     ->pluck('count', 'date')
         //     ->toArray());
+        return fn() => Auth::user()->id;
     }
 }

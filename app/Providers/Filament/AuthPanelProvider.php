@@ -95,7 +95,7 @@ class AuthPanelProvider extends PanelProvider
                         ->optimize('webp')
                         ->resize(50))
                     ->enableTwoFactorAuthentication(
-                        force: false, // force the user to enable 2FA before they can use the application (default = false)
+                        force: false,
                     ),
                 FilamentSpatieLaravelBackupPlugin::make()
                     ->usingPage(BackupsPage::class),

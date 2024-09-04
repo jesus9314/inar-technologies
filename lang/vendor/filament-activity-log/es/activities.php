@@ -17,7 +17,9 @@ return [
     ],
 
     'events' => [
+        'updated' => 'actualizado',
         'Updated' => 'Actualizado',
+        'created' => 'creado',
         'Created' => 'Creado',
         'Deleted' => 'Eliminado',
         'Restored' => 'Restaurado',

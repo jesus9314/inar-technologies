@@ -3,8 +3,10 @@
 namespace App\Traits\Widgets;
 
 use AmidEsfahani\FilamentTinyEditor\TinyEditor;
+use App\Models\Meeting;
 use App\Traits\Forms\CommonForms;
 use Filament\Forms\Components;
+use Filament\Forms;
 
 trait CalendarTrait
 {
@@ -17,7 +19,25 @@ trait CalendarTrait
         return [
             Components\TextInput::make('title')
                 ->label('Título')
-                ->required(),
+                ->required()
+                ->default(fn() => "Cita #" . (\App\Models\Meeting::count() + 1))
+                ->disabled(fn(Forms\Get $get) => $get('editTittle') ? false : true)
+                ->columnSpan(2)
+                ->dehydrated(),
+            Components\Section::make('tittle')
+                ->description('Desea ingresar manualmente el título?, abra esta sección')
+                ->columnSpanFull()
+                ->collapsed()
+                ->collapsible()
+                ->schema([
+                    Components\ToggleButtons::make('editTittle')
+                        ->default(false)
+                        ->label('Título manual')
+                        ->inline()
+                        ->dehydrated(false)
+                        ->boolean()
+                        ->live()
+                ]),
             Components\Group::make([
                 Components\DateTimePicker::make('starts_at')
                     ->label('Inicio')
@@ -29,7 +49,7 @@ trait CalendarTrait
                     ->native(false)
                     ->seconds(false)
                     ->required(),
-            ])->columns(),
+            ])->columnSpanFull(),
             TinyEditor::make('description')
                 ->label('Descripción')
                 ->profile('default')

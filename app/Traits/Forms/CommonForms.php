@@ -500,6 +500,7 @@ trait CommonForms
                 ->hint(new HtmlString(Blade::render('<x-filament::loading-indicator class="h-5 w-5" wire:loading wire:target="data.id_document_id" />')))
                 ->searchable()
                 ->preload()
+                ->default(2)
                 ->live(),
             Forms\Components\TextInput::make('name')
                 ->label('Nombre/Razón Social')

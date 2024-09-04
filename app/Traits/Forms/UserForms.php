@@ -24,6 +24,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Rawilk\FilamentPasswordInput\Password;
 use Illuminate\Support\Str;
+use Rawilk\FilamentPasswordInput\Actions\CopyToClipboardAction;
 use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 trait UserForms
@@ -74,6 +75,16 @@ trait UserForms
                 })
                 ->helperText(fn() => self::getHelperText())
                 ->required()
+                ->prefixAction(Action::make('clean')
+                    ->icon('heroicon-o-x-mark')
+                    ->color('gray')
+                    ->label('Limpiar')
+                    ->action(function (Set $set) {
+                        $set('document_number', '');
+                    }),)
+                ->suffixAction(
+                    CopyToClipboardAction::make('copy')
+                )
                 ->maxLength(255),
             Select::make('id_document_id')
                 ->label('Tipo de documento')
@@ -120,10 +131,10 @@ trait UserForms
                 ->regeneratePassword(color: 'danger')
                 ->copyable(color: 'success')
                 ->revealable()
-                ->hiddenOn([
-                    'edit',
-                    'view'
-                ])
+                // ->hiddenOn([
+                //     'edit',
+                //     'view'
+                // ])
                 ->required()
                 ->maxLength(12),
         ];

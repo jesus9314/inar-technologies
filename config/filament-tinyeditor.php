@@ -20,7 +20,7 @@ return [
     /** cutsom */
     'skins' => [
         // oxide, oxide-dark, tinymce-5, tinymce-5-dark
-        'ui' => 'oxide-darks',
+        'ui' => 'tinymce-5',
 
         // dark, default, document, tinymce-5, tinymce-5-dark, writer
         'content' => 'default'
@@ -43,7 +43,7 @@ return [
             'custom_configs' => [
                 'paste_webkit_styles' => 'color font-size',
                 'toolbar_mode' => 'sliding',
-                // 'content_style' => 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                'content_style' => 'body { font-family:Arial,sans-serif }',
                 'font_family_formats' => 'Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats',
                 'font_size_formats' => '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt'
             ]

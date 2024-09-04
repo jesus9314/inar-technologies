@@ -51,8 +51,8 @@ class Meeting extends Model implements Eventable
         return Event::make($this)
             ->backgroundColor($data['bgColor'])
             ->title($this->title)
-            ->start(self::getHourFormat($this->starts_at))
-            ->end(self::getHourFormat($this->ends_at))
+            ->start($this->starts_at)
+            ->end($this->ends_at)
             ->durationEditable(false)
             ->extendedProps($data['extendedProps'])
         ;
