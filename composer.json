@@ -18,6 +18,7 @@
         "cheesegrits/filament-google-maps": "^3.0",
         "eightynine/filament-excel-import": "^3.0",
         "filament/filament": "^3.2",
+        "filament/spatie-laravel-media-library-plugin": "^3.2",
         "filipfonal/filament-log-manager": "^2.0",
         "geo-sot/filament-env-editor": "^0.0.2",
         "guava/calendar": "^1.4",
@@ -40,7 +41,10 @@
         "spatie/laravel-backup": "^8.8",
         "spatie/laravel-package-tools": "^1.16",
         "swisnl/filament-backgrounds": "^1.1",
+        "tomatophp/filament-accounts": "^2.1",
+        "tomatophp/filament-notes": "^1.0",
         "tomatophp/filament-pwa": "^1.0",
+        "tomatophp/filament-wallet": "^1.0",
         "ysfkaya/filament-phone-input": "^2.3",
         "z3d0x/filament-logger": "^0.7.1"
     },

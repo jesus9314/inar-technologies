@@ -4,24 +4,16 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\BackupsPage;
 use App\Filament\Widgets\CustomAccountWidget;
-use App\Filament\Widgets\CustomerStats;
-use app\Filament\Widgets\MyCalendar;
-use App\Models\User;
-use Awcodes\FilamentGravatar\GravatarPlugin;
-use Awcodes\FilamentGravatar\GravatarProvider;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Forms\Components\FileUpload;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use FilipFonal\FilamentLogManager\FilamentLogManager;
-use GeoSot\FilamentEnvEditor\FilamentEnvEditorPlugin;
 use Hasnayeen\Themes\Http\Middleware\SetTheme;
 use Hasnayeen\Themes\ThemesPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -30,14 +22,16 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use pxlrbt\FilamentEnvironmentIndicator\EnvironmentIndicatorPlugin;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
+use TomatoPHP\FilamentAccounts\FilamentAccountsPlugin;
+use TomatoPHP\FilamentNotes\FilamentNotesPlugin;
 use TomatoPHP\FilamentPWA\FilamentPWAPlugin;
+use TomatoPHP\FilamentWallet\FilamentWalletPlugin;
 
 class AuthPanelProvider extends PanelProvider
 {
@@ -65,6 +59,7 @@ class AuthPanelProvider extends PanelProvider
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
             ->widgets([
                 CustomAccountWidget::class,
+                // \TomatoPHP\FilamentNotes\Filament\Widgets\NotesWidget::class
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -79,6 +74,9 @@ class AuthPanelProvider extends PanelProvider
                 SetTheme::class,
             ])
             ->plugins([
+                // FilamentNotesPlugin::make(),
+                // FilamentAccountsPlugin::make(),
+                FilamentWalletPlugin::make(),
                 FilamentPWAPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(
