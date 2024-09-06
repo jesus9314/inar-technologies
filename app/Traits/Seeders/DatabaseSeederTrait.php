@@ -2,41 +2,8 @@
 
 namespace App\Traits\Seeders;
 
-use Database\Seeders\ActionSeeder;
-use Database\Seeders\AffectationSeeder;
-use Database\Seeders\ApiSeeder;
-use Database\Seeders\BrandSeeder;
-use Database\Seeders\CategorySeeder;
-use Database\Seeders\CountrySeeder;
-use Database\Seeders\CurrencySeeder;
-use Database\Seeders\DepartmentSeeder;
-use Database\Seeders\DeviceStateSeeder;
-use Database\Seeders\DeviceTypeSeeder;
-use Database\Seeders\DistrictSeeder;
-use Database\Seeders\GraphicManufacturerSeeder;
-use Database\Seeders\GraphicSerieSeeder;
-use Database\Seeders\GraphicSufixSeeder;
-use Database\Seeders\IdDocumentSeeder;
-use Database\Seeders\MaintenanceStatesSeeder;
-use Database\Seeders\MemoryTypeSeeder;
-use Database\Seeders\OperatingSystemSeeder;
-use Database\Seeders\PeripheralTypeSeeder;
-use Database\Seeders\ProcessorConditionSeeder;
-use Database\Seeders\ProcessorGenerationSeeder;
-use Database\Seeders\ProcessorManufaturerSeeder;
-use Database\Seeders\ProcessorSerieSeeder;
-use Database\Seeders\ProcessorSufixSeeder;
-use Database\Seeders\ProvinceSeeder;
-use Database\Seeders\RamFormFactorSeeder;
-use Database\Seeders\ShieldSeeder;
-use Database\Seeders\StateSeeder;
-use Database\Seeders\SupplierSeeder;
-use Database\Seeders\SupplierTypeSeeder;
-use Database\Seeders\TaxDocumentTypeSeeder;
-use Database\Seeders\UnitSeeder;
-use Database\Seeders\WarehouseSeeder;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Storage;
+use Database\Seeders;
+use Illuminate\Support\Facades;
 
 trait DatabaseSeederTrait
 {
@@ -57,8 +24,8 @@ trait DatabaseSeederTrait
 
         foreach ($directories as $directory) {
             $directory = "public/$directory";
-            Storage::deleteDirectory($directory);
-            Storage::makeDirectory($directory);
+            Facades\Storage::deleteDirectory($directory);
+            Facades\Storage::makeDirectory($directory);
         }
     }
     /**
@@ -67,36 +34,37 @@ trait DatabaseSeederTrait
     private static function getProductionSeeders(): array
     {
         return [
-            StateSeeder::class,
-            IdDocumentSeeder::class,
-            SupplierTypeSeeder::class,
-            CountrySeeder::class,
-            DepartmentSeeder::class,
-            ProvinceSeeder::class,
-            DistrictSeeder::class,
-            AffectationSeeder::class,
-            CurrencySeeder::class,
-            UnitSeeder::class,
-            WarehouseSeeder::class,
-            TaxDocumentTypeSeeder::class,
-            MemoryTypeSeeder::class,
-            ProcessorConditionSeeder::class,
-            OperatingSystemSeeder::class,
-            RamFormFactorSeeder::class,
-            PeripheralTypeSeeder::class,
-            DeviceTypeSeeder::class,
-            ApiSeeder::class,
-            ActionSeeder::class,
-            ShieldSeeder::class,
-            MaintenanceStatesSeeder::class,
-            ProcessorManufaturerSeeder::class,
-            ProcessorSerieSeeder::class,
-            ProcessorSufixSeeder::class,
-            ProcessorGenerationSeeder::class,
-            GraphicManufacturerSeeder::class,
-            GraphicSerieSeeder::class,
-            GraphicSufixSeeder::class,
-            DeviceStateSeeder::class,
+            Seeders\StateSeeder::class,
+            Seeders\SupplierTypeSeeder::class,
+            Seeders\IdDocumentSeeder::class,
+            Seeders\CountrySeeder::class,
+            Seeders\DepartmentSeeder::class,
+            Seeders\ProvinceSeeder::class,
+            Seeders\DistrictSeeder::class,
+            Seeders\AffectationSeeder::class,
+            Seeders\CurrencySeeder::class,
+            Seeders\UnitSeeder::class,
+            Seeders\WarehouseSeeder::class,
+            Seeders\TaxDocumentTypeSeeder::class,
+            Seeders\MemoryTypeSeeder::class,
+            Seeders\ProcessorConditionSeeder::class,
+            Seeders\OperatingSystemSeeder::class,
+            Seeders\RamFormFactorSeeder::class,
+            Seeders\PeripheralTypeSeeder::class,
+            Seeders\DeviceTypeSeeder::class,
+            Seeders\ApiSeeder::class,
+            Seeders\ActionSeeder::class,
+            Seeders\ShieldSeeder::class,
+            Seeders\MaintenanceStatesSeeder::class,
+            Seeders\ProcessorManufaturerSeeder::class,
+            Seeders\ProcessorSerieSeeder::class,
+            Seeders\ProcessorSufixSeeder::class,
+            Seeders\ProcessorGenerationSeeder::class,
+            Seeders\GraphicManufacturerSeeder::class,
+            Seeders\GraphicSerieSeeder::class,
+            Seeders\GraphicSufixSeeder::class,
+            Seeders\DeviceStateSeeder::class,
+            Seeders\CompanySeeder::class,
         ];
     }
 
@@ -106,9 +74,9 @@ trait DatabaseSeederTrait
     private static function getJustLocalSeeders(): array
     {
         return [
-            SupplierSeeder::class,
-            BrandSeeder::class,
-            CategorySeeder::class,
+            Seeders\SupplierSeeder::class,
+            Seeders\BrandSeeder::class,
+            Seeders\CategorySeeder::class,
         ];
     }
 
@@ -126,6 +94,6 @@ trait DatabaseSeederTrait
      */
     private static function getSeeders(): array
     {
-        return App::environment('local') ? self::getAllSeeders() : self::getProductionSeeders();
+        return Facades\App::environment('local') ? self::getAllSeeders() : self::getProductionSeeders();
     }
 }
