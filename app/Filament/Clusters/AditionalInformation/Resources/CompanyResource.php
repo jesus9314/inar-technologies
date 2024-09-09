@@ -7,6 +7,7 @@ use App\Filament\Clusters\AditionalInformation\Resources\CompanyResource\Pages;
 use App\Filament\Clusters\AditionalInformation\Resources\CompanyResource\RelationManagers;
 use App\Models\Company;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,9 +30,9 @@ class CompanyResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\SpatieMediaLibraryFileUpload::make('logo')
+                        FileUpload::make('logo')
                             // ->label(trans('filament-ecommerce::messages.company.columns.logo'))
-                            ->collection('logo')
+                            // ->collection('logo')
                             ->columnSpanFull()
                             ->image(),
                         Forms\Components\TextInput::make('name')
@@ -94,18 +95,18 @@ class CompanyResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('country.name')
-                    ->label(trans('filament-ecommerce::messages.company.columns.country_id'))
+                    // ->label(trans('filament-ecommerce::messages.company.columns.country_id'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label(trans('filament-ecommerce::messages.company.columns.name'))
+                    // ->label(trans('filament-ecommerce::messages.company.columns.name'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->label(trans('filament-ecommerce::messages.company.columns.email'))
+                    // ->label(trans('filament-ecommerce::messages.company.columns.email'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->label(trans('filament-ecommerce::messages.company.columns.phone'))
+                    // ->label(trans('filament-ecommerce::messages.company.columns.phone'))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')

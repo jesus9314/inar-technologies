@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\BackupsPage;
+use App\Filament\Plugins\CustomFilamentInvoices\CustomFilamentInvoicesPlugin;
 use App\Filament\Widgets\CustomAccountWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Forms\Components\FileUpload;
@@ -29,6 +30,8 @@ use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use TomatoPHP\FilamentAccounts\FilamentAccountsPlugin;
+use TomatoPHP\FilamentInvoices\FilamentInvoicesPlugin;
+use TomatoPHP\FilamentLocations\FilamentLocationsPlugin;
 use TomatoPHP\FilamentNotes\FilamentNotesPlugin;
 use TomatoPHP\FilamentPWA\FilamentPWAPlugin;
 use TomatoPHP\FilamentWallet\FilamentWalletPlugin;
@@ -76,8 +79,10 @@ class AuthPanelProvider extends PanelProvider
             ->plugins([
                 // FilamentNotesPlugin::make(),
                 // FilamentAccountsPlugin::make(),
-                FilamentWalletPlugin::make(),
+                // FilamentWalletPlugin::make(),
+                CustomFilamentInvoicesPlugin::make(),
                 FilamentPWAPlugin::make(),
+                FilamentLocationsPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
@@ -119,8 +124,8 @@ class AuthPanelProvider extends PanelProvider
                 // FilamentEnvEditorPlugin::make()
                 //     ->navigationLabel('Variables de Entorno')
                 //     ->navigationGroup('Configuraciones'),
-                FilamentLogManager::make(),
-                EnvironmentIndicatorPlugin::make()
+                EnvironmentIndicatorPlugin::make(),
+                \Saade\FilamentLaravelLog\FilamentLaravelLogPlugin::make(),
             ])
             ->unsavedChangesAlerts()
             ->authMiddleware([

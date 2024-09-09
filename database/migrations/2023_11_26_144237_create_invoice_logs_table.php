@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,14 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('invoice_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('lat')->nullable();
-            $table->string('lng')->nullable();
-            $table->string('description')->nullable();
-            $table->string('reference')->nullable();
-            $table->string('address');
-            $table->foreignId('customer_id')->constrained();
+
+            $table->foreignId('invoice_id')->constrained('invoices')->onDelete('cascade');
+
+            $table->string('type')->default('info')->nullable();
+            $table->json('log')->nullable();
+
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('invoice_logs');
     }
 };

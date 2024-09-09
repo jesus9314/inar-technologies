@@ -458,8 +458,8 @@ trait CommonForms
                             ->defaultItems(1)
                             ->columns(2)
                     ]),
-                Forms\Components\wizard\Step::make('Direcciones')
-                    ->schema(self::location_form()),
+                // Forms\Components\wizard\Step::make('Direcciones')
+                //     ->schema(self::location_form()),
                 Forms\Components\wizard\Step::make("Teléfonos & Email's")
                     ->schema(self::get_aditional_info()),
             ])->columnSpanFull()

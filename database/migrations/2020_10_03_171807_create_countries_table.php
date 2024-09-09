@@ -8,24 +8,29 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
             $table->string('code')->unique();
-            $table->text('description');
-            $table->string('symbol');
-            $table->foreignId('activity_state_id')->constrained();
+            $table->string('phone');
+            $table->string('lat')->nullable();
+            $table->string('lang')->nullable();
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('currencies');
+        Schema::dropIfExists('countries');
     }
 };

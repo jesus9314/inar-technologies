@@ -21,6 +21,7 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
+use TomatoPHP\FilamentLocations\Models\Location;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {

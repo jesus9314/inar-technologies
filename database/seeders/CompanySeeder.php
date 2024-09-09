@@ -14,7 +14,7 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         Company::create([
-            'country_id' => 172,
+            'country_id' => 173,
             'name' => 'InarTechnologies',
             'ceo' => 'Jesus Inchicaque',
             'city' => 'Lima',

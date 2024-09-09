@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Company;
+use App\Models\Customer;
 use App\Models\Device;
 use App\Models\User;
 use App\Observers\DeviceObserver;
@@ -10,6 +12,9 @@ use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Illuminate\Support\ServiceProvider;
 use App\Policies\ActivityPolicy;
 use Spatie\Activitylog\Models\Activity;
+use TomatoPHP\FilamentInvoices\Facades\FilamentInvoices;
+use TomatoPHP\FilamentInvoices\Services\Contracts\InvoiceFor;
+use TomatoPHP\FilamentInvoices\Services\Contracts\InvoiceFrom;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,5 +36,13 @@ class AppServiceProvider extends ServiceProvider
             $switch
                 ->locales(['es', 'en']); // also accepts a closure
         });
+        FilamentInvoices::registerFor([
+            InvoiceFor::make(Customer::class)
+                ->label('Customer')
+        ]);
+        FilamentInvoices::registerFrom([
+            InvoiceFrom::make(Company::class)
+                ->label('Company')
+        ]);
     }
 }

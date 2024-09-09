@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('countries', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('invoices_items', function (Blueprint $table) {
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('countries');
+        Schema::table('invoices_items', function (Blueprint $table) {
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+        });
     }
 };

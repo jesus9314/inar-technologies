@@ -133,7 +133,7 @@ trait ProductTraitForms
                 ->label('Moneda')
                 ->searchable()
                 ->preload()
-                ->relationship('currency', 'description')
+                ->relationship('currency', 'name')
                 ->default(1)
                 ->required(),
             Select::make('unit_id')
