@@ -64,7 +64,7 @@ trait DatabaseSeederTrait
             Seeders\GraphicSerieSeeder::class,
             Seeders\GraphicSufixSeeder::class,
             Seeders\DeviceStateSeeder::class,
-            Seeders\CompanySeeder::class,
+            // Seeders\CompanySeeder::class,
         ];
     }
 
@@ -76,7 +76,7 @@ trait DatabaseSeederTrait
         return [
             Seeders\SupplierSeeder::class,
             Seeders\BrandSeeder::class,
-            Seeders\CategorySeeder::class,
+            // Seeders\CategorySeeder::class,
         ];
     }
 

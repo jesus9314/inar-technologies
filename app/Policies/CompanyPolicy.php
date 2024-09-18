@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Company;
+use TomatoPHP\FilamentEcommerce\Models\Company;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CompanyPolicy

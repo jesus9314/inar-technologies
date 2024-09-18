@@ -31,10 +31,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        User::observe(UserObserver::class);
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
-                ->locales(['es', 'en']); // also accepts a closure
+                ->locales(['es']); // also accepts a closure
         });
         FilamentInvoices::registerFor([
             InvoiceFor::make(Customer::class)

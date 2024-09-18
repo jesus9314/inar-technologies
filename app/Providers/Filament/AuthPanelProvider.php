@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\BackupsPage;
 use App\Filament\Plugins\CustomFilamentInvoices\CustomFilamentInvoicesPlugin;
+use App\Filament\Plugins\CustomFilamentPOSPlugin\CustomFilamentPOSPlugin;
 use App\Filament\Widgets\CustomAccountWidget;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Forms\Components\FileUpload;
@@ -77,11 +78,18 @@ class AuthPanelProvider extends PanelProvider
                 SetTheme::class,
             ])
             ->plugins([
-                // FilamentNotesPlugin::make(),
-                // FilamentAccountsPlugin::make(),
-                // FilamentWalletPlugin::make(),
                 CustomFilamentInvoicesPlugin::make(),
                 FilamentPWAPlugin::make(),
+                \Filament\SpatieLaravelTranslatablePlugin::make()
+                    ->defaultLocales(['es']),
+                \TomatoPHP\FilamentTranslations\FilamentTranslationsPlugin::make(),
+                \TomatoPHP\FilamentAccounts\FilamentAccountsPlugin::make()
+                    ->showAddressField()
+                    ->useContactUs()
+                    ->useAvatar()
+                    ->useLocations()
+                    ->useTypes(),
+                CustomFilamentPOSPlugin::make(),
                 FilamentLocationsPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(

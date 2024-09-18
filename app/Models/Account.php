@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Bavix\Wallet\Traits\HasWallet;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasTenants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,7 +48,6 @@ class Account extends Authenticatable implements HasMedia, HasAvatar, HasTenants
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
     use InteractsWithTenant;
-    use HasWallet;
 
     /**
      * @var array

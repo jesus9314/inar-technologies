@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8e4cc901720010c33200cfc4ceadf51",
+    "content-hash": "d2b31abd9eb0ae1cda275a6443509971",
     "packages": [
         {
             "name": "amidesfahani/filament-tinyeditor",
@@ -2490,6 +2490,80 @@
             "time": "2024-07-31T11:53:30+00:00"
         },
         {
+            "name": "flowframe/laravel-trend",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Flowframe/laravel-trend.git",
+                "reference": "bae1232325a59a7c9e99a372c80afab82309503b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Flowframe/laravel-trend/zipball/bae1232325a59a7c9e99a372c80afab82309503b",
+                "reference": "bae1232325a59a7c9e99a372c80afab82309503b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.37|^9|^10.0|^11.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.4.3"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^5.3|^6.1|^8.0",
+                "orchestra/testbench": "^6.15|^7.0|^8.0|^9.0",
+                "pestphp/pest": "^1.18|^2.34",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3",
+                "spatie/laravel-ray": "^1.23",
+                "vimeo/psalm": "^4.8|^5.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Flowframe\\Trend\\TrendServiceProvider"
+                    ],
+                    "aliases": {
+                        "Trend": "Flowframe\\Trend\\TrendFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Flowframe\\Trend\\": "src",
+                    "Flowframe\\Trend\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Klopstra",
+                    "email": "lars@flowframe.nl",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easily generate model trends",
+            "homepage": "https://github.com/flowframe/laravel-trend",
+            "keywords": [
+                "Flowframe",
+                "laravel",
+                "laravel-trend"
+            ],
+            "support": {
+                "issues": "https://github.com/Flowframe/laravel-trend/issues",
+                "source": "https://github.com/Flowframe/laravel-trend/tree/v0.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/larsklopstra",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-14T13:45:40+00:00"
+        },
+        {
             "name": "fruitcake/php-cors",
             "version": "v1.3.0",
             "source": {
@@ -4171,6 +4245,71 @@
             "time": "2024-06-26T13:09:29+00:00"
         },
         {
+            "name": "laravel/fortify",
+            "version": "v1.24.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/fortify.git",
+                "reference": "8158ba0960bb5f4aae509d01d74a95e16e30de20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/8158ba0960bb5f4aae509d01d74a95e16e30de20",
+                "reference": "8158ba0960bb5f4aae509d01d74a95e16e30de20",
+                "shasum": ""
+            },
+            "require": {
+                "bacon/bacon-qr-code": "^3.0",
+                "ext-json": "*",
+                "illuminate/support": "^10.0|^11.0",
+                "php": "^8.1",
+                "pragmarx/google2fa": "^8.0",
+                "symfony/console": "^6.0|^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^8.16|^9.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Fortify\\FortifyServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Fortify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Backend controllers and scaffolding for Laravel authentication.",
+            "keywords": [
+                "auth",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/fortify/issues",
+                "source": "https://github.com/laravel/fortify"
+            },
+            "time": "2024-09-03T10:02:14+00:00"
+        },
+        {
             "name": "laravel/framework",
             "version": "v11.22.0",
             "source": {
@@ -4377,6 +4516,73 @@
             "time": "2024-09-03T15:27:15+00:00"
         },
         {
+            "name": "laravel/jetstream",
+            "version": "v5.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/jetstream.git",
+                "reference": "8093245d850c215e47df1c5fc081f545afd7f0c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/jetstream/zipball/8093245d850c215e47df1c5fc081f545afd7f0c5",
+                "reference": "8093245d850c215e47df1c5fc081f545afd7f0c5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/console": "^11.0",
+                "illuminate/support": "^11.0",
+                "laravel/fortify": "^1.20",
+                "mobiledetect/mobiledetectlib": "^4.8",
+                "php": "^8.2.0",
+                "symfony/console": "^7.0"
+            },
+            "require-dev": {
+                "inertiajs/inertia-laravel": "^1.0",
+                "laravel/sanctum": "^4.0",
+                "livewire/livewire": "^3.3",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^9.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Jetstream\\JetstreamServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Jetstream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Tailwind scaffolding for the Laravel framework.",
+            "keywords": [
+                "auth",
+                "laravel",
+                "tailwind"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/jetstream/issues",
+                "source": "https://github.com/laravel/jetstream"
+            },
+            "time": "2024-09-09T13:52:03+00:00"
+        },
+        {
             "name": "laravel/prompts",
             "version": "v0.1.25",
             "source": {
@@ -4433,6 +4639,70 @@
                 "source": "https://github.com/laravel/prompts/tree/v0.1.25"
             },
             "time": "2024-08-12T22:06:33+00:00"
+        },
+        {
+            "name": "laravel/sanctum",
+            "version": "v4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sanctum.git",
+                "reference": "9cfc0ce80cabad5334efff73ec856339e8ec1ac1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/9cfc0ce80cabad5334efff73ec856339e8ec1ac1",
+                "reference": "9cfc0ce80cabad5334efff73ec856339e8ec1ac1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/console": "^11.0",
+                "illuminate/contracts": "^11.0",
+                "illuminate/database": "^11.0",
+                "illuminate/support": "^11.0",
+                "php": "^8.2",
+                "symfony/console": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench": "^9.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Sanctum\\SanctumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Sanctum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Sanctum provides a featherweight authentication system for SPAs and simple APIs.",
+            "keywords": [
+                "auth",
+                "laravel",
+                "sanctum"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/sanctum/issues",
+                "source": "https://github.com/laravel/sanctum"
+            },
+            "time": "2024-04-10T19:39:58+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -5668,6 +5938,144 @@
                 "source": "https://github.com/Masterminds/html5-php/tree/2.9.0"
             },
             "time": "2024-03-31T07:05:07+00:00"
+        },
+        {
+            "name": "milon/barcode",
+            "version": "v11.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/milon/barcode.git",
+                "reference": "1f4031adb52146bb7fbe88ef42214011376f9cbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/milon/barcode/zipball/1f4031adb52146bb7fbe88ef42214011376f9cbe",
+                "reference": "1f4031adb52146bb7fbe88ef42214011376f9cbe",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^7.0|^8.0|^9.0|^10.0 | ^11.0",
+                "php": "^7.3 | ^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Milon\\Barcode\\BarcodeServiceProvider"
+                    ],
+                    "aliases": {
+                        "DNS1D": "Milon\\Barcode\\Facades\\DNS1DFacade",
+                        "DNS2D": "Milon\\Barcode\\Facades\\DNS2DFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Milon\\Barcode": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Nuruzzaman Milon",
+                    "email": "contact@milon.im"
+                }
+            ],
+            "description": "Barcode generator like Qr Code, PDF417, C39, C39+, C39E, C39E+, C93, S25, S25+, I25, I25+, C128, C128A, C128B, C128C, 2-Digits UPC-Based Extention, 5-Digits UPC-Based Extention, EAN 8, EAN 13, UPC-A, UPC-E, MSI (Variation of Plessey code)",
+            "keywords": [
+                "CODABAR",
+                "CODE 128",
+                "CODE 39",
+                "barcode",
+                "datamatrix",
+                "ean",
+                "laravel",
+                "pdf417",
+                "qr code",
+                "qrcode"
+            ],
+            "support": {
+                "issues": "https://github.com/milon/barcode/issues",
+                "source": "https://github.com/milon/barcode/tree/v11.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/nuruzzamanmilon",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/milon",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-02-28T18:14:32+00:00"
+        },
+        {
+            "name": "mobiledetect/mobiledetectlib",
+            "version": "4.8.06",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/serbanghita/Mobile-Detect.git",
+                "reference": "af088b54cecc13b3264edca7da93a89ba7aa2d9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/af088b54cecc13b3264edca7da93a89ba7aa2d9e",
+                "reference": "af088b54cecc13b3264edca7da93a89ba7aa2d9e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0",
+                "psr/simple-cache": "^2 || ^3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^v3.35.1",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.6",
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Detection\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Serban Ghita",
+                    "email": "serbanghita@gmail.com",
+                    "homepage": "http://mobiledetect.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Mobile_Detect is a lightweight PHP class for detecting mobile devices. It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.",
+            "homepage": "https://github.com/serbanghita/Mobile-Detect",
+            "keywords": [
+                "detect mobile devices",
+                "mobile",
+                "mobile detect",
+                "mobile detector",
+                "php mobile detect"
+            ],
+            "support": {
+                "issues": "https://github.com/serbanghita/Mobile-Detect/issues",
+                "source": "https://github.com/serbanghita/Mobile-Detect/tree/4.8.06"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/serbanghita",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-01T22:28:42+00:00"
         },
         {
             "name": "moneyphp/money",
@@ -9917,6 +10325,76 @@
             "time": "2024-07-24T14:26:27+00:00"
         },
         {
+            "name": "spatie/laravel-translation-loader",
+            "version": "2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-translation-loader.git",
+                "reference": "aaf88739159ec415137738e4cc2b93b179fc1094"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-translation-loader/zipball/aaf88739159ec415137738e4cc2b93b179fc1094",
+                "reference": "aaf88739159ec415137738e4cc2b93b179fc1094",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/translation": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.2|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^8.0|^9.0|^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\TranslationLoader\\TranslationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\TranslationLoader\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Store your language lines in the database, yaml or other sources",
+            "homepage": "https://github.com/spatie/laravel-translation-loader",
+            "keywords": [
+                "database",
+                "db",
+                "i8n",
+                "language",
+                "laravel",
+                "laravel-translation-loader",
+                "spatie",
+                "translate"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/laravel-translation-loader/tree/2.8.0"
+            },
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2024-03-02T05:30:59+00:00"
+        },
+        {
             "name": "spatie/robots-txt",
             "version": "2.2.1",
             "source": {
@@ -12710,6 +13188,351 @@
             "time": "2023-02-12T12:00:38+00:00"
         },
         {
+            "name": "tomatophp/filament-accounts",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-accounts.git",
+                "reference": "29773819dbd60b6459ff1fc005324a78b87d82ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-accounts/zipball/29773819dbd60b6459ff1fc005324a78b87d82ae",
+                "reference": "29773819dbd60b6459ff1fc005324a78b87d82ae",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.0",
+                "filament/notifications": "^3.0.0",
+                "filament/spatie-laravel-media-library-plugin": "^3.2",
+                "genealabs/laravel-model-caching": "^11.0",
+                "laravel/sanctum": "^4.0",
+                "php": "^8.1|^8.2",
+                "tomatophp/console-helpers": "^1.1",
+                "tomatophp/filament-helpers": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentAccounts\\FilamentAccountsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentAccounts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "full accounts manager with API/Notifications/Contacts to manage your contacts and accounts",
+            "keywords": [
+                "accounts",
+                "api",
+                "contacts",
+                "crm",
+                "filament",
+                "laravel",
+                "notifications",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-accounts/issues",
+                "source": "https://github.com/tomatophp/filament-accounts/tree/v2.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-09-02T15:09:51+00:00"
+        },
+        {
+            "name": "tomatophp/filament-cms",
+            "version": "v1.0.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-cms.git",
+                "reference": "ddfc8e9bed0c6a1d19c84569f82a05907c285c41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-cms/zipball/ddfc8e9bed0c6a1d19c84569f82a05907c285c41",
+                "reference": "ddfc8e9bed0c6a1d19c84569f82a05907c285c41",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.0",
+                "filament/spatie-laravel-media-library-plugin": "^3.0.0",
+                "filament/spatie-laravel-settings-plugin": "^3.0.0",
+                "filament/spatie-laravel-translatable-plugin": "^3.0.0",
+                "php": "^8.1|^8.2",
+                "tomatophp/console-helpers": "^1.1",
+                "tomatophp/filament-icons": "^1.0",
+                "tomatophp/filament-translation-component": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentCms\\FilamentCmsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentCms\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "Full CMS System with easy to use page builder & theme manager for FilamentPHP",
+            "keywords": [
+                "blog",
+                "cms",
+                "filamentphp",
+                "laravel",
+                "page builder",
+                "pages",
+                "php",
+                "services",
+                "tomatophp"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-cms/issues",
+                "source": "https://github.com/tomatophp/filament-cms/tree/v1.0.17"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-09-01T12:06:11+00:00"
+        },
+        {
+            "name": "tomatophp/filament-developer-gate",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-developer-gate.git",
+                "reference": "4cec435f36cef2a06871cbe7d7cd7b8b11abc7ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-developer-gate/zipball/4cec435f36cef2a06871cbe7d7cd7b8b11abc7ac",
+                "reference": "4cec435f36cef2a06871cbe7d7cd7b8b11abc7ac",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.0",
+                "filament/notifications": "^3.0.0",
+                "php": "^8.1|^8.2",
+                "tomatophp/console-helpers": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentDeveloperGate\\FilamentDeveloperGateServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentDeveloperGate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "Secure your selected route by using a middleware with static password for developers only",
+            "keywords": [
+                "auth",
+                "developer",
+                "filament",
+                "gate",
+                "laravel",
+                "php",
+                "secure",
+                "tools"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-developer-gate/issues",
+                "source": "https://github.com/tomatophp/filament-developer-gate/tree/v1.0.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-07-08T10:18:17+00:00"
+        },
+        {
+            "name": "tomatophp/filament-ecommerce",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-ecommerce.git",
+                "reference": "a6b7b93c7830a7039dacdd41296f3981866381d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-ecommerce/zipball/a6b7b93c7830a7039dacdd41296f3981866381d5",
+                "reference": "a6b7b93c7830a7039dacdd41296f3981866381d5",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.0",
+                "flowframe/laravel-trend": "^0.2.0",
+                "milon/barcode": "^11.0",
+                "php": "^8.1|^8.2",
+                "tomatophp/console-helpers": "^1.1",
+                "tomatophp/filament-accounts": "^2.0",
+                "tomatophp/filament-cms": "^1.0",
+                "tomatophp/filament-locations": "^1.0",
+                "tomatophp/filament-settings-hub": "^1.0",
+                "tomatophp/filament-types": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentEcommerce\\FilamentEcommerceServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentEcommerce\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "Build your own ecommerce store with FilamentPHP with the Power of Tomato CMS Builder",
+            "keywords": [
+                "cart",
+                "ecommerce",
+                "filament",
+                "laravel",
+                "orders",
+                "php",
+                "prdoucts",
+                "splade",
+                "tomatophp"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-ecommerce/issues",
+                "source": "https://github.com/tomatophp/filament-ecommerce/tree/v1.0.5"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-08-11T12:06:37+00:00"
+        },
+        {
+            "name": "tomatophp/filament-helpers",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-helpers.git",
+                "reference": "a51b09dee50267c2d0fa9a31f17e3b7679a2b129"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-helpers/zipball/a51b09dee50267c2d0fa9a31f17e3b7679a2b129",
+                "reference": "a51b09dee50267c2d0fa9a31f17e3b7679a2b129",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.0",
+                "php": "^8.1|^8.2",
+                "tomatophp/console-helpers": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentHelpers\\FilamentHelpersServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentHelpers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "Helper Class Generator to manage your forms and table inside your filament app",
+            "keywords": [
+                "field class",
+                "filament",
+                "form class",
+                "generator",
+                "laravel",
+                "php",
+                "relation class",
+                "table class"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-helpers/issues",
+                "source": "https://github.com/tomatophp/filament-helpers/tree/v1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-05-11T20:18:48+00:00"
+        },
+        {
             "name": "tomatophp/filament-icons",
             "version": "v1.1.1",
             "source": {
@@ -12972,6 +13795,72 @@
             "time": "2024-08-14T15:05:16+00:00"
         },
         {
+            "name": "tomatophp/filament-pos",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-pos.git",
+                "reference": "b4398cfc752d24737c71354308fdf53efb90322a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-pos/zipball/b4398cfc752d24737c71354308fdf53efb90322a",
+                "reference": "b4398cfc752d24737c71354308fdf53efb90322a",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.0",
+                "filament/spatie-laravel-media-library-plugin": "^3.0.0",
+                "php": "^8.1|^8.2",
+                "tomatophp/console-helpers": "^1.1",
+                "tomatophp/filament-accounts": "^2.0",
+                "tomatophp/filament-ecommerce": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentPos\\FilamentPosServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentPos\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "POS System for FilamentPHP with a lot of features and integration with Ecommerce Builder",
+            "keywords": [
+                "ecommerce",
+                "filament-plugin",
+                "laravel",
+                "php",
+                "pos",
+                "tomatophp"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-pos/issues",
+                "source": "https://github.com/tomatophp/filament-pos/tree/v1.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-08-27T13:55:42+00:00"
+        },
+        {
             "name": "tomatophp/filament-pwa",
             "version": "v1.0.0",
             "source": {
@@ -13102,6 +13991,132 @@
                 }
             ],
             "time": "2024-09-05T11:57:48+00:00"
+        },
+        {
+            "name": "tomatophp/filament-translation-component",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-translation-component.git",
+                "reference": "30d5bef80fb2fb81d8186b6bdb49a9bdc63b6b41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-translation-component/zipball/30d5bef80fb2fb81d8186b6bdb49a9bdc63b6b41",
+                "reference": "30d5bef80fb2fb81d8186b6bdb49a9bdc63b6b41",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "filament/spatie-laravel-translatable-plugin": "^3.0",
+                "php": "^8.1|^8.2",
+                "tomatophp/console-helpers": "^1.1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentTranslationComponent\\FilamentTranslationComponentServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentTranslationComponent\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "Translation Component as a key/value to use it with Spatie Translatable FilamentPHP Plugin",
+            "keywords": [
+                "laravel",
+                "php",
+                "template"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-translation-component/issues",
+                "source": "https://github.com/tomatophp/filament-translation-component/tree/v1.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-07-29T09:10:27+00:00"
+        },
+        {
+            "name": "tomatophp/filament-translations",
+            "version": "v1.0.24",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tomatophp/filament-translations.git",
+                "reference": "6d3bc55f62b4b637e5d7b7ef1140fe27ed11f087"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tomatophp/filament-translations/zipball/6d3bc55f62b4b637e5d7b7ef1140fe27ed11f087",
+                "reference": "6d3bc55f62b4b637e5d7b7ef1140fe27ed11f087",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.0",
+                "filament/notifications": "^3.0.0",
+                "maatwebsite/excel": "^3.1",
+                "php": "^8.1|^8.2",
+                "spatie/laravel-translation-loader": "^2.7",
+                "tomatophp/console-helpers": "^1.1",
+                "tomatophp/filament-developer-gate": "^1.0",
+                "tomatophp/filament-translation-component": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "TomatoPHP\\FilamentTranslations\\FilamentTranslationsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TomatoPHP\\FilamentTranslations\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fady Mondy",
+                    "email": "info@3x1.io"
+                }
+            ],
+            "description": "Manage your translation with DB and cache, you can scan your languages tags like trans(), __(), and get the string inside and translate them use UI.",
+            "keywords": [
+                "laravel",
+                "php",
+                "template"
+            ],
+            "support": {
+                "issues": "https://github.com/tomatophp/filament-translations/issues",
+                "source": "https://github.com/tomatophp/filament-translations/tree/v1.0.24"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/3x1io",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-08-12T09:00:01+00:00"
         },
         {
             "name": "tomatophp/filament-types",
