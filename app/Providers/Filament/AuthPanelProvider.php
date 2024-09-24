@@ -83,13 +83,14 @@ class AuthPanelProvider extends PanelProvider
                 \Filament\SpatieLaravelTranslatablePlugin::make()
                     ->defaultLocales(['es']),
                 \TomatoPHP\FilamentTranslations\FilamentTranslationsPlugin::make(),
+                CustomFilamentPOSPlugin::make(),
                 \TomatoPHP\FilamentAccounts\FilamentAccountsPlugin::make()
                     ->showAddressField()
-                    ->useContactUs()
                     ->useAvatar()
                     ->useLocations()
-                    ->useTypes(),
-                CustomFilamentPOSPlugin::make(),
+                    ->showAddressField()
+                    ->useAccountMeta()
+                    ->useNotifications(),
                 FilamentLocationsPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(

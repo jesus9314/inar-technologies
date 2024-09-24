@@ -206,5 +206,67 @@ return [
             "remove_team_member_notification" => "¡Eliminado del equipo!",
             "leave_team_notification" => "¡Has dejado el equipo!",
         ],
+    ],
+    "team" => [
+        "title" => "Equipos",
+        "single" => "Equipo",
+        "columns" => [
+            "avatar" => "Avatar",
+            "name" => "Nombre",
+            "owner" => "Propietario",
+            "personal_team" => "Equipo Personal",
+        ],
+    ],
+
+    "roles" => [
+        "admin" => [
+            "name" => "Administrador",
+            "description" => "Los usuarios administradores pueden realizar cualquier acción."
+        ],
+        "user" => [
+            "name" => "Usuario",
+            "description" => "Los usuarios pueden leer y actualizar datos."
+        ],
+    ],
+
+    "login" => [
+        "active" => "Por favor, verifica tu cuenta primero y luego intenta iniciar sesión nuevamente.",
+    ],
+
+    "settings" => [
+        "types" => [
+            "title" => "Tipos de Cuentas"
+        ]
+    ],
+
+    "address" => [
+        "title" => "Editar Ubicaciones"
+    ],
+
+    "account-requests" => [
+        "title" => "Solicitudes",
+        "status" => "Estado de la Solicitud",
+        "types" => "Tipos de Solicitud",
+        "button" => "Gestionar Tipos y Estados"
+    ],
+
+    "contact-us" => [
+        "status" => "Editar Estado de Contáctenos",
+        "status-button" => "Gestionar Estado",
+        "footer" => "¿Tienes algún problema o pregunta? Por favor",
+        "modal" => "Por favor llena este formulario para contactarnos",
+        "label" => "Contáctenos",
+        "form" => [
+            "name" => "Nombre",
+            "email" => "Correo Electrónico",
+            "phone" => "Teléfono",
+            "subject" => "Asunto",
+            "message" => "Mensaje",
+        ],
+        "notification" => [
+            "title" => "Contáctenos",
+            "body" => "Tu mensaje ha sido enviado con éxito",
+        ]
     ]
+
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Plugins\CustomFilamentPOSPlugin;
 
+use App\Filament\Plugins\CustomFilamentEcommercePlugin\CustomFilamentEcommercePlugin;
 use App\Filament\Plugins\CustomFilamentPOSPlugin\Pages\Pos;
 use Filament\Panel;
 use TomatoPHP\FilamentAccounts\FilamentAccountsPlugin;
@@ -15,7 +16,8 @@ class CustomFilamentPOSPlugin extends BaseFilamentPOSPlugin
     {
         $panel
             ->plugins([
-                FilamentEcommercePlugin::make(),
+                CustomFilamentEcommercePlugin::make(),
+                // FilamentEcommercePlugin::make(),
                 FilamentAccountsPlugin::make()
             ])
             ->pages([

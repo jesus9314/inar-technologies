@@ -6,7 +6,6 @@ use App\Models\Api;
 use App\Models\Customer;
 use App\Models\CustomerLog;
 use App\Models\Meeting;
-use App\Models\Product;
 use App\Models\ProductPurchase;
 use App\Models\Purchase;
 use App\Models\Service;
@@ -20,6 +19,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use TomatoPHP\FilamentEcommerce\Models\Product;
 
 class TestController extends Controller
 {
@@ -42,6 +42,6 @@ class TestController extends Controller
         //     ->pluck('count', 'date')
         //     ->toArray());
         // return fn() => Auth::user()->id;
-        return Product::all();
+        return Product::with('productMetas')->find(2);
     }
 }

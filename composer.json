@@ -42,6 +42,7 @@
         "spatie/laravel-backup": "^8.8",
         "spatie/laravel-package-tools": "^1.16",
         "swisnl/filament-backgrounds": "^1.1",
+        "tomatophp/filament-alerts": "^2.0",
         "tomatophp/filament-invoices": "^1.0",
         "tomatophp/filament-locations": "^1.0",
         "tomatophp/filament-notes": "^1.0",

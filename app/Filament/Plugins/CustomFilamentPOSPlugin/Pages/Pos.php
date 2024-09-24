@@ -11,8 +11,12 @@ use TomatoPHP\FilamentCms\Models\Category;
 use TomatoPHP\FilamentEcommerce\Models\Cart;
 use TomatoPHP\FilamentEcommerce\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Concerns\Translatable;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Support\Str;
 use TomatoPHP\FilamentPos\Filament\Pages\Pos as BasePos;
 
@@ -23,15 +27,22 @@ class Pos extends BasePos
 
     public function table(Table $table): Table
     {
-        return $table->query(\App\Models\Product::query()->where('is_activated', 1))
+        return $table->query(\TomatoPHP\FilamentEcommerce\Models\Product::query()->where('is_activated', 1))
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('feature_image')
                     ->label(trans('filament-pos::messages.table.columns.image'))
                     ->square()
+                    ->defaultImageUrl(fn($record): string => 'https://ui-avatars.com/api/?background=000000&color=FFFFFF&name=' . $record->name)
                     ->collection('feature_image'),
                 TextColumn::make('name')
                     ->label(trans('filament-pos::messages.table.columns.name'))
                     ->searchable()
+                    ->sortable(),
+                TextColumn::make('price')
+                    ->label(trans('filament-pos::messages.table.columns.price'))
+                    ->state(fn(Product $product) => ($product->price + $product->vat) - $product->discount)
+                    ->description(fn(Product $product) => '(Price:' . number_format($product->price, 2) . '+VAT:' . number_format($product->vat) . ')-Discount:' . number_format($product->discount))
+                    ->money(locale: 'en', currency: setting('site_currency'))
                     ->sortable(),
                 TextColumn::make('sku')
                     ->label(trans('filament-pos::messages.table.columns.sku'))
@@ -40,12 +51,6 @@ class Pos extends BasePos
                 TextColumn::make('barcode')
                     ->label(trans('filament-pos::messages.table.columns.barcode'))
                     ->searchable()
-                    ->sortable(),
-                TextColumn::make('price')
-                    ->label(trans('filament-pos::messages.table.columns.price'))
-                    ->state(fn(Product $product) => ($product->price + $product->vat) - $product->discount)
-                    ->description(fn(Product $product) => '(Price:' . number_format($product->price, 2) . '+VAT:' . number_format($product->vat) . ')-Discount:' . number_format($product->discount))
-                    ->money(locale: 'en', currency: setting('site_currency'))
                     ->sortable(),
             ])
             ->actions([
@@ -75,14 +80,11 @@ class Pos extends BasePos
                             $existsOnCart->save();
                         }
                     }),
-                ActionGroup::make([
-                    ViewAction::make('Ver')
-                        ->form(self::get_product_schema()),
-                    EditAction::make('Editar')
-                        ->form(self::get_product_schema())
-                ])
-
-            ])
+                // ActionGroup::make([
+                //     ViewAction::make('ver')
+                //         ->form(self::get_product_schema()),
+                // ])
+            ], position: ActionsPosition::BeforeColumns)
             ->searchPlaceholder(trans('filament-pos::messages.table.search'))
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
@@ -95,9 +97,6 @@ class Pos extends BasePos
                             ->pluck('name', 'id')
                             ->toArray()
                     ),
-            ])
-            ->headerActions([
-                Tables\Actions\LocaleSwitcher::make(),
             ])
             ->defaultSort('name', 'desc');
     }
