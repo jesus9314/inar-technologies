@@ -30,6 +30,7 @@ trait MaintenanceTraitForms
                 ->required(),
             DatePicker::make('end_date')
                 ->label('Fecha de finalización')
+                ->default(now()->addDays(2))
                 ->native(false),
             Select::make('maintenance_state_id')
                 ->relationship(

@@ -35,12 +35,13 @@ class TestController extends Controller
         //     ->pluck('starts_at')
         //     ->toArray();
         // return App\Models\CustomerLog::all();
-       
+
 
         // return (CustomerLog::where('date', '>=', now()->subDays(30))
         //     ->orderBy('date')
         //     ->pluck('count', 'date')
         //     ->toArray());
+        return getDataFromDni('47939455');
         return fn() => Auth::user()->id;
     }
 }

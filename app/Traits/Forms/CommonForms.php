@@ -486,6 +486,9 @@ trait CommonForms
                     ->label('Limpiar')
                     ->action(function (Set $set) {
                         $set('document_number', '');
+                        $set('name', '');
+                        $set('last_name_m', '');
+                        $set('last_name_p', '');
                     }),)
                 ->suffixAction(
                     CopyToClipboardAction::make('copy')

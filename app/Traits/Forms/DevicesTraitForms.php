@@ -3,6 +3,7 @@
 namespace App\Traits\Forms;
 
 use App\Models;
+use App\Models\Brand;
 use Filament\Forms;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
@@ -1042,8 +1043,18 @@ trait DevicesTraitForms
             $socket = $get('socket');
             $chipset = $get('chipset');
 
+            $brandName = Brand::find($brandId)->name;
+
             if (!is_null($brandId) && !is_null($model) && !is_null($formFactor) && !is_null($socket) && !is_null($chipset)) {
-                $name = sprintf("%s %s %s %s (%s)", ucfirst($chipset), ucfirst($model), ucfirst($formFactor), $socket);
+                // Agregar `$brandId` como uno de los argumentos en `sprintf`
+                $name = sprintf(
+                    "%s %s %s %s (%s)",
+                    ucfirst($brandName),
+                    ucfirst($chipset),
+                    ucfirst($model),
+                    ucfirst($formFactor),
+                    $socket
+                );
                 $set('name', $name);
                 $set('slug', \Illuminate\Support\Str::slug($name));
             }

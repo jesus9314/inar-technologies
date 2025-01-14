@@ -24,53 +24,54 @@ trait CalendarTrait
                 ->disabled(fn(Forms\Get $get) => $get('editTittle') ? false : true)
                 ->columnSpan(2)
                 ->dehydrated(),
-            Components\Section::make('tittle')
-                ->description('Desea ingresar manualmente el título?, abra esta sección')
-                ->columnSpanFull()
-                ->collapsed()
-                ->collapsible()
-                ->schema([
-                    Components\ToggleButtons::make('editTittle')
-                        ->default(false)
-                        ->label('Título manual')
-                        ->inline()
-                        ->dehydrated(false)
-                        ->boolean()
-                        ->live()
-                ]),
             Components\Group::make([
                 Components\DateTimePicker::make('starts_at')
                     ->label('Inicio')
+                    ->columnSpan(1)
                     ->native(false)
                     ->seconds(false)
                     ->required(),
                 Components\DateTimePicker::make('ends_at')
                     ->label('Final')
+                    ->columnSpan(1)
                     ->native(false)
                     ->seconds(false)
                     ->required(),
-            ])->columnSpanFull(),
+            ])->columns(2),
             TinyEditor::make('description')
                 ->label('Descripción')
                 ->profile('default')
+                ->columnSpanFull()
                 ->resize('both'),
             Components\Select::make('customer')
+                ->relationship('customer', 'name')
                 ->label('Dueño')
                 ->searchable()
                 ->preload()
+                ->columnSpanFull()
                 ->native(false)
-                ->getSearchResultsUsing(function (string $search) {
-                    return \App\Models\Customer::query()
-                        ->where('name', 'like', "%{$search}%")
-                        ->orWhere('document_number', 'like', "%{$search}%")
-                        ->get()
-                        ->mapWithKeys(function ($item) {
-                            return [$item->id => $item->display_name];
-                        });
-                })
-                ->getOptionLabelUsing(function ($value) {
-                    return \App\Models\Customer::find($value)?->display_name;
-                })
+                ->createOptionForm(fn() => self::customer_schema())
+                ->editOptionForm(fn() => self::customer_schema()),
+                // ->getSearchResultsUsing(function (string $search) {
+                //     return \App\Models\Customer::query()
+                //         ->where('name', 'like', "%{$search}%")
+                //         ->orWhere('document_number', 'like', "%{$search}%")
+                //         ->get()
+                //         ->mapWithKeys(function ($item) {
+                //             return [$item->id => $item->display_name];
+                //         });
+                // })
+                // ->getOptionLabelUsing(function ($value) {
+                //     return \App\Models\Customer::find($value)?->display_name;
+                // }),
+            Components\ToggleButtons::make('editTittle')
+                ->default(false)
+                ->label('Título manual')
+                ->columnSpanFull()
+                ->inline()
+                ->dehydrated(false)
+                ->boolean()
+                ->live()
         ];
     }
 }
