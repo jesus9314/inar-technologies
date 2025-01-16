@@ -15,15 +15,20 @@ class IssuePriority extends Model
         'color'
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Relación con MaintenanceIssue
+    public function maintenanceIssues()
     {
-        return [
-            'color' => ColorsEnums::class
-        ];
+        return $this->hasMany(MaintenanceIssue::class);
     }
+    // /**
+    //  * Get the attributes that should be cast.
+    //  *
+    //  * @return array<string, string>
+    //  */
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'color' => ColorsEnums::class
+    //     ];
+    // }
 }

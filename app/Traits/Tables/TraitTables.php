@@ -51,8 +51,8 @@ trait TraitTables
                     EditAction::make(),
                     DeleteAction::make(),
                     Action::make('activities')
-                    ->url(fn ($record) => RamFormFactorResource::getUrl('activities', ['record' => $record]))
-                    ->icon('heroicon-c-bell-alert'),
+                        ->url(fn($record) => RamFormFactorResource::getUrl('activities', ['record' => $record]))
+                        ->icon('heroicon-c-bell-alert'),
                 ])
             ])
             ->bulkActions([
@@ -89,7 +89,7 @@ trait TraitTables
                     EditAction::make(),
                     DeleteAction::make(),
                     Action::make('activities')
-                        ->url(fn ($record) => MemoryTypeResource::getUrl('activities', ['record' => $record]))
+                        ->url(fn($record) => MemoryTypeResource::getUrl('activities', ['record' => $record]))
                         ->icon('heroicon-c-bell-alert'),
                 ])
             ])
@@ -199,7 +199,7 @@ trait TraitTables
                 ViewAction::make(),
                 EditAction::make(),
                 Action::make('activities')
-                    ->url(fn ($record) => BrandResource::getUrl('activities', ['record' => $record]))
+                    ->url(fn($record) => BrandResource::getUrl('activities', ['record' => $record]))
                     ->icon('heroicon-c-bell-alert'),
                 DeleteAction::make(),
             ])
@@ -265,7 +265,7 @@ trait TraitTables
                 EditAction::make(),
                 DeleteAction::make(),
                 Action::make('activities')
-                    ->url(fn ($record) => CategoryResource::getUrl('activities', ['record' => $record]))
+                    ->url(fn($record) => CategoryResource::getUrl('activities', ['record' => $record]))
                     ->icon('heroicon-c-bell-alert'),
             ])
         ];
@@ -336,7 +336,7 @@ trait TraitTables
                 EditAction::make(),
                 DeleteAction::make(),
                 Action::make('activities')
-                    ->url(fn ($record) => CurrencyResource::getUrl('activities', ['record' => $record]))
+                    ->url(fn($record) => CurrencyResource::getUrl('activities', ['record' => $record]))
                     ->icon('heroicon-c-bell-alert'),
 
             ])
@@ -404,7 +404,7 @@ trait TraitTables
                 EditAction::make(),
                 DeleteAction::make(),
                 Action::make('activities')
-                    ->url(fn ($record) => UnitResource::getUrl('activities', ['record' => $record]))
+                    ->url(fn($record) => UnitResource::getUrl('activities', ['record' => $record]))
                     ->icon('heroicon-c-bell-alert'),
 
             ])
@@ -443,6 +443,12 @@ trait TraitTables
             TextColumn::make('stablishment')
                 ->label('Establecimiento')
                 ->searchable(),
+            TextColumn::make('code')
+                ->label('Código')
+                ->searchable(),
+            TextColumn::make('location')
+                ->label('Ubicación')
+                ->searchable(),
             TextColumn::make('created_at')
                 ->dateTime()
                 ->sortable()
@@ -469,7 +475,7 @@ trait TraitTables
                 EditAction::make(),
                 DeleteAction::make(),
                 Action::make('activities')
-                    ->url(fn ($record) => WarehouseResource::getUrl('activities', ['record' => $record]))
+                    ->url(fn($record) => WarehouseResource::getUrl('activities', ['record' => $record]))
                     ->icon('heroicon-c-bell-alert'),
 
             ])

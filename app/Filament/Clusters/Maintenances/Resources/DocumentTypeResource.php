@@ -3,37 +3,44 @@
 namespace App\Filament\Clusters\Maintenances\Resources;
 
 use App\Filament\Clusters\Maintenances;
-use App\Filament\Clusters\Maintenances\Resources\MaintenanceStateResource\Pages;
-use App\Filament\Clusters\Maintenances\Resources\MaintenanceStateResource\RelationManagers;
-use App\Models\MaintenanceState;
-use App\Traits\Forms\TraitForms;
+use App\Filament\Clusters\Maintenances\Resources\DocumentTypeResource\Pages;
+use App\Filament\Clusters\Maintenances\Resources\DocumentTypeResource\RelationManagers;
+use App\Models\DocumentType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class MaintenanceStateResource extends Resource
+class DocumentTypeResource extends Resource
 {
-    use TraitForms;
+    protected static ?string $model = DocumentType::class;
 
-    protected static ?string $model = MaintenanceState::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-scale';
+    protected static ?string $navigationIcon = 'heroicon-s-currency-rupee';
 
     protected static ?string $cluster = Maintenances::class;
 
     protected static ?string $navigationGroup = 'Adicional';
 
-    protected static ?string $navigationLabel = 'Estado de Mantenimientos';
+    protected static ?string $navigationLabel = 'Tipo de Documentos';
 
     public static function form(Form $form): Form
     {
-        return self::maintenances_state_form($form);
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('sufijo')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('description')
+                    ->required()
+                    ->maxLength(255),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -42,11 +49,10 @@ class MaintenanceStateResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                Tables\Columns\TextColumn::make('sufijo')
                     ->searchable(),
-                TextColumn::make('color')
-                    ->searchable()
-                    ->badge(),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -76,7 +82,7 @@ class MaintenanceStateResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageMaintenanceStates::route('/'),
+            'index' => Pages\ManageDocumentTypes::route('/'),
         ];
     }
 }

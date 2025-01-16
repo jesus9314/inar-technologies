@@ -16,14 +16,18 @@ class WarehouseSeeder extends Seeder
         $wareHouses = [
             [
                 'description' => 'Almacén Oficina Principal',
-                'stablishment' => 'Oficina Principal'
+                'stablishment' => 'Oficina Principal',
+                'code' => 'almacen-oficina-principal-001',
+                'location' => 'Jirón Ángel Fernandez Quiroz 2813',
             ],
         ];
 
         foreach ($wareHouses as $wareHouse) {
             Warehouse::create([
                 'description' => $wareHouse['description'],
-                'stablishment' => $wareHouse['stablishment']
+                'stablishment' => $wareHouse['stablishment'],
+                'code' => $wareHouse['code'],
+                'location' => $wareHouse['location'],
             ]);
         }
     }

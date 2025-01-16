@@ -93,7 +93,7 @@ trait TraitForms
                 ->disabled()
                 ->dehydrated()
                 ->unique(ignoreRecord: true)
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->required()
                 ->maxLength(255),
             Textarea::make('description')
@@ -138,7 +138,7 @@ trait TraitForms
                 ->disabled()
                 ->reactive()
                 ->unique(ignoreRecord: true)
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->required()
                 ->maxLength(255),
             Textarea::make('description'),
@@ -168,7 +168,7 @@ trait TraitForms
                 ->label('Código')
                 ->unique(ignoreRecord: true)
                 ->live(onBlur: true)
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->required()
                 ->maxLength(255),
             Textarea::make('description')
@@ -204,7 +204,7 @@ trait TraitForms
                 ->label('Código')
                 ->unique(ignoreRecord: true)
                 ->live(onBlur: true)
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->required()
                 ->maxLength(255),
             TextInput::make('description')
@@ -246,6 +246,14 @@ trait TraitForms
                 ->label('Establecimiento')
                 ->required()
                 ->maxLength(255),
+            TextInput::make('code')
+                ->label('Código')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('location')
+                ->label('Ubicación')
+                ->required(),
+
         ];
     }
 
@@ -418,18 +426,18 @@ trait TraitForms
                 ->relationship(
                     name: 'department',
                     titleAttribute: 'name',
-                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('country_id', $get('country_id'))
+                    modifyQueryUsing: fn(Builder $query, Get $get) => $query->where('country_id', $get('country_id'))
                 )
-                ->disabled(fn (Get $get): bool => !filled($get('country_id')))
+                ->disabled(fn(Get $get): bool => !filled($get('country_id')))
                 ->live()
                 ->required(),
             Select::make('province_id')
                 ->relationship(
                     name: 'province',
                     titleAttribute: 'name',
-                    modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('department_id', $get('department_id'))
+                    modifyQueryUsing: fn(Builder $query, Get $get) => $query->where('department_id', $get('department_id'))
                 )
-                ->disabled(fn (Get $get): bool => !filled($get('department_id')))
+                ->disabled(fn(Get $get): bool => !filled($get('department_id')))
                 ->required(),
         ];
     }

@@ -19,6 +19,8 @@ class WarehouseExporter extends Exporter
         return [
             ExportColumn::make('description'),
             ExportColumn::make('stablishment'),
+            ExportColumn::make('code'),
+            ExportColumn::make('location'),
         ];
     }
 

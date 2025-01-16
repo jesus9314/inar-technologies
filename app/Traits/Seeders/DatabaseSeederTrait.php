@@ -3,6 +3,7 @@
 namespace App\Traits\Seeders;
 
 use Database\Seeders;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades;
 
 trait DatabaseSeederTrait
@@ -65,6 +66,8 @@ trait DatabaseSeederTrait
             Seeders\GraphicSufixSeeder::class,
             Seeders\DeviceStateSeeder::class,
             Seeders\CompanySeeder::class,
+            Seeders\IssuePrioritySeeder::class,
+            Seeders\DocumentTypeSeeder::class,
         ];
     }
 

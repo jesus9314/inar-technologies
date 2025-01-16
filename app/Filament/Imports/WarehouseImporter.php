@@ -20,6 +20,12 @@ class WarehouseImporter extends Importer
             ImportColumn::make('stablishment')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
+            ImportColumn::make('code')
+                ->requiredMapping()
+                ->rules(['required', 'max:255']),
+            ImportColumn::make('location')
+                ->requiredMapping()
+                ->rules(['required', 'max:255']),
         ];
     }
 

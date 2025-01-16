@@ -12,5 +12,9 @@ class Maintenances extends Cluster
 
     protected static ?string $modelLabel = 'Mantenimientos';
 
+    protected static ?string $navigationLabel = 'Mantenimientos';
+
+    protected static ?string $clusterBreadcrumb = 'Mantenimientos';
+
     protected static ?string $pluralModelLabel = 'mantenimientos';
 }

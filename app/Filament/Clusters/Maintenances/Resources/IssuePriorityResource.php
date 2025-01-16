@@ -22,9 +22,13 @@ class IssuePriorityResource extends Resource
 
     protected static ?string $model = IssuePriority::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-shield-exclamation';
 
     protected static ?string $cluster = Maintenances::class;
+
+    protected static ?string $navigationGroup = 'Adicional';
+
+    protected static ?string $navigationLabel = 'Prioridad de Incidencias';
 
     public static function form(Form $form): Form
     {

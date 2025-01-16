@@ -11,6 +11,7 @@ class Maintenance extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'start_date',
         'end_date',
         'description',
@@ -18,6 +19,8 @@ class Maintenance extends Model
         'customer_id',
         'device_id',
         'user_id',
+        'customer_requet',
+        'recommendations'
     ];
 
     public function maintenanceState(): BelongsTo
@@ -38,5 +41,20 @@ class Maintenance extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function maintenanceIssues()
+    {
+        return $this->hasMany(MaintenanceIssue::class);
+    }
+
+    public function maintenanceProcedures()
+    {
+        return $this->hasMany(MaintenanceProcedure::class);
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
 }

@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Torgodly\Html2Media\Actions\Html2MediaAction;
 
 class MaintenanceResource extends Resource
 {
@@ -21,9 +22,11 @@ class MaintenanceResource extends Resource
 
     protected static ?string $model = Maintenance::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-cog-6-tooth';
 
     protected static ?string $cluster = Maintenances::class;
+
+    protected static ?string $navigationLabel = 'Mantenimientos';
 
     public static function form(Form $form): Form
     {

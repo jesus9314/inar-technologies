@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->id();
+            $table->string('code');
             $table->date('start_date')->default(now());
             $table->date('end_date')->nullable();
             $table->text('description')->nullable();
@@ -21,6 +22,8 @@ return new class extends Migration
             $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('device_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->text('customer_requet');
+            $table->text('recommendations');
             $table->timestamps();
         });
     }

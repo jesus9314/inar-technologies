@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('warehouses', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->string('stablishment')->default('Oficina Principal');
-            $table->string('code')->nullable();
-            $table->string('location')->nullable();
+            $table->string('code');
+            $table->string('location');
+            $table->foreignId('maintenance_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('warehouse_id')->constrained();
+            $table->string('document_url');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('documents');
     }
 };
