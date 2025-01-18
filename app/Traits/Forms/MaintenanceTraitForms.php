@@ -22,8 +22,10 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use FilamentTiptapEditor\TiptapEditor;
+use HTMLPurifier_Config;
 use Illuminate\Database\Eloquent\Builder;
 use Torgodly\Html2Media\Actions\Html2MediaAction;
+use Illuminate\Support\Str;
 
 trait MaintenanceTraitForms
 {
@@ -43,7 +45,7 @@ trait MaintenanceTraitForms
                     ->schema([
                         TextInput::make('code')
                             ->label('Código')
-                            ->disabled(true)
+                            ->readOnly()
                             ->default(fn() => str_pad(Maintenance::count() + 1, 4, '0', STR_PAD_LEFT))
                             ->required(),
                         DatePicker::make('start_date')
@@ -98,37 +100,37 @@ trait MaintenanceTraitForms
                             ->searchable()
                             ->preload()
                             ->required(),
-                        RichEditor::make('customer_request')
-                            ->required()
+                        TinyEditor::make('customer_requet')
+                            ->label('Requisitos del Cliente')
                             ->columnSpanFull()
                     ])
                     ->columns(2),
                 Step::make('Información')
                     ->icon('heroicon-m-document-chart-bar')
                     ->schema([
-                        RichEditor::make('description')
-                            ->required()
+                        TinyEditor::make('description')
                             ->columnSpanFull(),
-                        Repeater::make('maintenanceIssues')
+                        TableRepeater::make('maintenanceIssues')
+                            ->headers([
+                                Header::make('Problema'),
+                                Header::make('Posible Solución'),
+                                Header::make('Prioridad'),
+                            ])
                             ->label('Problemas y posibles soluciones')
                             ->relationship('maintenanceIssues')
-                            ->defaultItems(1)
                             ->collapsible()
-                            ->collapsed()
                             ->cloneable()
+                            ->defaultItems(0)
                             ->itemLabel(fn(array $state): ?string => $state['issues'] ?? null)
                             ->schema([
-                                RichEditor::make('issues')
-                                    ->required(),
-                                RichEditor::make('solution')
-                                    ->required(),
+                                TextInput::make('issues'),
+                                TextInput::make('solution'),
                                 Select::make('issue_priority_id')
                                     ->label('Prioridad')
                                     ->relationship('issuePriority', 'name') // Relación en el modelo MaintenanceIssue
                                     ->searchable()
                                     ->preload()
-                                    ->default(2)
-                                    ->required(),
+                                    ->default(2),
                             ])->columnSpan('full')
                     ]),
                 Step::make('Procedimientos')
@@ -141,10 +143,10 @@ trait MaintenanceTraitForms
                             ])
                             ->label('Procedimientos de mantenimiento')
                             ->relationship('maintenanceProcedures')
-                            ->defaultItems(5)
                             ->collapsible()
                             ->collapsed()
                             ->cloneable()
+                            ->defaultItems(0)
                             ->schema([
                                 TextInput::make('name')
                                     ->required()
@@ -153,17 +155,14 @@ trait MaintenanceTraitForms
                                     ->default(false)
                             ])
                             ->columnSpanFull(),
-                        RichEditor::make('recommendations')
+                        TinyEditor::make('recommendations')
                             ->label('Recomendaciones al cliente')
-                            ->required()
                     ]),
                 Step::make('Conclusiones')
                     ->icon('heroicon-s-cube')
                     ->schema([
-                        RichEditor::make('solution')
-                            ->label('Solución')
-                            ->required(),
-
+                        TinyEditor::make('solution')
+                            ->label('Solución'),
                     ]),
                 Step::make('Documentos')
                     ->icon('heroicon-c-folder-open')
@@ -187,12 +186,14 @@ trait MaintenanceTraitForms
                                 TextInput::make('code')
                                     ->label('Código')
                                     ->disabled(true)
+                                    ->dehydrated()
                                     ->live(onBlur: true)
                                     // ->default(fn(Get $get, $state) => $state = strval($get('../../code')))
                                     ->required(),
                                 Select::make('document_type_id')
                                     ->relationship('documentType', 'name')
                                     ->searchable()
+                                    ->dehydrated()
                                     ->native(false)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn($state, Get $get, Set $set) => self::get_document_type_sufix($state, $get, $set))
@@ -206,13 +207,11 @@ trait MaintenanceTraitForms
                                     ->label('Ubicación')
                                     ->preload()
                                     ->searchable()
-                                    ->native(false)
-                                    ->required(),
+                                    ->native(false),
                                 FileUpload::make('document_url')
                                     ->label('Documento')
                                     ->downloadable()
-                                    ->acceptedFileTypes(['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'])
-                                    ->required(),
+                                // ->acceptedFileTypes(['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']),
                             ])
                             ->default(
                                 function (Get $get) {

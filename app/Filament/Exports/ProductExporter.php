@@ -21,6 +21,8 @@ class ProductExporter extends Exporter
                 ->label('Nombre'),
             ExportColumn::make('secondary_name')
                 ->label('Nombre Secundario'),
+            ExportColumn::make('service')
+                ->label('Modelo'),
             ExportColumn::make('model')
                 ->label('Modelo'),
             ExportColumn::make('bar_code')

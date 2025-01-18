@@ -21,6 +21,8 @@ class ProductImporter extends Importer
                 ->rules(['max:255']),
             ImportColumn::make('secondary_name')
                 ->rules(['max:255']),
+            ImportColumn::make('service')
+                ->rules(['max:255']),
             ImportColumn::make('model')
                 ->rules(['max:255']),
             ImportColumn::make('bar_code')

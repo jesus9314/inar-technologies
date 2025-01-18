@@ -20,6 +20,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'secondary_name',
+        'service',
         'slug',
         'model',
         'bar_code',

@@ -4,11 +4,15 @@ namespace App\Traits\Forms;
 
 use Awcodes\TableRepeater\Components\TableRepeater as ComponentsTableRepeater;
 use Awcodes\TableRepeater\Header;
+use DesignTheBox\BarcodeField\Forms\Components\BarcodeInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Contracts\HasForms;
@@ -36,11 +40,15 @@ trait ProductTraitForms
         return [
             Wizard::make()
                 ->schema([
-                    Step::make('Información General')
+                    Step::make('General')
                         ->schema(self::general_product_info())
                         ->columns(2),
-                    Step::make('Relaciones')
+                    Step::make('Stock')
+                        ->schema(self::stock())
+                        ->columns(2),
+                    Step::make('Adicional')
                         ->schema(self::product_relations_form())
+                        ->description('Categorías, marcas, moneda, unidad, depósito, etc...')
                         ->columns(2),
                 ])
                 ->columnSpanFull()
@@ -54,56 +62,107 @@ trait ProductTraitForms
             TextInput::make('name')
                 ->required()
                 ->unique(ignoreRecord: true)
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->label('Nombre')
                 ->autocapitalize('sentencecs')
                 ->live(onBlur: true)
                 ->required()
-                ->afterStateUpdated(fn (Get $get, Set $set) => self::setSlug($get, $set))
+                ->afterStateUpdated(fn(Get $get, Set $set) => self::setSlug($get, $set))
                 ->maxLength(255),
             TextInput::make('slug')
                 ->helperText(str('El campo **Nombre** se convertirá automáticamente en el slug')->inlineMarkdown()->toHtmlString())
-                ->afterStateUpdated(fn (HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
+                ->afterStateUpdated(fn(HasForms $livewire, TextInput $component) => self::validate_one_field($livewire, $component))
                 ->required()
                 ->unique(ignoreRecord: true)
                 ->disabled()
                 ->dehydrated()
-                ->beforeStateDehydrated(fn (Get $get, Set $set) => self::setSlug($get, $set))
+                ->beforeStateDehydrated(fn(Get $get, Set $set) => self::setSlug($get, $set))
                 ->maxLength(255),
+            TextInput::make('duration')
+                ->label('Duración')
+                ->suffixIcon('heroicon-m-clock')
+                ->helperText('En días, horas, minutos, etc... ')
+                ->hidden(fn(Get $get) => !self::isService($get))
+                ->required(fn(Get $get) => self::isService($get))
+                ->disabled(fn(Get $get) => !self::isService($get)),
             TextInput::make('secondary_name')
                 ->label('Nombre secundario')
                 ->maxLength(255),
             TextInput::make('model')
                 ->label('Modelo')
                 ->maxLength(255),
-            TextInput::make('bar_code')
+            BarcodeInput::make('bar_code')
+                ->helperText('Si cuentas con una pistola lectora de códigos de Barra, puedes emplearla aquí')
                 ->label('Código de Barras')
-                ->maxLength(255),
+                ->maxLength(255)
+                ->required(false)
+                ->icon('heroicon-o-viewfinder-circle'),
             TextInput::make('internal_code')
                 ->label('Código Interno')
                 ->maxLength(255),
-            DatePicker::make('due_date')
-                ->label('Fecha de vencimiento'),
-            TextInput::make('description')
-                ->label('descripción del producto')
-                ->maxLength(255),
-            TextInput::make('stock_initial')
-                ->label('Stock Inicial')
-                ->required()
-                ->default(0)
-                ->numeric(),
-            TextInput::make('stock_final')
-                ->hiddenOn('create')
-                ->disabled()
-                ->label('Stock Final')
-                ->numeric(),
-            TextInput::make('stock_min')
-                ->numeric()
-                ->integer()
-                ->label('Stock Mínimo'),
+            Toggle::make('service')
+                ->inline(false)
+                ->helperText('Si estás creando un servicio, activa esta opción')
+                ->label('Servicio?')
+                ->live(onBlur: true)
+                ->declined()
+                ->onColor('success')
+                ->offColor('danger')
+                ->onIcon('heroicon-o-check')
+                ->offIcon('heroicon-o-x-mark'),
             MoneyInput::make('unity_price')
                 ->label('Precio Unitario')
                 ->required(),
+            RichEditor::make('description')
+                ->columnSpanFull()
+                ->label('Descripción')
+                ->maxLength(255),
+        ];
+    }
+
+    protected static function stock(): array
+    {
+
+        return [
+            DatePicker::make('due_date')
+                ->native(false)
+                ->seconds(false)
+                ->default(now()->addWeek(1))
+                ->helperText('La fecha seleccionada por defecto es 1 semana posterior al registro, puedes cambiarlo dependiendo de lo necesario')
+                ->minDate(now()->subYears(2))
+                ->maxDate(now()->addYears(2))
+                ->closeOnDateSelection()
+                ->columnSpan(fn(Get $get) => self::isService($get) ? '2' : '1')
+                // ->columnSpanFull(fn(Get $get) => self::isService($get) ? true : false)
+                ->label('Fecha de vencimiento'),
+            TextInput::make('stock_initial')
+                ->label('Stock Inicial')
+                ->required(fn(Get $get) => !self::isService($get))
+                ->disabled(fn(Get $get) => self::isService($get))
+                ->hidden(fn(Get $get) => self::isService($get))
+                ->numeric()
+                ->integer()
+                ->minValue(0)
+                ->default(1),
+            TextInput::make('stock_final')
+                ->disabled()
+                ->required(fn(Get $get) => !self::isService($get))
+                ->disabled(fn(Get $get) => self::isService($get))
+                ->hidden(fn(Get $get) => self::isService($get))
+                ->numeric()
+                ->minValue(0)
+                ->hiddenOn('create')
+                ->label('Stock Final')
+                ->integer(),
+            TextInput::make('stock_min')
+                ->numeric()
+                ->integer()
+                ->minValue(0)
+                ->default(0)
+                ->required(fn(Get $get) => !self::isService($get))
+                ->disabled(fn(Get $get) => self::isService($get))
+                ->hidden(fn(Get $get) => self::isService($get))
+                ->label('Stock Mínimo'),
         ];
     }
 
@@ -143,7 +202,7 @@ trait ProductTraitForms
                 ->relationship(
                     name: 'unit',
                     titleAttribute: 'description',
-                    modifyQueryUsing: fn (Builder $query) => $query->where('id', '!=', 1)
+                    modifyQueryUsing: fn(Builder $query) => $query->where('id', '!=', 1)
                 )
                 ->default(10)
                 ->required(),
@@ -158,6 +217,13 @@ trait ProductTraitForms
                 ->image()
                 ->columnSpan(2),
         ];
+    }
+
+    protected static function isService(Get $get): bool
+    {
+        $service = $get('service');
+
+        return $service ? true : false;
     }
 
     protected static function setSlug(Get $get, Set $set): void

@@ -9,11 +9,14 @@ use App\Models\Maintenance;
 use App\Traits\Forms\MaintenanceTraitForms;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use PrintFilament\Print\PrintFilament;
 use Torgodly\Html2Media\Actions\Html2MediaAction;
 
 class MaintenanceResource extends Resource
@@ -86,6 +89,14 @@ class MaintenanceResource extends Resource
             //
         ];
     }
+
+    // public static function infolist(Infolist $infolist): Infolist
+    // {
+    //     return $infolist
+    //         ->schema([
+    //             TextEntry::make('code')
+    //         ]);
+    // }
 
     public static function getPages(): array
     {

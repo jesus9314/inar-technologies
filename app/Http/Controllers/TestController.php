@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Api;
 use App\Models\Customer;
 use App\Models\CustomerLog;
+use App\Models\Maintenance;
 use App\Models\Meeting;
 use App\Models\Product;
 use App\Models\ProductPurchase;
@@ -41,6 +42,8 @@ class TestController extends Controller
         //     ->orderBy('date')
         //     ->pluck('count', 'date')
         //     ->toArray());
+        $maintenance = Maintenance::with(['maintenanceState', 'customer', 'device', 'user', 'maintenanceIssues', 'maintenanceProcedures', 'documents'])->find(2);
+        return $maintenance->maintenanceState;
         return getDataFromDni('47939455');
         return fn() => Auth::user()->id;
     }

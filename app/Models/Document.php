@@ -14,7 +14,6 @@ class Document extends Model
 
     protected $fillable = [
         'code',
-        'location',
         'document_type_id',
         'warehouse_id',
         'maintenance_id',

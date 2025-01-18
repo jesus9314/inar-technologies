@@ -31,7 +31,7 @@ class ListProducts extends ListRecords
             ExportAction::make()
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('warning')
-                ->exporter(ProductExporter::class)
+                ->exporter(ProductExporter::class),
         ];
     }
 }

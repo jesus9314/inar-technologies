@@ -15,6 +15,7 @@ class Maintenance extends Model
         'start_date',
         'end_date',
         'description',
+        'solution',
         'maintenance_state_id',
         'customer_id',
         'device_id',

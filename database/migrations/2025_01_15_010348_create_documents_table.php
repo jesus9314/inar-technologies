@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->string('location');
             $table->foreignId('maintenance_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('warehouse_id')->constrained();
-            $table->string('document_url');
+            $table->foreignId('warehouse_id')->nullable()->constrained();
+            $table->string('document_url')->nullable();
             $table->timestamps();
         });
     }

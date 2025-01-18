@@ -28,6 +28,7 @@ use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
@@ -38,7 +39,7 @@ trait ProductTraitTable
     protected static function product_table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('service_id', null))
+            ->modifyQueryUsing(fn(Builder $query) => $query->where('service_id', null))
             ->extremePaginationLinks()
             ->striped()
             ->groups(self::groups())
@@ -77,6 +78,7 @@ trait ProductTraitTable
     {
         return [
             TrashedFilter::make(),
+            TernaryFilter::make('service'),
             SelectFilter::make('Marcas')
                 ->relationship('brand', 'name')
                 ->searchable()
@@ -89,7 +91,7 @@ trait ProductTraitTable
                 ->constraints([
                     NumberConstraint::make('stock_final')
                         ->label('Stock')
-                ])
+                ]),
         ];
     }
 
@@ -98,11 +100,11 @@ trait ProductTraitTable
         return [
             Group::make('category.name')
                 ->label('Categorías')
-                ->getDescriptionFromRecordUsing(fn (Product $product): string => $product->category->description)
+                ->getDescriptionFromRecordUsing(fn(Product $product): string => $product->category->description)
                 ->collapsible(),
             Group::make('brand.name')
                 ->label('Marcas')
-                ->getDescriptionFromRecordUsing(fn (Product $product): string => $product->brand->description)
+                ->getDescriptionFromRecordUsing(fn(Product $product): string => $product->brand->description)
                 ->collapsible(),
         ];
     }
@@ -112,11 +114,10 @@ trait ProductTraitTable
         return [
             TextColumn::make('name')
                 ->label('Nombre')
-                ->description(fn (Product $product): string => $product->description, position: 'above')
+                ->description(fn(Product $product): string => strip_tags($product->description), position: 'above')
                 ->searchable(),
-            ImageColumn::make('image_url')
-                ->label('Imagen')
-                ->square(),
+            MoneyColumn::make('unity_price')
+                ->label('Precio unitario'),
             TextColumn::make('category.name')
                 ->label('Categoría')
                 ->numeric()
@@ -130,9 +131,10 @@ trait ProductTraitTable
                 ->numeric()
                 ->sortable()
                 ->badge()
-                ->color(fn (Product $product, int $state) => self::get_bagdes_color($product, $state)),
-            MoneyColumn::make('unity_price')
-                ->label('Precio unitario'),
+                ->color(fn(Product $product, int $state) => self::get_bagdes_color($product, $state)),
+            ImageColumn::make('image_url')
+                ->label('Imagen')
+                ->square(),
         ];
     }
 
@@ -145,7 +147,7 @@ trait ProductTraitTable
                 DeleteAction::make(),
                 ForceDeleteAction::make(),
                 RestoreAction::make(),
-                Action::make('activities')->url(fn ($record) => ProductResource::getUrl('activities', ['record' => $record])),
+                Action::make('activities')->url(fn($record) => ProductResource::getUrl('activities', ['record' => $record])),
             ])
         ];
     }

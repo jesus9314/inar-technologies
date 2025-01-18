@@ -10,6 +10,8 @@ class ProductsManage extends Cluster
 
     protected static ?string $navigationLabel = 'Productos';
 
+    protected static ?string $clusterBreadcrumb = 'Productos y Servicios';
+
     protected static ?string $navigationGroup = 'Productos y Servicios';
 
     protected static ?string $modelLabel = 'Producto';

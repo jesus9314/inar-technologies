@@ -17,13 +17,14 @@ return new class extends Migration
             $table->date('start_date')->default(now());
             $table->date('end_date')->nullable();
             $table->text('description')->nullable();
+            $table->text('solution')->nullable();
 
             $table->foreignId('maintenance_state_id')->constrained();
             $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('device_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->nullable()->constrained();
-            $table->text('customer_requet');
-            $table->text('recommendations');
+            $table->text('customer_requet')->nullable();
+            $table->text('recommendations')->nullable();
             $table->timestamps();
         });
     }

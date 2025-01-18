@@ -20,6 +20,8 @@ class VoucherResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Adicional';
+
     protected static ?string $cluster = ProductsManage::class;
 
     public static function form(Form $form): Form

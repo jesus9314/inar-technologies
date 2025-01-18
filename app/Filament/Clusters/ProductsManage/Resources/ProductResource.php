@@ -27,7 +27,7 @@ class ProductResource extends Resource
 
     protected static ?string $modelLabel = 'Producto';
 
-    protected static ?string $pluralModelLabel = 'Productos';
+    protected static ?string $pluralModelLabel = 'Productos y Servicios';
 
     public static function getEloquentQuery(): Builder
     {
